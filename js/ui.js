@@ -138,6 +138,8 @@
       '<div class="wp-card-body">' +
         (o.duration ? '<span class="wp-card-meta">' + icon("clock") + esc(o.duration) + "</span>" : "") +
         '<h3 class="wp-card-title">' + esc(o.title) + "</h3>" +
+        (o.rating ? '<span class="wp-rating">' + icon("star") + '<strong class="wp-tnum">' + o.rating.avg.toFixed(1) + "</strong>" +
+          '<span class="wp-rating-n">(' + o.rating.count + " " + (th ? "รีวิวตัวอย่าง" : "sample reviews") + ")</span></span>" : "") +
         (o.summary ? '<p class="wp-card-summary">' + esc(o.summary) + "</p>" : "") +
         (o.reasons ? matchReasons({ reasons: o.reasons, note: false, title: th ? "ตรงกับที่คุณเลือก" : "Matches your preferences" }) : "") +
         '<p class="wp-card-price">' + (th ? "เริ่มต้น " : "from ") + "<strong>" + esc(price) + "</strong>" + esc(" / " + (o.unit || "person")) + "</p>" +
@@ -177,7 +179,7 @@
       "<label" + attrs({ "for": o.id, "class": cx("wp-label", o.required && "wp-label-req") }) + ">" + esc(o.label) +
         (o.optional ? '<span class="wp-label-opt"> (' + esc(o.optional === true ? "optional" : o.optional) + ")</span>" : "") + "</label>" +
       "<input" + attrs({ id: o.id, "class": "wp-input", type: o.type || "text", name: o.name || o.id, value: o.value || "", required: !!o.required,
-        autocomplete: o.autocomplete, inputmode: o.inputmode, placeholder: o.placeholder, "aria-invalid": o.error ? "true" : null, "aria-describedby": described,
+        autocomplete: o.autocomplete, inputmode: o.inputmode, placeholder: o.placeholder, maxlength: o.maxlength, "aria-invalid": o.error ? "true" : null, "aria-describedby": described,
         "data-input": o.input }) + ">" +
       (o.hint ? '<span id="' + esc(hintId) + '" class="wp-hint">' + esc(o.hint) + "</span>" : "") +
       (o.error ? '<span id="' + esc(errId) + '" class="wp-error" role="alert">' + icon("alert") + esc(o.error) + "</span>" : "") +
@@ -192,11 +194,18 @@
       (o.detail ? '<span class="wp-consent-detail">' + esc(o.detail) + "</span>" : "") + "</span></label>";
   }
 
+  /* Row of 5 stars for a rating (rounded to the nearest whole star). The number is given as text for screen readers. */
+  function stars(value, label) {
+    var n = Math.round(value), out = "";
+    for (var i = 1; i <= 5; i++) out += icon("star", { cls: i <= n ? "is-on" : "is-off" });
+    return '<span class="wp-stars" role="img" aria-label="' + esc(label || value + " / 5") + '">' + out + "</span>";
+  }
+
   function faqItem(q, a, open) {
     return "<details" + attrs({ "class": "wp-faq", open: !!open }) + "><summary>" + esc(q) + icon("plus") + '</summary><div class="wp-faq-body">' + esc(a) + "</div></details>";
   }
 
   window.UI = { esc: esc, attrs: attrs, cx: cx, act: act, icon: icon, button: button, iconButton: iconButton, chip: chip, badge: badge,
     searchBar: searchBar, categoryCard: categoryCard, matchReasons: matchReasons, treatmentCard: treatmentCard, stepper: stepper,
-    notice: notice, money: money, textField: textField, consentCheck: consentCheck, faqItem: faqItem };
+    notice: notice, money: money, textField: textField, consentCheck: consentCheck, faqItem: faqItem, stars: stars };
 })();

@@ -1,0 +1,268 @@
+/* Wellness Pass: styles for the demo features (wishlist, reviews, venue info, payment, my bookings, venue dashboard,
+   info pages, toasts, dialogs, print). Uses only the design tokens from style.css. Loaded after components.css. */
+
+/* ---------- Page fade-in (once per page load) ---------- */
+#app.is-ready { animation: wp-fade-in .32s ease-out both; }
+@keyframes wp-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Header additions ---------- */
+a.s-brand { text-decoration: none; }
+.s-brand-mark { width: 26px; height: 26px; color: var(--jade); stroke-width: 1.6; }
+a.s-nav-link { display: inline-flex; align-items: center; text-decoration: none; }
+.s-nav { gap: 22px; }
+.s-wish-btn { text-decoration: none; }
+.s-wish-btn[aria-current="page"] { border-color: var(--jade); background: var(--tint); }
+.s-wish-btn .wp-count { background: var(--heart); }
+@media (max-width: 1120px) { .s-nav { gap: 16px; } .s-search-pill { display: none; } }
+
+/* ---------- Footer links ---------- */
+a.s-foot-link { display: flex; align-items: center; text-decoration: none; }
+.s-foot-legal a { color: var(--on-forest-muted); text-underline-offset: 4px; }
+.s-foot-legal a:hover { color: var(--on-forest); }
+
+/* ---------- Small hero band for inner pages ---------- */
+.s-inner-hero-sm { padding: 56px 0 64px; }
+@media (max-width: 760px) { .s-inner-hero-sm { padding: 36px 0 44px; } }
+.s-page-main { padding: 48px 0 80px; }
+@media (max-width: 760px) { .s-page-main { padding: 28px 0 56px; } }
+
+/* ---------- Quiz result box: landscape fills the whole box ---------- */
+.s-qresult-art { left: 0; right: 0; top: 0; bottom: 0; width: 100%; height: 100%; opacity: 1; }
+.s-qresult-text { padding: 20px 24px 30px; }
+.s-qresult .wp-btn-ghost { background: var(--surface); }
+.s-qresult .wp-btn-ghost:hover { background: var(--tint); }
+@media (min-width: 761px) { .s-qresult-text { max-width: calc(100% - 300px); } }
+@media (max-width: 760px) { .s-qresult-art .s-qa-deco { display: none; } .s-qresult-text { max-width: none; } }
+
+/* ---------- Ratings ---------- */
+.wp-rating strong { font-weight: 600; color: var(--forest); }
+.wp-rating-n { color: var(--muted); }
+.wp-stars { display: inline-flex; gap: 2px; vertical-align: middle; }
+.wp-stars .wp-icon { width: 16px; height: 16px; stroke: none; }
+.wp-stars .is-on { fill: var(--turmeric); }
+.wp-stars .is-off { fill: var(--line); }
+
+/* ---------- Toasts ---------- */
+.wp-toasts { position: fixed; left: 50%; bottom: 24px; z-index: 70; display: grid; gap: 8px; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 32px); pointer-events: none; }
+.wp-toast { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: var(--radius-pill); background: var(--forest); color: var(--on-forest); font-size: 14px; font-weight: 500; box-shadow: var(--shadow-popover); animation: wp-toast-in .22s ease-out; transition: opacity .22s ease, transform .22s ease; }
+.wp-toast .wp-icon { color: var(--sage); width: 17px; height: 17px; stroke-width: 2.4; }
+.wp-toast-danger { background: var(--danger); }
+.wp-toast-danger .wp-icon { color: #fff; }
+.wp-toast.is-out { opacity: 0; transform: translateY(8px); }
+@keyframes wp-toast-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.s-has-mbar ~ .wp-toasts, body:has(.s-has-mbar) .wp-toasts { bottom: 100px; }
+
+/* ---------- Dialog ---------- */
+.wp-dialog { width: min(560px, calc(100vw - 32px)); max-height: calc(100vh - 48px); padding: 0; border: 0; border-radius: var(--radius-xl); background: var(--surface); color: var(--ink); box-shadow: var(--shadow-popover); font-family: var(--font-sans); overflow: auto; }
+.wp-dialog.is-wide { width: min(980px, calc(100vw - 32px)); }
+.wp-dialog::backdrop { background: rgba(18, 53, 43, .58); }
+.wp-dialog[open] { animation: s-pop .2s ease; }
+.wp-dialog-head { position: sticky; top: 0; z-index: 1; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 20px 16px 24px; border-bottom: 1px solid var(--line); background: var(--surface); }
+.wp-dialog-title { margin: 0; font-size: 18px; font-weight: 500; color: var(--forest); }
+.wp-dialog-body { padding: 20px 24px; display: grid; gap: 14px; font-size: 15px; color: var(--ink-2); }
+.wp-dialog-body p { margin: 0; }
+.wp-dialog-foot { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; padding: 16px 24px 20px; border-top: 1px solid var(--line); }
+
+/* Lightbox (photo viewer) */
+.wp-lightbox .wp-dialog-body { padding: 0; background: var(--forest); }
+.s-lb-stage { position: relative; display: grid; place-items: center; height: min(72vh, 640px); }
+.s-lb-stage img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+.s-lb-nav { position: absolute; top: 50%; width: 48px; height: 48px; margin-top: -24px; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .92); color: var(--forest); cursor: pointer; box-shadow: var(--shadow-sm); transition: background .18s ease; }
+.s-lb-nav:hover { background: #fff; }
+.s-lb-prev { left: 16px; }
+.s-lb-prev .wp-icon, .s-lb-next .wp-icon { width: 22px; height: 22px; }
+.s-lb-next { right: 16px; }
+.s-lb-cap { display: flex; justify-content: space-between; gap: 12px; padding: 12px 20px; background: var(--surface); color: var(--muted); font-size: 14px; }
+.s-gallery-btn { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.s-gallery-btn img { transition: transform .35s ease; }
+.s-gallery-btn:hover img { transform: scale(1.03); }
+.s-gallery-btn:focus-visible { outline-offset: -4px; }
+.s-gallery-more { position: absolute; right: 14px; bottom: 14px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, .94); color: var(--forest); font-size: 13px; font-weight: 600; pointer-events: none; }
+
+/* ---------- Processing overlay ---------- */
+.wp-processing { position: fixed; inset: 0; z-index: 80; display: grid; place-items: center; background: rgba(251, 250, 246, .86); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: wp-fade-in .2s ease; }
+.wp-processing-box { display: grid; justify-items: center; gap: 16px; padding: 32px 40px; border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow-popover); color: var(--forest); font-size: 16px; }
+.wp-spinner { width: 44px; height: 44px; border-radius: 50%; border: 4px solid var(--tint-strong); border-top-color: var(--jade); animation: wp-spin .8s linear infinite; }
+@keyframes wp-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .wp-spinner { animation: wp-spin 2.4s linear infinite !important; } }
+
+/* ---------- Home: city cards ---------- */
+.s-city-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+.s-city-card { position: relative; display: flex; align-items: flex-end; min-height: 300px; overflow: hidden; border-radius: var(--radius-2xl); background: var(--forest); color: var(--on-forest); text-decoration: none; box-shadow: var(--shadow-card); transition: transform .22s ease, box-shadow .22s ease; }
+.s-city-card img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
+.s-city-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 53, 43, 0) 30%, rgba(18, 53, 43, .88) 100%); }
+.s-city-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
+.s-city-card:hover img { transform: scale(1.04); }
+.s-city-body { position: relative; z-index: 1; display: grid; gap: 4px; width: 100%; padding: 24px; }
+.s-city-name { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 26px; font-weight: 500; line-height: 1.3; }
+.s-city-name .wp-icon { width: 22px; height: 22px; color: var(--sage); transition: transform .2s ease; }
+.s-city-card:hover .s-city-name .wp-icon { transform: translateX(4px); }
+.s-city-blurb { font-size: 14px; color: var(--on-forest-muted); }
+.s-city-count { justify-self: start; margin-top: 6px; padding: 3px 12px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, .16); font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+@media (max-width: 860px) { .s-city-grid { grid-template-columns: 1fr; } .s-city-card { min-height: 220px; } }
+
+/* ---------- Detail: reviews ---------- */
+.s-rev-top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-bottom: 20px; }
+.s-rev-avg { font-size: 40px; font-weight: 500; line-height: 1; color: var(--forest); font-variant-numeric: tabular-nums; }
+.s-rev-top .wp-stars .wp-icon { width: 20px; height: 20px; }
+.s-rev-list { display: grid; gap: 12px; }
+.s-rev { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 18px 20px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
+.s-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--tint-strong); color: var(--jade-dark); font-weight: 600; }
+.s-rev-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; }
+.s-rev-name { font-weight: 500; color: var(--forest); }
+.s-rev-meta { font-size: 13px; color: var(--muted); }
+.s-rev p { margin: 6px 0 0; font-size: 15px; color: var(--ink-2); }
+.s-rating-row { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--muted); }
+.s-rating-row strong { color: var(--forest); font-weight: 600; }
+.s-rating-row a { color: var(--jade-dark); text-underline-offset: 4px; }
+
+/* ---------- Detail: venue ---------- */
+.s-venue { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 20px; align-items: stretch; margin-top: 20px; }
+.s-venue-info { display: grid; align-content: start; gap: 12px; padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
+.s-venue-info strong { font-size: 18px; font-weight: 500; color: var(--forest); }
+.s-venue-row { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; color: var(--ink-2); }
+.s-venue-row .wp-icon { width: 17px; height: 17px; margin-top: 3px; color: var(--jade); }
+.s-map { position: relative; min-height: 240px; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--line); background: var(--sand); }
+.s-map iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+@media (max-width: 760px) { .s-venue { grid-template-columns: 1fr; } }
+
+/* ---------- Checkout: card form + PromptPay ---------- */
+.s-cardform { display: grid; gap: 16px; padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface-soft); }
+.s-cardform .wp-input { background: var(--surface); }
+.s-cardform-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+.s-cardform .wp-field, .s-lookup .wp-field, .s-field-grid .wp-field { align-content: start; }
+.s-cardnum { position: relative; }
+.s-cardnum .wp-input { width: 100%; padding-right: 92px; font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.s-brand-tag { position: absolute; right: 12px; top: 37px; padding: 2px 10px; border-radius: var(--radius-xs); background: var(--forest); color: var(--on-forest); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.s-test-cards { display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
+.s-test-cards code { padding: 1px 6px; border-radius: 6px; background: var(--surface); border: 1px solid var(--line); color: var(--forest); font-size: 13px; }
+.s-pp { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; padding: 20px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface-soft); }
+.s-pp-qr { display: grid; justify-items: center; gap: 8px; padding: 14px; border-radius: var(--radius-lg); background: #fff; border: 1px solid var(--line); }
+.s-pp-qr svg { display: block; width: 180px; height: 180px; }
+.s-pp-head { display: flex; align-items: center; gap: 8px; padding: 4px 12px; border-radius: var(--radius-xs); background: var(--forest-2); color: var(--on-forest); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.s-pp-info { display: grid; gap: 8px; flex: 1 1 220px; }
+.s-pp-amount { font-size: 28px; font-weight: 600; color: var(--jade); font-variant-numeric: tabular-nums; }
+.s-timer { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.s-timer .wp-icon { width: 16px; height: 16px; color: var(--jade); }
+.s-timer.is-low { color: var(--danger); }
+.s-pp.is-expired .s-pp-qr svg { opacity: .15; }
+@media (max-width: 560px) { .s-cardform-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Success: actions + email preview ---------- */
+.s-success-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.s-copy { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 4px 12px; border-radius: var(--radius-pill); border: 1px solid var(--line-strong); background: var(--surface); color: var(--forest); font: inherit; font-size: 13px; font-weight: 500; cursor: pointer; transition: background .18s ease; }
+.s-copy:hover { background: var(--tint); }
+.s-email { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+.s-email-meta { display: grid; gap: 2px; padding: 14px 18px; border-bottom: 1px solid var(--line); background: var(--surface-soft); font-size: 13px; color: var(--muted); }
+.s-email-meta strong { color: var(--ink); font-weight: 500; }
+.s-email-banner { padding: 22px 24px; background: linear-gradient(125deg, var(--forest-2), var(--forest)); color: var(--on-forest); }
+.s-email-banner strong { display: block; font-size: 20px; font-weight: 500; }
+.s-email-banner span { font-size: 14px; color: var(--on-forest-muted); }
+.s-email-body { display: grid; gap: 14px; padding: 20px 24px 24px; font-size: 14px; color: var(--ink-2); }
+
+/* ---------- My bookings / venue dashboard: booking rows ---------- */
+.s-bk-list { display: grid; gap: 16px; }
+.s-bk { display: grid; grid-template-columns: 148px minmax(0, 1fr) auto; gap: 20px; align-items: center; padding: 16px; border-radius: var(--radius-xl); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); }
+.s-bk.is-highlight { border-color: var(--jade); box-shadow: 0 0 0 3px rgba(47, 125, 98, .16), var(--shadow-sm); }
+.s-bk-thumb { position: relative; height: 112px; border-radius: var(--radius-lg); overflow: hidden; background: linear-gradient(145deg, var(--forest), var(--jade) 62%, var(--sage)); }
+.s-bk-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s-bk-main { display: grid; gap: 6px; min-width: 0; }
+.s-bk-title { margin: 0; font-size: 18px; font-weight: 500; line-height: 1.4; color: var(--forest); }
+.s-bk-title a { color: inherit; text-decoration: none; }
+.s-bk-title a:hover { color: var(--jade); }
+.s-bk-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 14px; color: var(--muted); }
+.s-bk-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.s-bk-meta .wp-icon { width: 15px; height: 15px; color: var(--jade); }
+.s-bk-ref { font-size: 13px; font-weight: 600; letter-spacing: .04em; color: var(--forest); font-variant-numeric: tabular-nums; }
+.s-bk-side { display: grid; justify-items: end; gap: 10px; }
+.s-bk-total { font-size: 20px; font-weight: 600; color: var(--jade); font-variant-numeric: tabular-nums; }
+.s-bk-note { font-size: 13px; color: var(--muted); }
+@media (max-width: 760px) {
+  .s-bk { grid-template-columns: 96px minmax(0, 1fr); gap: 14px; align-items: start; }
+  .s-bk-thumb { height: 96px; }
+  .s-bk-side { grid-column: 1 / -1; justify-items: stretch; grid-template-columns: 1fr auto; align-items: center; }
+  .s-bk-side .s-btn-row { grid-column: 1 / -1; }
+}
+
+/* Lookup form */
+.s-lookup { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+.s-lookup .wp-field { max-width: none; }
+@media (max-width: 760px) { .s-lookup { grid-template-columns: 1fr; } }
+
+/* Dashboard stats + filter tabs */
+.s-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.s-stat { padding: 18px 20px; border-radius: var(--radius-xl); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); }
+.s-stat strong { display: block; font-size: 32px; font-weight: 500; line-height: 1.2; color: var(--forest); font-variant-numeric: tabular-nums; }
+.s-stat span { font-size: 14px; color: var(--muted); }
+.s-stat.is-alert { border-color: var(--notice-line); background: var(--notice-bg); }
+.s-stat.is-alert strong { color: var(--notice-text); }
+@media (max-width: 860px) { .s-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.s-toolbar-row { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px; margin: 32px 0 16px; }
+
+/* Dashboard table (becomes cards on small screens) */
+.s-table-wrap { border-radius: var(--radius-xl); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); overflow: hidden; }
+.s-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.s-table th { padding: 14px 16px; text-align: left; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); background: var(--surface-soft); border-bottom: 1px solid var(--line); }
+.s-table td { padding: 14px 16px; vertical-align: middle; border-bottom: 1px solid var(--line); color: var(--ink-2); }
+.s-table tr:last-child td { border-bottom: 0; }
+.s-table td strong { display: block; font-weight: 500; color: var(--forest); }
+.s-table .s-sub { font-size: 13px; }
+.s-table .s-btn-row { flex-wrap: nowrap; justify-content: flex-end; }
+.s-num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 860px) {
+  .s-table thead { display: none; }
+  .s-table, .s-table tbody, .s-table tr, .s-table td { display: block; width: 100%; box-sizing: border-box; }
+  .s-table tr { padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .s-table tr:last-child { border-bottom: 0; }
+  .s-table td { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border: 0; text-align: right; }
+  .s-table td::before { content: attr(data-label); flex: none; color: var(--muted); font-size: 13px; text-align: left; }
+  .s-table td.s-td-main { display: block; text-align: left; padding-bottom: 8px; }
+  .s-table td.s-td-main::before { display: none; }
+  .s-table .s-btn-row { justify-content: flex-end; }
+}
+
+/* ---------- Info pages ---------- */
+.s-prose { max-width: 760px; color: var(--ink-2); }
+.s-prose h2 { margin: 40px 0 12px; font-size: 24px; font-weight: 500; line-height: 1.35; color: var(--forest); }
+.s-prose h2:first-child { margin-top: 0; }
+.s-prose h3 { margin: 24px 0 8px; font-size: 18px; font-weight: 500; color: var(--forest); }
+.s-prose p { margin: 0 0 14px; }
+.s-prose ul { margin: 0 0 14px; padding-left: 22px; display: grid; gap: 6px; }
+.s-prose a { color: var(--jade-dark); text-underline-offset: 4px; }
+.s-info-layout { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 48px; align-items: start; }
+.s-info-nav { position: sticky; top: 96px; display: grid; gap: 4px; padding: 12px; border-radius: var(--radius-xl); border: 1px solid var(--line); background: var(--surface); }
+.s-info-nav a { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: var(--radius-sm); color: var(--ink-2); font-size: 15px; text-decoration: none; }
+.s-info-nav a:hover { background: var(--surface-soft); }
+.s-info-nav a[aria-current="page"] { background: var(--tint); color: var(--jade-dark); font-weight: 500; }
+.s-info-nav .wp-icon { width: 17px; height: 17px; color: var(--jade); }
+@media (max-width: 900px) { .s-info-layout { grid-template-columns: 1fr; gap: 24px; } .s-info-nav { position: static; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); } }
+.s-faq-group + .s-faq-group { margin-top: 36px; }
+.s-faq-group .wp-faq { max-width: none; }
+.s-updated { margin: 0 0 24px; font-size: 13px; color: var(--muted); }
+
+/* Refund tiers */
+.s-tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 24px; }
+.s-tier { padding: 18px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
+.s-tier strong { display: block; font-size: 28px; font-weight: 500; color: var(--forest); font-variant-numeric: tabular-nums; }
+.s-tier span { font-size: 14px; color: var(--muted); }
+.s-tier.is-full { border-color: rgba(15, 110, 82, .3); background: var(--success-tint); }
+.s-tier.is-full strong { color: var(--success); }
+.s-tier.is-none strong { color: var(--danger); }
+@media (max-width: 640px) { .s-tiers { grid-template-columns: 1fr; } }
+
+/* Contact */
+.s-contact-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 32px; }
+.s-contact-item { display: flex; gap: 14px; align-items: flex-start; padding: 18px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
+.s-contact-item strong { display: block; font-weight: 500; color: var(--forest); }
+.s-contact-item span { font-size: 14px; color: var(--muted); }
+@media (max-width: 640px) { .s-contact-grid { grid-template-columns: 1fr; } }
+
+/* ---------- Print (booking confirmation) ---------- */
+@media print {
+  body { background: #fff; }
+  .s-header-slot, .s-skip, .s-foot-art, .s-footer, .no-print, .wp-toasts, .s-mbar { display: none !important; }
+  #app.is-ready { animation: none; }
+  .s-page { background: #fff; }
+  .s-card, .s-ref, .wp-notice { box-shadow: none !important; break-inside: avoid; }
+  main { padding: 0 !important; }
+}

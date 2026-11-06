@@ -2,6 +2,7 @@
 
 Web-sized copies of the photos in `data/pictures` (JPEG, max 1600 px wide).
 The site finds photos by file name, so to swap a photo, replace the file and keep its name.
+Treatments added later reuse some photos; their `photos` list in `js/data.js` says which files they use.
 
 | File | Used for | Original file in `data/pictures` |
 |---|---|---|
@@ -17,7 +18,6 @@ The site finds photos by file name, so to swap a photo, replace the file and kee
 | foot-reflexology-1.jpg | Foot reflexology: card + main | foot_massage3.png |
 | foot-reflexology-2.jpg | Foot reflexology: detail | Foot-Massage-2.png |
 | foot-reflexology-3.jpg | Foot reflexology: detail | feet_massage2.png |
-| foot-reflexology-4.jpg | (spare) | Chiangmai_foot_massage.JPG |
 | sunrise-yoga-1.jpg | Sunrise yoga: card + main | yoga3.png |
 | sunrise-yoga-2.jpg | Sunrise yoga: detail + Treatments page banner | treatment_pic.png |
 | sunrise-yoga-3.jpg | Sunrise yoga: detail | yoga.jpg |
@@ -35,10 +35,13 @@ The site finds photos by file name, so to swap a photo, replace the file and kee
 | deep-stretch-3.jpg | Deep tissue: detail | thai_massage2.png |
 | mindful-retreat-1.jpg | One-day mindful retreat: card + main | Panviman_Spa_Resort_(12659454673).jpg |
 | mindful-retreat-2.jpg | Mindful retreat: detail | Panviman_Spa_Resort_(12659522433).jpg |
-| mindful-retreat-3.jpg | Mindful retreat: detail | Doi_Inthanon,_Stream_in_the_mountains,_Thailand.jpg |
-| city-bangkok-1.jpg | (spare) | bangkok_view.png |
-| city-bangkok-2.jpg | (spare) | bangkok_view2.png |
-| city-bangkok-3.jpg | Fallback detail photo | Wat_Pho_Bangkok_Thailand.jpg |
-| city-chiangmai-1.jpg | (spare) | Chiangmai_view.jpg |
-| city-phuket-1.jpg | Fallback detail photo | phuket_view.webp |
-| city-phuket-2.jpg | (spare) | kata_beach.jpg |
+| mindful-retreat-3.jpg | Mindful retreat: detail + Doi Inthanon retreat: card | Doi_Inthanon,_Stream_in_the_mountains,_Thailand.jpg |
+| temple-massage-1.jpg | Old-town Thai massage: card + main | Wat_Pho_Bangkok_Thailand.jpg |
+| park-yoga-1.jpg | Morning yoga in the park: card + main | bangkok_view2.png |
+| street-foot-massage-1.jpg | Old City foot massage: card + main | Chiangmai_foot_massage.JPG |
+| sunset-stretch-1.jpg | Sunset stretch & breathwork: card + main | kata_beach.jpg |
+| city-bangkok-1.jpg | Home: Bangkok city card | bangkok_view.png |
+| city-chiangmai-1.jpg | Home: Chiang Mai city card + Doi Inthanon retreat: detail | Chiangmai_view.jpg |
+| city-phuket-1.jpg | Home: Phuket city card | phuket_view.webp |
+| og-cover.jpg | Link preview image (LINE, Facebook) | made from hero-1.jpg |
+| apple-touch-icon.png | iPhone home-screen icon | made for the site |
