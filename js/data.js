@@ -1,0 +1,233 @@
+/* Wellness Pass: SAMPLE catalogue and helper functions. Every venue, price, slot and policy here is a placeholder.
+   Exposes window.WPData. Loaded before ui.js / common.js / page scripts. */
+(function () {
+  var cats = [
+    { id: "thai", icon: "hand", th: "นวดไทย", en: "Thai massage" },
+    { id: "spa", icon: "drop", th: "สปาและอโรมาเทอราพี", en: "Spa & aromatherapy" },
+    { id: "yoga", icon: "lotus", th: "โยคะและสมาธิ", en: "Yoga & meditation" },
+    { id: "retreat", icon: "moon", th: "รีทรีตเพื่อสุขภาพ", en: "Wellness retreats" },
+    { id: "muaythai", icon: "flame", th: "มวยไทยฟิตเนส", en: "Muay Thai fitness" },
+    { id: "steam", icon: "leaf", th: "อบสมุนไพรและน้ำแร่", en: "Herbal steam & hot springs" },
+    { id: "inhotel", icon: "pin", th: "บริการถึงโรงแรม", en: "In-hotel treatments" }
+  ];
+  var cities = { bkk: { th: "กรุงเทพฯ", en: "Bangkok" }, cnx: { th: "เชียงใหม่", en: "Chiang Mai" }, hkt: { th: "ภูเก็ต", en: "Phuket" } };
+  var intensity = { gentle: { th: "เบา", en: "Gentle" }, medium: { th: "ปานกลาง", en: "Medium" }, deep: { th: "เข้มข้น", en: "Deep / active" } };
+  var settings = { spa: { th: "ห้องสปาเงียบสงบ", en: "Quiet spa room" }, nature: { th: "กลางแจ้ง ใกล้ธรรมชาติ", en: "Outdoors, nature" }, home: { th: "ที่ห้องพักของคุณ", en: "At your hotel" } };
+
+  var T = [
+    { id: "thai-traditional", cat: "thai", city: "bkk", intensity: "medium", setting: "spa", goals: ["recover", "relax"], icon: "hand",
+      title: { th: "นวดไทยแผนโบราณ", en: "Traditional Thai massage" },
+      summary: { th: "กดจุดและยืดเหยียดบนเบาะ ปรับแรงนวดตามที่คุณต้องการ", en: "Acupressure and assisted stretching on a floor mat, pressure adjusted to you." },
+      about: { th: "นวดไทยแบบดั้งเดิมในชุดผ้าฝ้ายหลวม ๆ นักบำบัดใช้มือ ศอก และเข่า กดจุดตามแนวเส้นและช่วยยืดเหยียด ช่วยให้รู้สึกผ่อนคลายและคลายความตึงของกล้ามเนื้อ", en: "A traditional Thai massage in loose cotton clothes. The therapist uses palms, elbows and knees along the body's lines and guides you through gentle stretches. It helps you relax and eases muscle tension." },
+      options: [{ min: 60, price: 900 }, { min: 90, price: 1250 }, { min: 120, price: 1600 }] },
+    { id: "herbal-compress", cat: "spa", city: "cnx", intensity: "gentle", setting: "spa", goals: ["relax"], icon: "drop",
+      title: { th: "ประคบสมุนไพรและน้ำมันหอมระเหย", en: "Herbal compress & aroma oil" },
+      summary: { th: "ลูกประคบสมุนไพรอุ่น ๆ ตามด้วยนวดน้ำมันหอมระเหยอย่างช้า ๆ", en: "Warm luk pra kob herbal compress followed by a slow aromatherapy oil massage." },
+      about: { th: "เริ่มด้วยลูกประคบสมุนไพรอุ่น ๆ บนบ่า หลัง และขา แล้วต่อด้วยนวดน้ำมันหอมระเหยจังหวะช้า เหมาะกับวันที่อยากพักจริง ๆ", en: "Warm herbal compresses on shoulders, back and legs, then a slow-rhythm aromatherapy oil massage. Made for days when you want to switch off." },
+      options: [{ min: 90, price: 1850 }, { min: 120, price: 2350 }] },
+    { id: "foot-reflexology", cat: "thai", city: "bkk", intensity: "gentle", setting: "spa", goals: ["relax"], icon: "leaf",
+      title: { th: "นวดฝ่าเท้า", en: "Foot reflexology" },
+      summary: { th: "นวดเท้าและน่องด้วยไม้กดจุดและครีมสมุนไพร หลังวันเดินเที่ยวทั้งวัน", en: "Feet and calves with a wooden stick and herbal balm, after a long day on your feet." },
+      about: { th: "นั่งเอนบนเก้าอี้นวม นักบำบัดนวดเท้าและน่องด้วยไม้กดจุดและครีมสมุนไพร ใช้เวลาไม่นาน เหมาะเป็นช่วงพักระหว่างวัน", en: "Relax in a reclining chair while the therapist works on feet and calves with a wooden stick and herbal balm. Short and easy to fit into a day." },
+      options: [{ min: 45, price: 500 }, { min: 60, price: 600 }] },
+    { id: "sunrise-yoga", cat: "yoga", city: "hkt", intensity: "gentle", setting: "nature", goals: ["energize", "relax"], icon: "sun",
+      title: { th: "โยคะยามเช้าริมทะเล", en: "Sunrise yoga by the sea" },
+      summary: { th: "คลาสโยคะกลุ่มเล็กบนลานไม้ริมหาด เริ่มต้นวันแบบสดชื่น", en: "Small-group yoga on a wooden deck by the beach to start your day fresh." },
+      about: { th: "คลาสหฐะโยคะสำหรับทุกระดับ เน้นการหายใจและการยืดเหยียด จัดบนลานไม้ใกล้ชายหาด มีเสื่อและน้ำดื่มให้", en: "An all-levels hatha class focused on breathing and stretching, held on a wooden deck near the beach. Mats and water are provided." },
+      options: [{ min: 60, price: 700 }, { min: 90, price: 950 }] },
+    { id: "muay-thai", cat: "muaythai", city: "hkt", intensity: "deep", setting: "nature", goals: ["energize"], icon: "flame",
+      title: { th: "มวยไทยเพื่อสุขภาพ", en: "Muay Thai fitness session" },
+      summary: { th: "เรียนท่าพื้นฐาน ชกเป้า และคาร์ดิโอ กับครูมวยแบบตัวต่อตัวหรือกลุ่มเล็ก", en: "Basic technique, pad work and cardio with a trainer, one-to-one or in a small group." },
+      about: { th: "เรียนท่าพื้นฐานของมวยไทย ฝึกชกเป้ากับครู และจบด้วยการยืดเหยียด ไม่ต้องมีประสบการณ์มาก่อน มีนวมและผ้าพันมือให้", en: "Learn Muay Thai basics, work the pads with a trainer and finish with a stretch. No experience needed; gloves and hand wraps provided." },
+      options: [{ min: 60, price: 1200 }, { min: 90, price: 1600 }] },
+    { id: "in-hotel-aroma", cat: "inhotel", city: "bkk", intensity: "gentle", setting: "home", goals: ["relax"], icon: "pin", travelFee: 300, request: true,
+      title: { th: "อโรมาเทอราพีถึงห้องพัก", en: "In-hotel aromatherapy" },
+      summary: { th: "นักบำบัดนำเตียงพับและน้ำมันหอมระเหยมาที่ห้องพักของคุณ", en: "A therapist brings a folding table and aroma oils to your hotel room." },
+      about: { th: "นวดน้ำมันหอมระเหยในห้องพักของคุณ นักบำบัดนำอุปกรณ์มาเอง สถานที่จะยืนยันการจองภายในช่วงเวลาที่กำหนด [ระยะเวลายืนยัน — รอเจ้าของกำหนด]", en: "An aromatherapy oil massage in your own room. The therapist brings everything. The venue confirms the request within a set window [confirmation window — owner to set]." },
+      options: [{ min: 60, price: 1900 }, { min: 90, price: 2200 }, { min: 120, price: 2800 }] },
+    { id: "herbal-steam", cat: "steam", city: "cnx", intensity: "gentle", setting: "nature", goals: ["relax", "recover"], icon: "leaf",
+      title: { th: "อบสมุนไพรและแช่น้ำแร่", en: "Herbal steam & hot spring soak" },
+      summary: { th: "อบไอน้ำสมุนไพรไทย แล้วแช่บ่อน้ำแร่กลางสวน", en: "Thai herbal steam, then a soak in a garden mineral pool." },
+      about: { th: "อบไอน้ำที่ต้มด้วยตะไคร้ ไพล และขมิ้น สลับกับพักดื่มชาสมุนไพร แล้วแช่บ่อน้ำแร่กลางสวน", en: "Steam infused with lemongrass, plai and turmeric, breaks with herbal tea, then a soak in a mineral pool in the garden." },
+      options: [{ min: 60, price: 950 }, { min: 90, price: 1300 }] },
+    { id: "deep-stretch", cat: "thai", city: "hkt", intensity: "deep", setting: "spa", goals: ["recover"], icon: "hand",
+      title: { th: "นวดกดจุดลึกและยืดเหยียด", en: "Deep tissue & stretch" },
+      summary: { th: "แรงนวดเข้มข้นเน้นบ่า หลัง และขา ตามด้วยการยืดเหยียด", en: "Firm pressure on shoulders, back and legs, followed by assisted stretching." },
+      about: { th: "เหมาะกับคนที่ชอบแรงนวดหนัก นักบำบัดจะถามระดับแรงก่อนเริ่มและระหว่างนวด บอกได้ตลอดถ้าแรงเกินไป", en: "For people who like firm pressure. The therapist checks the pressure before and during the session; say so any time it is too much." },
+      options: [{ min: 60, price: 1400 }, { min: 90, price: 1900 }] },
+    { id: "mindful-retreat", cat: "retreat", city: "cnx", intensity: "gentle", setting: "nature", goals: ["relax"], icon: "moon", request: true,
+      title: { th: "รีทรีตฝึกสติ 1 วัน", en: "One-day mindful retreat" },
+      summary: { th: "สมาธิ เดินในสวน อาหารกลางวันมังสวิรัติ และนวดไทย 60 นาที", en: "Meditation, a garden walk, a vegetarian lunch and a 60-minute Thai massage." },
+      about: { th: "หนึ่งวันช้า ๆ ในสวน เริ่มด้วยสมาธิ เดินในสวน อาหารกลางวันมังสวิรัติ และปิดท้ายด้วยนวดไทย สถานที่ยืนยันการจองภายในช่วงเวลาที่กำหนด", en: "A slow day in a garden: meditation, a mindful walk, a vegetarian lunch and a Thai massage to close. The venue confirms the request within a set window." },
+      options: [{ min: 360, price: 3900 }] }
+  ];
+
+  var included = {
+    th: ["นักบำบัดหรือครูที่ผ่านการอบรม [ตรวจสอบกับสถานที่]", "ผ้าเช็ดตัว ชุดเปลี่ยน และน้ำดื่ม", "ชาสมุนไพรหลังทรีตเมนต์"],
+    en: ["A trained therapist or teacher [to verify with venue]", "Towels, a change of clothes and drinking water", "Herbal tea after your session"]
+  };
+  var excluded = {
+    th: ["ค่าเดินทางไปสถานที่", "ทิปนักบำบัด (ไม่บังคับ)", "ผลิตภัณฑ์ที่ซื้อเพิ่ม"],
+    en: ["Travel to the venue", "Tips for your therapist (optional)", "Products bought on site"]
+  };
+
+  /* Photo slots. Files live in images/ and follow one naming pattern (see images/README.md):
+       hero-1..3.jpg            home page slideshow
+       <treatment id>-1.jpg     card photo + main detail photo   e.g. muay-thai-1.jpg
+       <treatment id>-2/3.jpg   the two smaller detail photos    e.g. muay-thai-2.jpg
+       city-<city>-N.jpg        city views (spare)
+     To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
+  function img(name) { return "images/" + name + ".jpg"; }
+  var photos = {
+    hero: img("hero-1"),
+    heroes: [{ src: img("hero-1") }, { src: img("hero-2"), city: "hkt" }, { src: img("hero-3") }],
+    spot: img("herbal-compress-3"),          // home page spotlight (the herbal compress treatment)
+    treatments: img("sunrise-yoga-2"),       // treatments page banner
+    gallery: [img("city-bangkok-3"), img("city-phuket-1")],   // fallback detail photos if a treatment has none
+    byId: {},
+    galleryById: {}
+  };
+  T.forEach(function (t) {
+    photos.byId[t.id] = img(t.id + "-1");
+    photos.galleryById[t.id] = [img(t.id + "-2"), img(t.id + "-3")];
+  });
+
+  function L(o, lang) { return o ? (o[lang] || o.en) : ""; }
+  function baht(n) { return "฿" + Number(n).toLocaleString("en-US"); }
+  function get(id) { for (var i = 0; i < T.length; i++) if (T[i].id === id) return T[i]; return T[0]; }
+  function cat(id) { for (var i = 0; i < cats.length; i++) if (cats[i].id === id) return cats[i]; return null; }
+  function priceFor(t, min) { for (var i = 0; i < t.options.length; i++) if (t.options[i].min === min) return t.options[i].price; return t.options[0].price; }
+  function minLabel(m, lang) {
+    if (m >= 300) return lang === "th" ? (m / 60) + " ชั่วโมง" : (m / 60) + " hours";
+    return m + (lang === "th" ? " นาที" : " min");
+  }
+  function durLabel(t, lang) {
+    var a = t.options[0].min, b = t.options[t.options.length - 1].min;
+    if (a === b) return minLabel(a, lang);
+    return a + "–" + b + (lang === "th" ? " นาที" : " min");
+  }
+  function card(t, lang) {
+    return { id: t.id, title: L(t.title, lang), category: L(cat(t.cat), lang), duration: durLabel(t, lang) + " · " + L(cities[t.city], lang),
+      summary: L(t.summary, lang), price: t.options[0].price, icon: t.icon, unit: lang === "th" ? "ท่าน" : "person",
+      image: photos.byId[t.id] || undefined, imageAlt: L(t.title, lang) };
+  }
+  /* Dates: everything is counted in days from today (idx 0 = today). Booking window is a placeholder rule. */
+  var WINDOW = 30;
+  function today0() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function loc(lang) { return lang === "th" ? "th-TH" : "en-GB"; }
+  function dayInfo(i, lang) {
+    var t0 = today0(), x = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate() + i), l = loc(lang);
+    var lab = x.toLocaleDateString(l, { weekday: "short", day: "numeric", month: "short" });
+    if (i === 0) lab = (lang === "th" ? "วันนี้ · " : "Today · ") + lab;
+    return { idx: i, label: lab, dow: x.toLocaleDateString(l, { weekday: "short" }), day: x.getDate(),
+      mon: x.toLocaleDateString(l, { month: "short" }), monthYear: x.toLocaleDateString(l, { month: "long", year: "numeric" }),
+      long: x.toLocaleDateString(l, { weekday: "long", day: "numeric", month: "long" }), weekend: x.getDay() === 0 || x.getDay() === 6 };
+  }
+  function dates(lang, n) { var out = []; for (var i = 0; i < (n || WINDOW); i++) out.push(dayInfo(i, lang)); return out; }
+  function dows(lang) { return lang === "th" ? ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"] : ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]; }
+  function weekendIdx() { var dw = today0().getDay(); return (dw === 6 || dw === 0) ? 0 : 6 - dw; }
+  function monthGrid(off, lang) {
+    var t0 = today0(), first = new Date(t0.getFullYear(), t0.getMonth() + off, 1);
+    var days = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate(), cells = [];
+    for (var b = 0; b < first.getDay(); b++) cells.push({ blank: true });
+    for (var d = 1; d <= days; d++) {
+      var x = new Date(first.getFullYear(), first.getMonth(), d), idx = Math.round((x - t0) / 86400000);
+      cells.push({ n: d, idx: idx, ok: idx >= 0 && idx < WINDOW, isToday: idx === 0, weekend: x.getDay() === 0 || x.getDay() === 6,
+        aria: x.toLocaleDateString(loc(lang), { weekday: "long", day: "numeric", month: "long", year: "numeric" }) });
+    }
+    var last = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate() + WINDOW - 1);
+    var maxOff = (last.getFullYear() - t0.getFullYear()) * 12 + last.getMonth() - t0.getMonth();
+    return { title: first.toLocaleDateString(loc(lang), { month: "long", year: "numeric" }), cells: cells, maxOff: maxOff };
+  }
+  /* Party: adults (a), seniors (s), children (c). Max size and the children rule are placeholders to confirm. */
+  var PARTY_MAX = 6;
+  function partyNorm(p) { p = p || {}; return { a: p.a === undefined ? 1 : p.a, s: p.s || 0, c: p.c || 0 }; }
+  function partyTotal(p) { p = partyNorm(p); return p.a + p.s + p.c; }
+  function partyLabel(p, lang) {
+    p = partyNorm(p); var th = lang === "th", out = [];
+    if (p.c) out.push(p.c + (th ? " เด็ก" : (p.c > 1 ? " children" : " child")));
+    if (p.a) out.push(p.a + (th ? " ผู้ใหญ่" : (p.a > 1 ? " adults" : " adult")));
+    if (p.s) out.push(p.s + (th ? " ผู้สูงอายุ" : (p.s > 1 ? " seniors" : " senior")));
+    return out.join(", ");
+  }
+  function partyRows(p, lang, set) {
+    p = partyNorm(p); var th = lang === "th", tot = partyTotal(p), grown = p.a + p.s;
+    var defs = [
+      { k: "c", label: th ? "เด็ก" : "Children", sub: th ? "อายุต่ำกว่า 18 ปี · มากับผู้ใหญ่" : "Under 18 · with an adult" },
+      { k: "a", label: th ? "ผู้ใหญ่" : "Adults", sub: th ? "อายุ 18–59 ปี" : "Age 18–59" },
+      { k: "s", label: th ? "ผู้สูงอายุ" : "Seniors", sub: th ? "อายุ 60 ปีขึ้นไป" : "Age 60 and over" }
+    ];
+    return defs.map(function (d) {
+      var n = p[d.k], lessOk = d.k === "c" ? n > 0 : (n > 0 && grown > 1), moreOk = tot < PARTY_MAX;
+      return { label: d.label, sub: d.sub, n: n, noLess: !lessOk, noMore: !moreOk,
+        ariaLess: (th ? "ลดจำนวน" : "Fewer ") + d.label.toLowerCase(), ariaMore: (th ? "เพิ่มจำนวน" : "More ") + d.label.toLowerCase(),
+        less: function () { if (!lessOk) return; var q = partyNorm(p); q[d.k] = n - 1; set(q); },
+        more: function () { if (!moreOk) return; var q = partyNorm(p); q[d.k] = n + 1; set(q); } };
+    });
+  }
+  function partyNote(p, lang) {
+    p = partyNorm(p); var th = lang === "th";
+    var n = th ? "สูงสุด " + PARTY_MAX + " ท่านต่อการจอง [รอยืนยัน]" : "Up to " + PARTY_MAX + " guests per booking [to confirm]";
+    if (p.c) n += th ? " · บางทรีตเมนต์อาจไม่เหมาะกับเด็ก สถานที่จะแจ้งก่อนยืนยัน [รอยืนยัน]" : " · some treatments may not suit children; the venue tells you before confirming [to confirm]";
+    if (p.s) n += th ? " · แจ้งข้อมูลสุขภาพที่นักบำบัดควรรู้ได้ในขั้นตอนกรอกรายละเอียด" : " · you can share health details the therapist should know in the details step";
+    return n;
+  }
+  var slots = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30"];
+  function slotList(dateIdx) {
+    var fullA = ["12:00", "18:00"], fullB = ["10:30", "16:30"];
+    var full = (dateIdx || 0) % 2 ? fullB : fullA;
+    return slots.map(function (s) { return full.indexOf(s) >= 0 ? { time: s, state: "full" } : { time: s }; });
+  }
+  function slotGroups(dateIdx, lang) {
+    var th = lang === "th";
+    var g = [
+      { id: "morning", icon: "sun", label: th ? "ช่วงเช้า" : "Morning", test: function (h) { return h < 12; } },
+      { id: "afternoon", icon: "leaf", label: th ? "ช่วงบ่าย" : "Afternoon", test: function (h) { return h >= 12 && h < 17; } },
+      { id: "evening", icon: "moon", label: th ? "ช่วงเย็น" : "Evening", test: function (h) { return h >= 17; } }
+    ];
+    var list = slotList(dateIdx);
+    return g.map(function (grp) {
+      var items = list.filter(function (s) { return grp.test(parseInt(s.time, 10)); });
+      var open = items.filter(function (s) { return s.state !== "full"; }).length;
+      return { id: grp.id, icon: grp.icon, label: grp.label, slots: items, open: open,
+        count: th ? "ว่าง " + open + " จาก " + items.length + " เวลา" : open + " of " + items.length + " open" };
+    });
+  }
+  function quiz(lang) {
+    var th = lang === "th";
+    return [
+      { id: "goal", question: th ? "วันนี้คุณต้องการอะไรมากที่สุด" : "What do you need most today?", options: [
+        { value: "relax", label: th ? "พักผ่อน คลายเครียด" : "Relax and unwind", icon: "moon" },
+        { value: "recover", label: th ? "คลายความตึงของกล้ามเนื้อ" : "Ease tension", icon: "hand" },
+        { value: "energize", label: th ? "เพิ่มความสดชื่น" : "Feel energized", icon: "sun" }] },
+      { id: "intensity", question: th ? "ความเข้มข้นที่ชอบ" : "How intense?", options: [
+        { value: "gentle", label: th ? "เบา ๆ" : "Gentle", icon: "drop" },
+        { value: "medium", label: th ? "ปานกลาง" : "Medium", icon: "leaf" },
+        { value: "deep", label: th ? "เข้มข้น / ได้ขยับ" : "Deep / active", icon: "flame" }] },
+      { id: "setting", question: th ? "อยากได้บรรยากาศแบบไหน" : "Where?", options: [
+        { value: "spa", label: th ? "ห้องสปาเงียบสงบ" : "Quiet spa room", icon: "lotus" },
+        { value: "nature", label: th ? "กลางแจ้ง ธรรมชาติ" : "Outdoors, nature", icon: "leaf" },
+        { value: "home", label: th ? "ที่โรงแรมของฉัน" : "At my hotel", icon: "pin" }] }
+    ];
+  }
+  var goalReason = {
+    relax: { th: "ตรงกับสิ่งที่คุณต้องการ: พักผ่อน คลายเครียด", en: "Fits what you need: relax and unwind" },
+    recover: { th: "ตรงกับสิ่งที่คุณต้องการ: คลายความตึงของกล้ามเนื้อ", en: "Fits what you need: ease tension" },
+    energize: { th: "ตรงกับสิ่งที่คุณต้องการ: เพิ่มความสดชื่น", en: "Fits what you need: feel energized" }
+  };
+  function match(ans, lang) {
+    if (!ans || !ans.goal || !ans.intensity || !ans.setting) return [];
+    var scored = T.map(function (t, i) {
+      var r = [], sc = 0;
+      if (t.goals.indexOf(ans.goal) >= 0) { sc += 3; r.push(L(goalReason[ans.goal], lang)); }
+      if (t.intensity === ans.intensity) { sc += 2; r.push(lang === "th" ? "ความเข้มข้นระดับ" + intensity[t.intensity].th + " ตามที่คุณเลือก" : intensity[t.intensity].en + " intensity, as you chose"); }
+      if (t.setting === ans.setting) { sc += 2; r.push(lang === "th" ? "บรรยากาศ: " + settings[t.setting].th : "Setting: " + settings[t.setting].en); }
+      return { t: t, sc: sc, r: r, i: i };
+    }).filter(function (x) { return x.sc > 0; });
+    scored.sort(function (a, b) { return b.sc - a.sc || a.i - b.i; });
+    return scored.slice(0, 3).map(function (x) { var c = card(x.t, lang); c.reasons = x.r; return c; });
+  }
+
+  window.WPData = { photos: photos, treatments: T, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
+    L: L, baht: baht, get: get, cat: cat, priceFor: priceFor, minLabel: minLabel, durLabel: durLabel, card: card, dates: dates, dayInfo: dayInfo, dows: dows, weekendIdx: weekendIdx, monthGrid: monthGrid, WINDOW: WINDOW, slotList: slotList, slotGroups: slotGroups, partyNorm: partyNorm, partyTotal: partyTotal, partyLabel: partyLabel, partyRows: partyRows, partyNote: partyNote, quiz: quiz, match: match };
+})();

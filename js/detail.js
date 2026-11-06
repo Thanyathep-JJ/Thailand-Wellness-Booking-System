@@ -1,0 +1,195 @@
+/* Wellness Pass: Treatment detail (detail.html?id=<treatment id>).
+   Gallery, options, length + date + start time + guests pickers, what's included, before you book, about, reviews,
+   and a sticky summary with the estimated total and the Book button. */
+(function () {
+  "use strict";
+  var D = window.WPData, UI = window.UI, WP = window.WP, esc = UI.esc, icon = UI.icon;
+
+  var TEXT = {
+    th: {
+      back: "ทรีตเมนต์ทั้งหมด", photo: "ภาพตัวอย่าง", sample: "ตัวอย่าง · Sample", requestBadge: "รอสถานที่ยืนยัน",
+      tabsAria: "หัวข้อในหน้านี้", tabOptions: "ตัวเลือก", tabTimes: "วันและเวลา", tabIncluded: "สิ่งที่รวม / ไม่รวม", tabBefore: "ก่อนจอง", tabAbout: "เกี่ยวกับ", tabReviews: "รีวิว",
+      perPerson: "ท่าน", estimate: "ราคาโดยประมาณ ระบบจะคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
+      dateLabel: "วันที่", lengthLabel: "ความยาว", startTime: "เวลาเริ่ม", prevWeek: "สัปดาห์ก่อนหน้า", nextWeek: "สัปดาห์ถัดไป", today: "วันนี้", fullSuffix: " เต็มแล้ว",
+      slotNote: "การเลือกเวลายังไม่ใช่การจอง เวลาจะถูกกันไว้ให้หลังเริ่มชำระเงินเท่านั้น เวลาในเขตเวลาประเทศไทย",
+      guests: "ผู้เข้าร่วม", inc: "รวมในราคา", exc: "ไม่รวมในราคา",
+      healthTitle: "สุขภาพและความปลอดภัย", healthBody: "ถ้าคุณตั้งครรภ์ มีอาการบาดเจ็บ หรือมีโรคประจำตัว คุณจะแจ้งได้ในขั้นตอนกรอกรายละเอียด หากไม่แน่ใจว่าทรีตเมนต์นี้เหมาะกับคุณหรือไม่ โปรดปรึกษาแพทย์ของคุณ",
+      b1: "มาถึงก่อนเวลาประมาณ 15 นาที [รอยืนยันกับสถานที่]", b2: "หลีกเลี่ยงอาหารมื้อหนักก่อนนวดประมาณ 1 ชั่วโมง", b3: "บอกนักบำบัดได้ตลอดถ้าแรงนวดมากหรือน้อยเกินไป",
+      venueNote: "ชื่อสถานที่ ที่อยู่ และนักบำบัดจะแสดงที่นี่เมื่อมีข้อมูลจริง",
+      noReviews: "ยังไม่มีรีวิว รีวิวจะแสดงที่นี่หลังจากมีผู้ใช้บริการจริงและยืนยันการเข้าใช้แล้ว",
+      panelAria: "สรุปการจอง", estTotal: "ราคารวมโดยประมาณ", sLength: "ความยาว", sDate: "วันที่", sTime: "เวลาเริ่ม", sGuests: "ผู้เข้าร่วม", sFee: "ค่าเดินทางถึงโรงแรม",
+      pickTime: "ยังไม่ได้เลือก", needSlot: "เลือกเวลาเริ่มก่อนดำเนินการต่อ", book: "จองทรีตเมนต์นี้", request: "ส่งคำขอจอง",
+      noHold: "ยังไม่มีการตัดเงินในขั้นตอนนี้", requestTitle: "คำขอจอง", requestBody: "สถานที่จะยืนยันการจองภายในช่วงเวลาที่กำหนด [รอเจ้าของกำหนด] ถ้าไม่ได้รับการยืนยัน คุณจะไม่ถูกเรียกเก็บเงิน",
+      venue: "สถานที่ตัวอย่าง · ", intensity: "ความเข้มข้น: ", photoN: function (n) { return " · ภาพที่ " + n; }
+    },
+    en: {
+      back: "All treatments", photo: "Sample photo", sample: "Sample · ตัวอย่าง", requestBadge: "Venue confirms",
+      tabsAria: "On this page", tabOptions: "Options", tabTimes: "Date and time", tabIncluded: "Included / not included", tabBefore: "Before you book", tabAbout: "About", tabReviews: "Reviews",
+      perPerson: "person", estimate: "Estimated prices. Checkout re-prices on the server.",
+      dateLabel: "Date", lengthLabel: "Length", startTime: "Start time", prevWeek: "Previous week", nextWeek: "Next week", today: "Today", fullSuffix: ", fully booked",
+      slotNote: "Picking a time does not reserve it. It is held only once checkout starts. Times are Thailand time.",
+      guests: "Guests", inc: "Included", exc: "Not included",
+      healthTitle: "Health and safety", healthBody: "If you are pregnant, injured or have a health condition, you can tell us in the details step. If you are unsure whether this treatment suits you, please check with your doctor.",
+      b1: "Arrive about 15 minutes early [to confirm with venue]", b2: "Avoid a heavy meal for about an hour before a massage", b3: "Tell your therapist any time the pressure is too much or too little",
+      venueNote: "The venue name, address and therapists will show here once real content is added.",
+      noReviews: "No reviews yet. Reviews will appear here after real, verified visits.",
+      panelAria: "Booking summary", estTotal: "Estimated total", sLength: "Length", sDate: "Date", sTime: "Start time", sGuests: "Guests", sFee: "In-hotel travel fee",
+      pickTime: "Not chosen yet", needSlot: "Pick a start time to continue.", book: "Book this treatment", request: "Send booking request",
+      noHold: "Nothing is charged at this step.", requestTitle: "Request to book", requestBody: "The venue confirms within a set window [owner to set]. If it is not confirmed, you are not charged.",
+      venue: "Sample venue · ", intensity: "Intensity: ", photoN: function (n) { return " · photo " + n; }
+    }
+  };
+
+  var tr = D.get(WP.param("id") || WP.get("treatmentId", "thai-traditional"));
+  WP.set({ treatmentId: tr.id });
+  var mins = tr.options.map(function (o) { return o.min; });
+  var startDate = Math.min(D.WINDOW - 1, Math.max(0, WP.get("startDate", 0)));
+  var MAX_PAGE = Math.floor((D.WINDOW - 1) / 7);
+
+  /* If the user comes back from the booking page for the same treatment, restore their choices. */
+  var prev = WP.get("booking", null);
+  var same = prev && prev.id === tr.id;
+  var state = {
+    dur: same && mins.indexOf(prev.dur) >= 0 ? prev.dur : mins[0],
+    dateIdx: same ? prev.dateIdx : startDate,
+    slot: same ? prev.slot : null,
+    party: D.partyNorm(same && prev.party ? prev.party : (WP.get("startParty", null) || { a: Math.min(6, Math.max(1, WP.get("startGuests", 1))) })),
+    page: null,   // which week of the date strip is shown (null = the week of the chosen date)
+    err: false
+  };
+
+  function gallery(lang, t) {
+    var P = D.photos, gl = (P.galleryById && P.galleryById[tr.id]) || P.gallery || [], name = D.L(tr.title, lang), main = P.byId[tr.id];
+    return '<div class="s-gallery">' +
+      "<div>" + (main ? '<img class="s-cover" src="' + esc(main) + '" alt="' + esc(name) + '">'
+        : '<span class="s-frost" aria-hidden="true">' + icon(tr.icon) + '</span><span class="s-photo-label">' + esc(t.photo) + "</span>") + "</div>" +
+      '<div class="s-sand">' + (gl[0] ? '<img class="s-cover" src="' + esc(gl[0]) + '" alt="' + esc(name + t.photoN(2)) + '">' : icon("leaf", { label: t.photo })) + "</div>" +
+      '<div class="s-sand">' + (gl[1] ? '<img class="s-cover" src="' + esc(gl[1]) + '" alt="' + esc(name + t.photoN(3)) + '">' : icon("lotus", { label: t.photo })) + "</div>" +
+      "</div>";
+  }
+
+  function timesSection(lang, t) {
+    var dates = D.dates(lang);
+    var page = state.page === null ? Math.floor(state.dateIdx / 7) : state.page;
+    var wStart = Math.min(page * 7, D.WINDOW - 7);
+    var week = dates.slice(wStart, wStart + 7);
+    var groups = D.slotGroups(state.dateIdx, lang);
+    return '<section id="times" class="s-block" aria-labelledby="h-times"><h2 id="h-times" class="s-h3">' + esc(t.tabTimes) + "</h2>" +
+      '<div class="s-slot-wrap">' +
+        '<p class="wp-label" style="margin: 0 0 10px;">' + esc(t.lengthLabel) + "</p>" +
+        '<div class="s-chips" role="group" aria-label="' + esc(t.lengthLabel) + '" style="margin-bottom: 24px;">' + mins.map(function (m) {
+          return UI.chip({ label: D.minLabel(m, lang) + " · " + D.baht(D.priceFor(tr, m)), icon: "clock", selected: m === state.dur, action: "pickDur", arg: m });
+        }).join("") + "</div>" +
+        '<div class="s-week-label"><span class="wp-label">' + esc(t.dateLabel) + '</span><span class="s-small" aria-live="polite">' + esc(dates[wStart].monthYear) + "</span></div>" +
+        '<div class="s-week">' +
+          '<button type="button" class="s-cal-nav" aria-label="' + esc(t.prevWeek) + '"' + (page <= 0 ? " disabled" : "") + ' data-action="prevWeek" data-arg="' + page + '">' + icon("left") + "</button>" +
+          '<div class="s-datestrip" role="group" aria-label="' + esc(t.dateLabel) + '">' + week.map(function (d) {
+            return '<button type="button" class="s-datecard' + (d.idx === 0 ? " is-today" : "") + '" aria-pressed="' + (d.idx === state.dateIdx) + '" aria-label="' + esc(d.long) + '" data-action="pickDay" data-arg="' + d.idx + '">' +
+              '<span class="s-dc-top">' + esc(d.idx === 0 ? t.today : d.dow) + '</span><span class="s-dc-day">' + d.day + '</span><span class="s-dc-mon">' + esc(d.mon) + "</span></button>";
+          }).join("") + "</div>" +
+          '<button type="button" class="s-cal-nav" aria-label="' + esc(t.nextWeek) + '"' + (page >= MAX_PAGE ? " disabled" : "") + ' data-action="nextWeek" data-arg="' + page + '">' + icon("right") + "</button>" +
+        "</div>" +
+        '<p class="wp-label" style="margin: 24px 0 0;">' + esc(t.startTime) + " · " + esc(dates[state.dateIdx].long) + "</p>" +
+        groups.map(function (g) {
+          return '<div class="s-slot-group" role="group" aria-label="' + esc(g.label) + '"><p class="s-slot-head">' + icon(g.icon) + esc(g.label) + '<span class="s-slot-count">· ' + esc(g.count) + "</span></p>" +
+            '<div class="wp-slots-grid">' + g.slots.map(function (x) {
+              var full = x.state === "full";
+              return '<button type="button" class="wp-slot" aria-pressed="' + (state.slot === x.time) + '"' + (full ? ' aria-disabled="true"' : "") +
+                ' aria-label="' + esc(x.time + (full ? t.fullSuffix : "")) + '" data-action="pickSlot" data-arg="' + x.time + '">' + x.time + "</button>";
+            }).join("") + "</div></div>";
+        }).join("") +
+        '<p class="wp-slots-note">' + esc(t.slotNote) + "</p>" +
+      "</div>" +
+      '<div style="max-width: 560px; margin-top: 28px;"><p class="wp-label" style="margin: 0 0 4px;">' + esc(t.guests) + "</p>" +
+        WP.partyHtml(state.party, lang) + '<p class="s-party-note">' + esc(D.partyNote(state.party, lang)) + "</p></div>" +
+      "</section>";
+  }
+
+  function infoSections(lang, t) {
+    var list = function (items, ico, cls) {
+      return '<ul class="s-list' + (cls ? " " + cls : "") + '">' + items.map(function (i) { return "<li>" + icon(ico) + "<span>" + esc(i) + "</span></li>"; }).join("") + "</ul>";
+    };
+    return '<section id="included" class="s-block" aria-labelledby="h-inc"><h2 id="h-inc" class="s-h3">' + esc(t.tabIncluded) + "</h2>" +
+        '<div class="s-two"><div><p class="wp-label" style="margin: 0 0 10px;">' + esc(t.inc) + "</p>" + list(D.included[lang], "check") + "</div>" +
+        '<div><p class="wp-label" style="margin: 0 0 10px;">' + esc(t.exc) + "</p>" + list(D.excluded[lang], "plus", "is-no") + "</div></div></section>" +
+      '<section id="before" class="s-block" aria-labelledby="h-before"><h2 id="h-before" class="s-h3">' + esc(t.tabBefore) + "</h2>" +
+        UI.notice({ tone: "notice", title: t.healthTitle }, esc(t.healthBody)) +
+        list([t.b1, t.b2, t.b3], "info").replace('class="s-list"', 'class="s-list" style="margin-top: 16px;"') + "</section>" +
+      '<section id="about" class="s-block" aria-labelledby="h-about"><h2 id="h-about" class="s-h3">' + esc(t.tabAbout) + "</h2>" +
+        '<p style="margin: 0; max-width: 680px; line-height: 1.85; color: var(--ink-2);">' + esc(D.L(tr.about, lang)) + "</p>" +
+        '<p class="s-small" style="margin: 12px 0 0;">' + esc(t.venueNote) + "</p></section>" +
+      '<section id="reviews" class="s-block" aria-labelledby="h-rev"><h2 id="h-rev" class="s-h3">' + esc(t.tabReviews) + "</h2>" +
+        '<div class="s-empty"><span class="s-icon-tile">' + icon("star") + '</span><p style="margin: 0; max-width: 460px;">' + esc(t.noReviews) + "</p></div></section>";
+  }
+
+  function summary(lang, t) {
+    var dates = D.dates(lang), guests = D.partyTotal(state.party), fee = tr.travelFee || 0;
+    var total = D.priceFor(tr, state.dur) * guests + fee;
+    var bookLabel = tr.request ? t.request : t.book;
+    return {
+      total: total, bookLabel: bookLabel,
+      html: '<aside class="s-sticky" aria-label="' + esc(t.panelAria) + '"><div class="s-card s-sum">' +
+        '<div><p class="s-small" style="margin: 0;">' + esc(t.estTotal) + "</p>" + UI.money(total) + "</div>" +
+        WP.sumRows([
+          [t.sLength, D.minLabel(state.dur, lang) + " · " + D.baht(D.priceFor(tr, state.dur)) + " / " + t.perPerson],
+          [t.sDate, dates[state.dateIdx].label],
+          [t.sTime, state.slot || t.pickTime],
+          [t.sGuests, D.partyLabel(state.party, lang)],
+          fee > 0 && [t.sFee, D.baht(fee)]
+        ]) +
+        (state.err ? '<p class="s-err-text" role="alert">' + icon("alert") + esc(t.needSlot) + "</p>" : "") +
+        '<div class="s-wide">' + UI.button({ label: bookLabel, variant: "cta", arrow: true, action: "book" }) + "</div>" +
+        '<p class="s-small" style="margin: 0;">' + esc(t.noHold) + "</p>" +
+        (tr.request ? UI.notice({ tone: "info", title: t.requestTitle }, esc(t.requestBody)) : "") +
+        "</div></aside>"
+    };
+  }
+
+  WP.page({
+    active: "treatments",
+    view: function (lang) {
+      var t = TEXT[lang], th = lang === "th", sum = summary(lang, t);
+      document.title = D.L(tr.title, lang) + " · Wellness Pass";
+      var tabs = [["options", t.tabOptions], ["times", t.tabTimes], ["included", t.tabIncluded], ["before", t.tabBefore], ["about", t.tabAbout], ["reviews", t.tabReviews]];
+      return '<main id="main-content" class="s-shell" style="padding: 20px 0 72px;">' +
+        WP.backButton(t.back, "goBack") + gallery(lang, t) +
+        '<div class="s-split"><div style="min-width: 0;">' +
+          '<div class="s-chips" style="margin-bottom: 12px;">' + UI.badge(D.L(D.cat(tr.cat), lang), "jade", tr.icon) + UI.badge(t.sample, "notice") +
+            (tr.request ? UI.badge(t.requestBadge, "neutral", "clock") : "") + "</div>" +
+          '<h1 class="s-h1">' + esc(D.L(tr.title, lang)) + "</h1>" +
+          '<div class="s-meta-row" style="margin-top: 12px;">' +
+            "<span>" + icon("pin") + esc(t.venue + D.L(D.cities[tr.city], lang)) + "</span>" +
+            "<span>" + icon("clock") + esc(D.durLabel(tr, lang)) + "</span>" +
+            "<span>" + icon("flame") + esc(t.intensity + D.L(D.intensity[tr.intensity], lang)) + "</span>" +
+            "<span>" + icon("leaf") + esc(D.L(D.settings[tr.setting], lang)) + "</span></div>" +
+          '<p style="margin: 16px 0 0; max-width: 680px; color: var(--ink-2);">' + esc(D.L(tr.summary, lang)) + "</p>" +
+          '<nav class="s-tabs" aria-label="' + esc(t.tabsAria) + '">' + tabs.map(function (x) { return '<a href="#' + x[0] + '">' + esc(x[1]) + "</a>"; }).join("") + "</nav>" +
+          '<section id="options" class="s-block" aria-labelledby="h-options"><h2 id="h-options" class="s-h3">' + esc(t.tabOptions) + "</h2>" +
+            '<div class="s-opt-list">' + tr.options.map(function (o) {
+              return '<div class="s-opt"><span style="display: flex; gap: 10px; align-items: center;">' + icon("clock") + "<strong>" + esc(D.minLabel(o.min, lang)) + "</strong></span>" +
+                '<span><span class="s-price">' + esc(D.baht(o.price)) + '</span> <span class="s-small">/ ' + esc(t.perPerson) + "</span></span></div>";
+            }).join("") + "</div>" +
+            '<p class="s-small" style="margin: 12px 0 0;">' + esc(t.estimate) + "</p></section>" +
+          timesSection(lang, t) + infoSections(lang, t) +
+        "</div>" + sum.html + "</div></main>" +
+        '<div class="s-mbar"><span><span class="s-small" style="display: block; line-height: 1.3;">' + esc(t.estTotal) + '</span><strong class="s-price">' + esc(D.baht(sum.total)) + "</strong></span>" +
+          UI.button({ label: sum.bookLabel, variant: "cta", action: "book" }) + "</div>";
+    },
+    after: function () { document.querySelector(".s-page").classList.add("s-has-mbar"); },
+    actions: {
+      goBack: function () { WP.go("treatments", { filterCat: "all" }); return false; },
+      pickDur: function (m) { state.dur = Number(m); },
+      prevWeek: function (p) { state.page = Math.max(0, Number(p) - 1); },
+      nextWeek: function (p) { state.page = Math.min(MAX_PAGE, Number(p) + 1); },
+      pickDay: function (i) { state.dateIdx = Number(i); state.slot = null; },
+      pickSlot: function (time) { state.slot = time; state.err = false; },
+      partyLess: function (i) { state.party = WP.partyChange(state.party, Number(i), "less"); },
+      partyMore: function (i) { state.party = WP.partyChange(state.party, Number(i), "more"); },
+      book: function () {
+        if (!state.slot) { state.err = true; return; }
+        WP.go("booking", { booking: { id: tr.id, dur: state.dur, dateIdx: state.dateIdx, slot: state.slot, guests: D.partyTotal(state.party), party: state.party } });
+        return false;
+      }
+    }
+  });
+})();
