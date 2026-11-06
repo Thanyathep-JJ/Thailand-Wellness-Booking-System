@@ -14,13 +14,14 @@
       slotNote: "การเลือกเวลายังไม่ใช่การจอง เวลาจะถูกกันไว้ให้หลังเริ่มชำระเงินเท่านั้น เวลาในเขตเวลาประเทศไทย",
       guests: "ผู้เข้าร่วม", inc: "รวมในราคา", exc: "ไม่รวมในราคา",
       healthTitle: "สุขภาพและความปลอดภัย", healthBody: "ถ้าคุณตั้งครรภ์ มีอาการบาดเจ็บ หรือมีโรคประจำตัว คุณจะแจ้งได้ในขั้นตอนกรอกรายละเอียด หากไม่แน่ใจว่าทรีตเมนต์นี้เหมาะกับคุณหรือไม่ โปรดปรึกษาแพทย์ของคุณ",
-      b1: "มาถึงก่อนเวลาประมาณ 15 นาที [รอยืนยันกับสถานที่]", b2: "หลีกเลี่ยงอาหารมื้อหนักก่อนนวดประมาณ 1 ชั่วโมง", b3: "บอกนักบำบัดได้ตลอดถ้าแรงนวดมากหรือน้อยเกินไป",
-      venueNote: "ชื่อสถานที่ ที่อยู่ และนักบำบัดจะแสดงที่นี่เมื่อมีข้อมูลจริง",
-      noReviews: "ยังไม่มีรีวิว รีวิวจะแสดงที่นี่หลังจากมีผู้ใช้บริการจริงและยืนยันการเข้าใช้แล้ว",
+      b1: "มาถึงก่อนเวลาประมาณ 15 นาที", b2: "หลีกเลี่ยงอาหารมื้อหนักก่อนนวดประมาณ 1 ชั่วโมง", b3: "บอกนักบำบัดได้ตลอดถ้าแรงนวดมากหรือน้อยเกินไป",
+      venueNote: "ชื่อสถานที่ ที่อยู่ และรีวิวเป็นข้อมูลตัวอย่างสำหรับเดโม", hours: "เวลาเปิด", daily: "ทุกวัน", openMap: "เปิดใน Google Maps", mapTitle: "แผนที่",
+      reviewsOf: function (n) { return "จาก " + n + " รีวิวตัวอย่าง"; }, reviewsNote: "รีวิวในเดโมนี้เป็นตัวอย่าง ในเว็บไซต์จริงจะแสดงเฉพาะรีวิวจากผู้ที่ใช้บริการแล้ว", daysAgo: function (n) { return n + " วันที่แล้ว"; },
+      viewPhotos: "ดูรูปทั้งหมด", photoOf: function (i, n) { return "รูปที่ " + i + " จาก " + n; }, prevPhoto: "รูปก่อนหน้า", nextPhoto: "รูปถัดไป", openPhoto: "เปิดรูปขนาดใหญ่",
       panelAria: "สรุปการจอง", estTotal: "ราคารวมโดยประมาณ", sLength: "ความยาว", sDate: "วันที่", sTime: "เวลาเริ่ม", sGuests: "ผู้เข้าร่วม", sFee: "ค่าเดินทางถึงโรงแรม",
       pickTime: "ยังไม่ได้เลือก", needSlot: "เลือกเวลาเริ่มก่อนดำเนินการต่อ", book: "จองทรีตเมนต์นี้", request: "ส่งคำขอจอง",
-      noHold: "ยังไม่มีการตัดเงินในขั้นตอนนี้", requestTitle: "คำขอจอง", requestBody: "สถานที่จะยืนยันการจองภายในช่วงเวลาที่กำหนด [รอเจ้าของกำหนด] ถ้าไม่ได้รับการยืนยัน คุณจะไม่ถูกเรียกเก็บเงิน",
-      venue: "สถานที่ตัวอย่าง · ", intensity: "ความเข้มข้น: ", photoN: function (n) { return " · ภาพที่ " + n; }
+      noHold: "ยังไม่มีการตัดเงินในขั้นตอนนี้", requestTitle: "คำขอจอง", requestBody: "สถานที่จะยืนยันการจองภายใน 12 ชั่วโมง ถ้าไม่ได้รับการยืนยัน คุณจะไม่ถูกเรียกเก็บเงิน",
+      intensity: "ความเข้มข้น: ", photoN: function (n) { return " · ภาพที่ " + n; }
     },
     en: {
       back: "All treatments", photo: "Sample photo", sample: "Sample · ตัวอย่าง", requestBadge: "Venue confirms",
@@ -30,13 +31,14 @@
       slotNote: "Picking a time does not reserve it. It is held only once checkout starts. Times are Thailand time.",
       guests: "Guests", inc: "Included", exc: "Not included",
       healthTitle: "Health and safety", healthBody: "If you are pregnant, injured or have a health condition, you can tell us in the details step. If you are unsure whether this treatment suits you, please check with your doctor.",
-      b1: "Arrive about 15 minutes early [to confirm with venue]", b2: "Avoid a heavy meal for about an hour before a massage", b3: "Tell your therapist any time the pressure is too much or too little",
-      venueNote: "The venue name, address and therapists will show here once real content is added.",
-      noReviews: "No reviews yet. Reviews will appear here after real, verified visits.",
+      b1: "Arrive about 15 minutes early", b2: "Avoid a heavy meal for about an hour before a massage", b3: "Tell your therapist any time the pressure is too much or too little",
+      venueNote: "Venue names, addresses and reviews are sample content for this demo.", hours: "Opening hours", daily: "daily", openMap: "Open in Google Maps", mapTitle: "Map",
+      reviewsOf: function (n) { return "from " + n + " sample reviews"; }, reviewsNote: "Reviews in this demo are samples. On a live site only guests who completed a visit could review.", daysAgo: function (n) { return n + " days ago"; },
+      viewPhotos: "View photos", photoOf: function (i, n) { return "Photo " + i + " of " + n; }, prevPhoto: "Previous photo", nextPhoto: "Next photo", openPhoto: "Open larger photo",
       panelAria: "Booking summary", estTotal: "Estimated total", sLength: "Length", sDate: "Date", sTime: "Start time", sGuests: "Guests", sFee: "In-hotel travel fee",
       pickTime: "Not chosen yet", needSlot: "Pick a start time to continue.", book: "Book this treatment", request: "Send booking request",
-      noHold: "Nothing is charged at this step.", requestTitle: "Request to book", requestBody: "The venue confirms within a set window [owner to set]. If it is not confirmed, you are not charged.",
-      venue: "Sample venue · ", intensity: "Intensity: ", photoN: function (n) { return " · photo " + n; }
+      noHold: "Nothing is charged at this step.", requestTitle: "Request to book", requestBody: "The venue confirms within 12 hours. If it is not confirmed, you are not charged.",
+      intensity: "Intensity: ", photoN: function (n) { return " · photo " + n; }
     }
   };
 
@@ -58,13 +60,90 @@
     err: false
   };
 
+  /* All photos of this treatment, in gallery order (null where a photo is missing). */
+  function photoList(lang, t) {
+    var P = D.photos, gl = (P.galleryById && P.galleryById[tr.id]) || P.gallery || [], name = D.L(tr.title, lang);
+    return [P.byId[tr.id], gl[0], gl[1]].map(function (src, i) { return src ? { src: src, alt: i ? name + t.photoN(i + 1) : name } : null; });
+  }
   function gallery(lang, t) {
-    var P = D.photos, gl = (P.galleryById && P.galleryById[tr.id]) || P.gallery || [], name = D.L(tr.title, lang), main = P.byId[tr.id];
+    var list = photoList(lang, t);
+    var cell = function (p, i, fallback) {
+      if (!p) return fallback;
+      return '<button type="button" class="s-gallery-btn" data-action="openPhoto" data-arg="' + i + '" aria-label="' + esc(t.openPhoto + ": " + p.alt) + '">' +
+        '<img class="s-cover" src="' + esc(p.src) + '" alt="' + esc(p.alt) + '"' + (i ? ' loading="lazy"' : "") + "></button>" +
+        (i === 0 ? '<span class="s-gallery-more">' + icon("search") + esc(t.viewPhotos) + "</span>" : "");
+    };
     return '<div class="s-gallery">' +
-      "<div>" + (main ? '<img class="s-cover" src="' + esc(main) + '" alt="' + esc(name) + '">'
-        : '<span class="s-frost" aria-hidden="true">' + icon(tr.icon) + '</span><span class="s-photo-label">' + esc(t.photo) + "</span>") + "</div>" +
-      '<div class="s-sand">' + (gl[0] ? '<img class="s-cover" src="' + esc(gl[0]) + '" alt="' + esc(name + t.photoN(2)) + '">' : icon("leaf", { label: t.photo })) + "</div>" +
-      '<div class="s-sand">' + (gl[1] ? '<img class="s-cover" src="' + esc(gl[1]) + '" alt="' + esc(name + t.photoN(3)) + '">' : icon("lotus", { label: t.photo })) + "</div>" +
+      "<div>" + cell(list[0], 0, '<span class="s-frost" aria-hidden="true">' + icon(tr.icon) + '</span><span class="s-photo-label">' + esc(t.photo) + "</span>") + "</div>" +
+      '<div class="s-sand">' + cell(list[1], 1, icon("leaf", { label: t.photo })) + "</div>" +
+      '<div class="s-sand">' + cell(list[2], 2, icon("lotus", { label: t.photo })) + "</div>" +
+      "</div>";
+  }
+
+  /* Photo viewer: a dialog with previous / next buttons (arrow keys work too). */
+  function openLightbox(start) {
+    var lang = WP.getLang(), t = TEXT[lang], list = photoList(lang, t).filter(Boolean), i = Math.min(start, list.length - 1);
+    if (!list.length) return;
+    var paint = function (dlg) {
+      var p = list[i], img = dlg.querySelector(".s-lb-stage img");
+      img.src = p.src; img.alt = p.alt;
+      dlg.querySelector(".s-lb-count").textContent = t.photoOf(i + 1, list.length);
+      dlg.querySelector(".s-lb-alt").textContent = p.alt;
+    };
+    WP.dialog({
+      title: D.L(tr.title, lang), wide: true, cls: "wp-lightbox",
+      html: '<div class="s-lb-stage"><img src="" alt="">' +
+        (list.length > 1 ? '<button type="button" class="s-lb-nav s-lb-prev" aria-label="' + esc(t.prevPhoto) + '">' + icon("left") + "</button>" +
+          '<button type="button" class="s-lb-nav s-lb-next" aria-label="' + esc(t.nextPhoto) + '">' + icon("right") + "</button>" : "") +
+        '</div><div class="s-lb-cap"><span class="s-lb-alt"></span><span class="s-lb-count" aria-live="polite"></span></div>',
+      onOpen: function (dlg) {
+        var step = function (d) { i = (i + d + list.length) % list.length; paint(dlg); };
+        paint(dlg);
+        dlg.addEventListener("click", function (e) {
+          if (e.target.closest(".s-lb-prev")) step(-1);
+          if (e.target.closest(".s-lb-next")) step(1);
+        });
+        dlg.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft") step(-1);
+          if (e.key === "ArrowRight") step(1);
+        });
+      }
+    });
+  }
+
+  /* Stars + average under the title, linking to the reviews section. */
+  function ratingRow(lang, t) {
+    var r = D.rating(tr);
+    return '<div class="s-rating-row">' + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") + "<strong>" + r.avg.toFixed(1) + "</strong>" +
+      '<a href="#reviews">' + esc(t.reviewsOf(r.count)) + "</a></div>";
+  }
+
+  function reviewsSection(lang, t) {
+    var r = D.rating(tr), list = D.reviews(tr);
+    return '<section id="reviews" class="s-block" aria-labelledby="h-rev"><h2 id="h-rev" class="s-h3">' + esc(t.tabReviews) + "</h2>" +
+      '<div class="s-rev-top"><span class="s-rev-avg">' + r.avg.toFixed(1) + "</span>" + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") +
+        '<span class="s-small">' + esc(t.reviewsOf(r.count)) + "</span>" + UI.badge(t.sample, "notice") + "</div>" +
+      '<div class="s-rev-list">' + list.map(function (x) {
+        return '<article class="s-rev"><span class="s-avatar" aria-hidden="true">' + esc(x.name.charAt(0)) + "</span><div>" +
+          '<div class="s-rev-head"><span><span class="s-rev-name">' + esc(x.name) + '</span> <span class="s-rev-meta">· ' + esc(D.L(x.from, lang)) + "</span></span>" +
+            UI.stars(x.stars, x.stars + " / 5") + "</div>" +
+          '<span class="s-rev-meta">' + esc(t.daysAgo(x.daysAgo)) + "</span>" +
+          "<p>" + esc(x[lang] || x.en) + "</p></div></article>";
+      }).join("") + "</div>" +
+      '<p class="s-small" style="margin: 14px 0 0;">' + esc(t.reviewsNote) + "</p></section>";
+  }
+
+  /* Venue name, address, opening hours and an embedded Google map (needs an internet connection). */
+  function venueBlock(lang, t) {
+    var v = D.venues[tr.id];
+    if (!v) return "";
+    var q = encodeURIComponent(v.map);
+    return '<div class="s-venue"><div class="s-venue-info"><strong>' + esc(v.name) + "</strong>" +
+        '<span class="s-venue-row">' + icon("pin") + "<span>" + esc(D.L(v.addr, lang)) + "</span></span>" +
+        '<span class="s-venue-row">' + icon("clock") + "<span>" + esc(t.hours + ": " + v.hours + " " + t.daily) + "</span></span>" +
+        '<a class="wp-link" href="https://www.google.com/maps/search/?api=1&amp;query=' + q + '" target="_blank" rel="noopener">' + esc(t.openMap) + " " + icon("arrow") + "</a>" +
+      "</div>" +
+      '<div class="s-map"><iframe title="' + esc(t.mapTitle + ": " + v.name) + '" src="https://www.google.com/maps?q=' + q + '&amp;z=15&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>' +
       "</div>";
   }
 
@@ -73,7 +152,7 @@
     var page = state.page === null ? Math.floor(state.dateIdx / 7) : state.page;
     var wStart = Math.min(page * 7, D.WINDOW - 7);
     var week = dates.slice(wStart, wStart + 7);
-    var groups = D.slotGroups(state.dateIdx, lang);
+    var groups = D.slotGroups(state.dateIdx, lang, tr).filter(function (g) { return g.slots.length; });
     return '<section id="times" class="s-block" aria-labelledby="h-times"><h2 id="h-times" class="s-h3">' + esc(t.tabTimes) + "</h2>" +
       '<div class="s-slot-wrap">' +
         '<p class="wp-label" style="margin: 0 0 10px;">' + esc(t.lengthLabel) + "</p>" +
@@ -117,9 +196,9 @@
         list([t.b1, t.b2, t.b3], "info").replace('class="s-list"', 'class="s-list" style="margin-top: 16px;"') + "</section>" +
       '<section id="about" class="s-block" aria-labelledby="h-about"><h2 id="h-about" class="s-h3">' + esc(t.tabAbout) + "</h2>" +
         '<p style="margin: 0; max-width: 680px; line-height: 1.85; color: var(--ink-2);">' + esc(D.L(tr.about, lang)) + "</p>" +
+        venueBlock(lang, t) +
         '<p class="s-small" style="margin: 12px 0 0;">' + esc(t.venueNote) + "</p></section>" +
-      '<section id="reviews" class="s-block" aria-labelledby="h-rev"><h2 id="h-rev" class="s-h3">' + esc(t.tabReviews) + "</h2>" +
-        '<div class="s-empty"><span class="s-icon-tile">' + icon("star") + '</span><p style="margin: 0; max-width: 460px;">' + esc(t.noReviews) + "</p></div></section>";
+      reviewsSection(lang, t);
   }
 
   function summary(lang, t) {
@@ -156,9 +235,9 @@
         '<div class="s-split"><div style="min-width: 0;">' +
           '<div class="s-chips" style="margin-bottom: 12px;">' + UI.badge(D.L(D.cat(tr.cat), lang), "jade", tr.icon) + UI.badge(t.sample, "notice") +
             (tr.request ? UI.badge(t.requestBadge, "neutral", "clock") : "") + "</div>" +
-          '<h1 class="s-h1">' + esc(D.L(tr.title, lang)) + "</h1>" +
+          '<h1 class="s-h1">' + esc(D.L(tr.title, lang)) + "</h1>" + ratingRow(lang, t) +
           '<div class="s-meta-row" style="margin-top: 12px;">' +
-            "<span>" + icon("pin") + esc(t.venue + D.L(D.cities[tr.city], lang)) + "</span>" +
+            "<span>" + icon("pin") + esc(D.venues[tr.id].name + " · " + D.L(D.cities[tr.city], lang)) + "</span>" +
             "<span>" + icon("clock") + esc(D.durLabel(tr, lang)) + "</span>" +
             "<span>" + icon("flame") + esc(t.intensity + D.L(D.intensity[tr.intensity], lang)) + "</span>" +
             "<span>" + icon("leaf") + esc(D.L(D.settings[tr.setting], lang)) + "</span></div>" +
@@ -179,6 +258,7 @@
     actions: {
       goBack: function () { WP.go("treatments", { filterCat: "all" }); return false; },
       pickDur: function (m) { state.dur = Number(m); },
+      openPhoto: function (i) { openLightbox(Number(i)); return false; },
       prevWeek: function (p) { state.page = Math.max(0, Number(p) - 1); },
       nextWeek: function (p) { state.page = Math.min(MAX_PAGE, Number(p) + 1); },
       pickDay: function (i) { state.dateIdx = Number(i); state.slot = null; },

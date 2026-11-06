@@ -1,6 +1,6 @@
 /* Wellness Pass: Treatments listing (treatments.html).
    Search fields (treatment / date / guests), filter sidebar (keyword, price, intensity, setting, city), sort, results grid.
-   Opens with ?cat=<category id> to pre-filter a category. */
+   Opens with ?cat=<category id> or ?city=bkk|cnx|hkt to pre-filter. */
 (function () {
   "use strict";
   var D = window.WPData, UI = window.UI, WP = window.WP, esc = UI.esc, icon = UI.icon;
@@ -9,7 +9,7 @@
     th: {
       eyebrow: "TREATMENTS · ทรีตเมนต์", title: "ทรีตเมนต์ทั้งหมด", lead: "นวดไทย สปา โยคะ มวยไทย และรีทรีต ในกรุงเทพฯ เชียงใหม่ และภูเก็ต",
       searchAria: "ค้นหาทรีตเมนต์", fTreat: "ทรีตเมนต์", fDate: "วันที่", fGuests: "ผู้เข้าร่วม", anyTreat: "ทุกทรีตเมนต์", anyDate: "วันไหนก็ได้", everyDay: "ทุกวัน",
-      qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", quickAria: "ตัวเลือกด่วน", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป", calNote: "จองล่วงหน้าได้ 30 วัน [รอยืนยัน]",
+      qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", quickAria: "ตัวเลือกด่วน", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป", calNote: "จองล่วงหน้าได้ 30 วัน",
       done: "เสร็จ", filters: "ตัวกรอง", keyword: "คำค้นหา", searchPh: "เช่น นวดไทย โยคะ", clearSearch: "ล้างคำค้นหา",
       price: "ช่วงราคา", priceSub: "ราคาเริ่มต้นต่อท่าน · บาท", minPrice: "ราคาต่ำสุด", maxPrice: "ราคาสูงสุด",
       fInt: "ความเข้มข้น", fSet: "บรรยากาศ", fSetSub: "อยากได้ทรีตเมนต์ที่ไหน", fCity: "เมือง", anyInt: "ทุกระดับ", anySet: "ทุกที่", anyCity: "ทุกเมือง",
@@ -21,7 +21,7 @@
     en: {
       eyebrow: "TREATMENTS", title: "All treatments", lead: "Thai massage, spa, yoga, Muay Thai and retreats in Bangkok, Chiang Mai and Phuket.",
       searchAria: "Search treatments", fTreat: "Treatment", fDate: "Date", fGuests: "Guests", anyTreat: "All treatments", anyDate: "Any date", everyDay: "Every day",
-      qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", quickAria: "Quick picks", prevMonth: "Previous month", nextMonth: "Next month", calNote: "Bookable up to 30 days ahead [to confirm]",
+      qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", quickAria: "Quick picks", prevMonth: "Previous month", nextMonth: "Next month", calNote: "Bookable up to 30 days ahead",
       done: "Done", filters: "Filters", keyword: "Keyword", searchPh: "e.g. Thai massage, yoga", clearSearch: "Clear search",
       price: "Price range", priceSub: "Starting price per person · THB", minPrice: "Minimum price", maxPrice: "Maximum price",
       fInt: "Intensity", fSet: "Setting", fSetSub: "Where you want your treatment", fCity: "City", anyInt: "Any intensity", anySet: "Anywhere", anyCity: "Any city",
@@ -35,7 +35,7 @@
   var P_MIN = 0, P_MAX = 4000;
   var startDate = WP.get("startDate", 0);
   var state = {
-    q: "", cat: WP.param("cat") || WP.get("filterCat", "all"), city: "all", inten: "all", setting: "all",
+    q: "", cat: WP.param("cat") || WP.get("filterCat", "all"), city: D.cities[WP.param("city")] ? WP.param("city") : "all", inten: "all", setting: "all",
     minP: P_MIN, maxP: P_MAX, sort: "rec",
     open: null,                                   // which search dropdown is open: "cat" | "date" | "guests"
     dateIdx: startDate ? startDate : -1,          // days from today, -1 = any date

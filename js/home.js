@@ -13,7 +13,7 @@
       fTreat: "ทรีตเมนต์", fDate: "วันที่", fGuests: "ผู้เข้าร่วม", anyTreat: "นวดไทย สปา โยคะ…", anyDate: "วันไหนก็ได้",
       search: "ค้นหา", searchAria: "ค้นหาทรีตเมนต์", panelTreat: "เลือกประเภททรีตเมนต์", panelDate: "เลือกวัน", panelGuests: "จำนวนผู้เข้าร่วม",
       all: "ทุกประเภท", close: "ปิด", quickAria: "ตัวเลือกด่วน", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป",
-      calNote: "จองล่วงหน้าได้ 30 วัน [รอยืนยัน] · จุดใต้วันที่คือวันนี้",
+      calNote: "จองล่วงหน้าได้ 30 วัน · จุดใต้วันที่คือวันนี้",
       clear: "ล้างทั้งหมด", back: "ย้อนกลับ", next: "ถัดไป", show: "ดูทรีตเมนต์", step: function (n) { return "ขั้นตอน " + n + " จาก 3"; },
       qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", qAny: "วันไหนก็ได้", qAnySub: "ดูทุกวัน",
       sampleBadge: "ตัวอย่าง · Sample", sampleNote: "เดโม: ชื่อสถานที่ ราคา และเวลาว่างทั้งหมดเป็นข้อมูลตัวอย่าง",
@@ -31,12 +31,13 @@
       checkLead: "เช็ก 3 เรื่องนี้ก่อนจอง จะได้ทรีตเมนต์ที่พอดีกับเวลา คนที่ไปด้วย และงบของคุณ",
       checkM1: "ราคาเป็นราคาโดยประมาณ ยืนยันอีกครั้งตอนชำระเงิน", checkM2: "ข้อมูลสุขภาพแจ้งได้ในขั้นตอนกรอกรายละเอียด",
       s1: "ระยะเวลาและแรงนวด", s1b: "เลือกความยาวที่พอดีกับวันของคุณ แล้วบอกแรงนวดที่ชอบตอนกรอกรายละเอียดการจอง",
-      s2: "ใครไปด้วย", s2b: "ทรีตเมนต์คู่ใช้นักบำบัดสองคน ผู้ที่อายุต่ำกว่า 18 ปีต้องมีผู้ปกครองอยู่ด้วย [เงื่อนไขรอยืนยัน]",
+      s2: "ใครไปด้วย", s2b: "ทรีตเมนต์คู่ใช้นักบำบัดสองคน ผู้ที่อายุต่ำกว่า 18 ปีต้องมีผู้ปกครองอยู่ด้วย จองได้สูงสุด 6 ท่านต่อครั้ง",
       s3: "แพ็กเกจมีอะไรบ้าง", s3b: "ดูสิ่งที่รวมและไม่รวม เช่น ค่าเดินทางถึงโรงแรม ก่อนชำระเงินทุกครั้ง",
       faqEyebrow: "FAQ · คำถามที่พบบ่อย", faqTitle: "คำถามที่พบบ่อย", faqLead: "ถ้ามีคำถามเรื่องสุขภาพ โปรดปรึกษาแพทย์ของคุณก่อนจอง",
       q1: "ต้องทำแบบสอบถามก่อนจองไหม", a1: "ไม่ต้อง คุณดูและจองทรีตเมนต์ทั้งหมดได้เลย แบบสอบถามเป็นแค่ตัวช่วยแนะนำ",
       q2: "ข้อมูลสุขภาพของฉันจะถูกส่งให้ใคร", a2: "เราขอข้อมูลสุขภาพเฉพาะในขั้นตอนกรอกรายละเอียด หลังคุณให้ความยินยอม และส่งให้เฉพาะสถานที่ที่ดูแลการจองนั้น ไม่นำไปใช้แนะนำสินค้าหรือการตลาด",
-      q3: "เปลี่ยนเวลาหรือยกเลิกได้ไหม", a3: "เงื่อนไขการเปลี่ยนเวลาและยกเลิกจะแสดงในแต่ละทรีตเมนต์ก่อนชำระเงิน [นโยบายรอเจ้าของกำหนด]",
+      q3: "เปลี่ยนเวลาหรือยกเลิกได้ไหม", a3: "ได้ ยกเลิกฟรีก่อนเวลานัด 24 ชั่วโมง คืนเงิน 50% เมื่อยกเลิกก่อน 6–24 ชั่วโมง ยกเลิกหรือเปลี่ยนเวลาได้ที่หน้า “การจองของฉัน”",
+      cityEyebrow: "DESTINATIONS · เมือง", cityTitle: "เลือกตามเมืองที่คุณอยู่", cityCount: function (n) { return n + " ทรีตเมนต์"; }, faqAll: "ดูคำถามทั้งหมด",
       ctaTitle: "หาทรีตเมนต์ที่ใช่สำหรับวันนี้", ctaSub: "ดูทั้งหมดได้เลย หรือให้เราช่วยแนะนำจากคำตอบ 3 ข้อ", ctaBrowse: "ดูทรีตเมนต์ทั้งหมด", ctaQuiz: "ทำแบบสอบถาม"
     },
     en: {
@@ -45,7 +46,7 @@
       fTreat: "Treatment", fDate: "Date", fGuests: "Guests", anyTreat: "Thai massage, spa, yoga…", anyDate: "Any date",
       search: "Search", searchAria: "Search treatments", panelTreat: "Choose a treatment type", panelDate: "Choose a date", panelGuests: "Number of guests",
       all: "Any treatment", close: "Close", quickAria: "Quick picks", prevMonth: "Previous month", nextMonth: "Next month",
-      calNote: "Bookable up to 30 days ahead [to confirm] · the dot marks today",
+      calNote: "Bookable up to 30 days ahead · the dot marks today",
       clear: "Clear all", back: "Back", next: "Next", show: "Show treatments", step: function (n) { return "Step " + n + " of 3"; },
       qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", qAny: "Any date", qAnySub: "See every day",
       sampleBadge: "Sample · ตัวอย่าง", sampleNote: "Demo: every venue, price and time shown is sample content.",
@@ -63,12 +64,13 @@
       checkLead: "A quick check before you book, so the treatment fits your time, your group and your budget.",
       checkM1: "Prices are estimates, confirmed at checkout", checkM2: "Share health details in the booking details step",
       s1: "Duration and pressure", s1b: "Pick a length that fits your day, then tell us the pressure you like when you fill in your details.",
-      s2: "Who is joining", s2b: "Couples treatments use two therapists. Guests under 18 need a guardian on site [rule to confirm].",
+      s2: "Who is joining", s2b: "Couples treatments use two therapists. Guests under 18 need a parent or guardian on site. Up to 6 guests per booking.",
       s3: "What is included", s3b: "Check what is and is not included, such as in-hotel travel fees, before you pay.",
       faqEyebrow: "FAQ", faqTitle: "Common questions", faqLead: "For questions about your health, please check with your doctor before booking.",
       q1: "Do I have to take the quiz?", a1: "No. You can browse and book every treatment without it; the quiz only helps you choose.",
       q2: "Who sees my health details?", a2: "We ask for health details only in the booking details step, after you consent, and share them only with the venue handling that booking. They are never used for recommendations or marketing.",
-      q3: "Can I change my time or cancel?", a3: "Change and cancellation rules are shown on each treatment before you pay [policy to be set by the owner].",
+      q3: "Can I change my time or cancel?", a3: "Yes. Cancel for free up to 24 hours before, or get 50% back between 6 and 24 hours before. Manage it from My bookings.",
+      cityEyebrow: "DESTINATIONS", cityTitle: "Browse by city", cityCount: function (n) { return n + " treatments"; }, faqAll: "See all questions",
       ctaTitle: "Find a treatment that fits today", ctaSub: "Browse everything, or let three quick answers narrow it down.", ctaBrowse: "Browse all treatments", ctaQuiz: "Take the quiz"
     }
   };
@@ -91,13 +93,17 @@
     '<rect x="1072" y="122" width="96" height="30"></rect><rect x="1118" y="26" width="4" height="26"></rect><path d="M300 136 L352 108 L404 136 Z"></path>' +
     '<rect x="312" y="136" width="5" height="22"></rect><rect x="387" y="136" width="5" height="22"></rect></g>' +
     '<path d="M0 146 C240 126 480 154 720 138 C960 122 1200 150 1440 134 L1440 170 L0 170 Z" fill="#0b241c" fill-opacity="0.5"></path></svg>';
-  var QUIZ_ART = '<svg class="s-qresult-art" viewBox="0 0 360 130" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">' +
-    '<path d="M0 96 C60 70 120 84 180 66 C240 48 300 64 360 52 L360 130 L0 130 Z" fill="#e1f0e7"></path>' +
-    '<path d="M40 112 C110 92 170 108 240 94 C290 84 330 92 360 88 L360 130 L40 130 Z" fill="#9fcdb3"></path>' +
-    '<g fill="#1b4637"><rect x="250" y="76" width="48" height="20"></rect><path d="M240 78 L274 56 L308 78 Z"></path><path d="M252 60 L274 44 L296 60 Z"></path><rect x="272" y="26" width="4" height="20"></rect></g>' +
-    '<path d="M120 122 C124 98 120 86 128 70" stroke="#12352b" stroke-width="5" fill="none" stroke-linecap="round"></path>' +
-    '<g fill="#2f7d62"><path d="M128 70 C114 60 98 62 86 70 C102 68 114 70 128 74 Z"></path><path d="M128 70 C142 58 160 58 172 66 C156 66 142 68 128 76 Z"></path><path d="M128 70 C122 54 108 46 96 48 C110 54 120 62 126 74 Z"></path><path d="M128 70 C136 54 150 48 162 50 C148 56 138 64 130 74 Z"></path></g>' +
-    '<path d="M0 124 C120 114 240 128 360 118 L360 130 L0 130 Z" fill="#12352b"></path></svg>';
+  /* Full-width landscape behind the quiz result: low hills across the whole box (so the text stays readable),
+     palm tree and pagoda on the right. Anchored bottom-right, so narrow screens crop from the left. */
+  var QUIZ_ART = '<svg class="s-qresult-art" viewBox="0 0 1440 160" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">' +
+    '<path d="M0 128 C260 116 520 132 780 118 C1020 104 1240 84 1440 76 L1440 160 L0 160 Z" fill="#e1f0e7"></path>' +
+    '<g class="s-qa-deco" transform="translate(1040 8) scale(1.2)">' +
+      '<g fill="#1b4637"><rect x="250" y="76" width="48" height="20"></rect><path d="M240 78 L274 56 L308 78 Z"></path><path d="M252 60 L274 44 L296 60 Z"></path><rect x="272" y="26" width="4" height="20"></rect></g>' +
+      '<path d="M120 122 C124 98 120 86 128 70" stroke="#12352b" stroke-width="5" fill="none" stroke-linecap="round"></path>' +
+      '<g fill="#2f7d62"><path d="M128 70 C114 60 98 62 86 70 C102 68 114 70 128 74 Z"></path><path d="M128 70 C142 58 160 58 172 66 C156 66 142 68 128 76 Z"></path><path d="M128 70 C122 54 108 46 96 48 C110 54 120 62 126 74 Z"></path><path d="M128 70 C136 54 150 48 162 50 C148 56 138 64 130 74 Z"></path></g>' +
+    "</g>" +
+    '<path d="M0 142 C320 132 640 148 960 136 C1160 128 1320 118 1440 116 L1440 160 L0 160 Z" fill="#9fcdb3"></path>' +
+    '<path d="M0 154 C360 148 720 158 1080 150 C1260 146 1380 148 1440 146 L1440 160 L0 160 Z" fill="#12352b"></path></svg>';
 
   /* ---------- Sections ---------- */
   function heroSection(lang, t) {
@@ -176,6 +182,17 @@
       }).join("") + "</div></div></section>";
   }
 
+  function citySection(lang, t) {
+    return '<section class="s-section" style="padding-top: 0;" aria-labelledby="city-title"><div class="s-shell">' +
+      '<div class="s-head-row"><div><p class="s-eyebrow">' + esc(t.cityEyebrow) + '</p><h2 id="city-title" class="s-h2">' + esc(t.cityTitle) + "</h2></div></div>" +
+      '<div class="s-city-grid">' + D.cityCards.map(function (c) {
+        var n = D.treatments.filter(function (tr) { return tr.city === c.id; }).length;
+        return '<a class="s-city-card" href="treatments.html?city=' + c.id + '"><img src="' + esc(c.image) + '" alt="" loading="lazy">' +
+          '<span class="s-city-body"><span class="s-city-name">' + esc(D.L(D.cities[c.id], lang)) + icon("arrow") + "</span>" +
+          '<span class="s-city-blurb">' + esc(D.L(c.blurb, lang)) + '</span><span class="s-city-count">' + esc(t.cityCount(n)) + "</span></span></a>";
+      }).join("") + "</div></div></section>";
+  }
+
   function quizSection(lang, t) {
     var ans = answers(), th = lang === "th";
     var qs = D.quiz(lang);
@@ -250,7 +267,8 @@
   function faqSection(lang, t) {
     return '<section class="s-section" aria-labelledby="faq-title"><div class="s-shell" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px 64px; align-items: start;">' +
       '<div><p class="s-eyebrow">' + esc(t.faqEyebrow) + '</p><h2 id="faq-title" class="s-h2">' + esc(t.faqTitle) + '</h2><p class="s-lead">' + esc(t.faqLead) + "</p></div>" +
-      "<div>" + UI.faqItem(t.q1, t.a1) + UI.faqItem(t.q2, t.a2) + UI.faqItem(t.q3, t.a3) + "</div>" +
+      "<div>" + UI.faqItem(t.q1, t.a1) + UI.faqItem(t.q2, t.a2) + UI.faqItem(t.q3, t.a3) +
+        '<p style="margin: 16px 0 0;"><a class="wp-link" href="faq.html">' + esc(t.faqAll) + " " + icon("arrow") + "</a></p></div>" +
       "</div></section>";
   }
 
@@ -272,7 +290,7 @@
     active: "home",
     view: function (lang) {
       var t = TEXT[lang];
-      return '<main id="main-content">' + heroSection(lang, t) + categoriesSection(lang, t) + quizSection(lang, t) +
+      return '<main id="main-content">' + heroSection(lang, t) + categoriesSection(lang, t) + citySection(lang, t) + quizSection(lang, t) +
         spotlightSection(lang, t) + checklistSection(lang, t) + faqSection(lang, t) + ctaSection(lang, t) + "</main>";
     },
     actions: {
