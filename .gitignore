@@ -1,0 +1,13 @@
+# OS files
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editor settings
+.vscode/
+.idea/
+
+# Local tools and deploys
+node_modules/
+.vercel/
+*.log
