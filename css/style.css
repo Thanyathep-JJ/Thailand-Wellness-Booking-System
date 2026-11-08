@@ -20,7 +20,8 @@
 }
 html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 a { color: var(--jade-dark); }
-a:hover { color: var(--forest); }
+/* Zero specificity, so links that set their own colour (buttons, footer, city cards on dark backgrounds) keep it on hover. */
+:where(a:hover) { color: var(--forest); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 
 .s-page { min-height: 100%; background: var(--page); color: var(--ink); font-family: var(--font-sans); font-size: 16px; line-height: 1.75; overflow-x: clip; }
