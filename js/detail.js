@@ -10,7 +10,7 @@
       back: "ทรีตเมนต์ทั้งหมด", photo: "ภาพตัวอย่าง", sample: "ตัวอย่าง · Sample", requestBadge: "รอสถานที่ยืนยัน",
       tabsAria: "หัวข้อในหน้านี้", tabOptions: "ตัวเลือก", tabTimes: "วันและเวลา", tabIncluded: "สิ่งที่รวม / ไม่รวม", tabBefore: "ก่อนจอง", tabAbout: "เกี่ยวกับ", tabReviews: "รีวิว",
       perPerson: "ท่าน", estimate: "ราคาโดยประมาณ ระบบจะคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
-      dateLabel: "วันที่", lengthLabel: "ความยาว", startTime: "เวลาเริ่ม", prevWeek: "สัปดาห์ก่อนหน้า", nextWeek: "สัปดาห์ถัดไป", today: "วันนี้", fullSuffix: " เต็มแล้ว",
+      dateLabel: "วันที่", lengthLabel: "ความยาว", startTime: "เวลาเริ่ม", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป", quickAria: "ตัวเลือกด่วน", qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", qNextWeek: "สัปดาห์หน้า", calNote: "จองล่วงหน้าได้ 30 วัน · จุดใต้วันที่คือวันนี้", noTimes: "วันนี้ไม่มีเวลาว่างแล้ว ลองเลือกวันอื่น", today: "วันนี้", fullSuffix: " เต็มแล้ว",
       slotNote: "การเลือกเวลายังไม่ใช่การจอง เวลาจะถูกกันไว้ให้หลังเริ่มชำระเงินเท่านั้น เวลาในเขตเวลาประเทศไทย",
       guests: "ผู้เข้าร่วม", inc: "รวมในราคา", exc: "ไม่รวมในราคา",
       healthTitle: "สุขภาพและความปลอดภัย", healthBody: "ถ้าคุณตั้งครรภ์ มีอาการบาดเจ็บ หรือมีโรคประจำตัว คุณจะแจ้งได้ในขั้นตอนกรอกรายละเอียด หากไม่แน่ใจว่าทรีตเมนต์นี้เหมาะกับคุณหรือไม่ โปรดปรึกษาแพทย์ของคุณ",
@@ -27,7 +27,7 @@
       back: "All treatments", photo: "Sample photo", sample: "Sample · ตัวอย่าง", requestBadge: "Venue confirms",
       tabsAria: "On this page", tabOptions: "Options", tabTimes: "Date and time", tabIncluded: "Included / not included", tabBefore: "Before you book", tabAbout: "About", tabReviews: "Reviews",
       perPerson: "person", estimate: "Estimated prices. Checkout re-prices on the server.",
-      dateLabel: "Date", lengthLabel: "Length", startTime: "Start time", prevWeek: "Previous week", nextWeek: "Next week", today: "Today", fullSuffix: ", fully booked",
+      dateLabel: "Date", lengthLabel: "Length", startTime: "Start time", prevMonth: "Previous month", nextMonth: "Next month", quickAria: "Quick picks", qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", qNextWeek: "Next week", calNote: "Bookable up to 30 days ahead · the dot marks today", noTimes: "No times left on this day. Please pick another date.", today: "Today", fullSuffix: ", fully booked",
       slotNote: "Picking a time does not reserve it. It is held only once checkout starts. Times are Thailand time.",
       guests: "Guests", inc: "Included", exc: "Not included",
       healthTitle: "Health and safety", healthBody: "If you are pregnant, injured or have a health condition, you can tell us in the details step. If you are unsure whether this treatment suits you, please check with your doctor.",
@@ -46,17 +46,25 @@
   WP.set({ treatmentId: tr.id });
   var mins = tr.options.map(function (o) { return o.min; });
   var startDate = Math.min(D.WINDOW - 1, Math.max(0, WP.get("startDate", 0)));
-  var MAX_PAGE = Math.floor((D.WINDOW - 1) / 7);
+  /* First day from `idx` onwards that still has a free start time (e.g. skips today after the last slot). */
+  function firstOpenDay(idx) {
+    for (var i = idx; i < D.WINDOW; i++) if (D.slotList(i, tr).some(function (x) { return x.state !== "full"; })) return i;
+    return idx;
+  }
+  /* Calendar month (0 = this month) that contains the date `idx` days from today. */
+  function monthOffFor(idx) {
+    var n = new Date(), d = new Date(n.getFullYear(), n.getMonth(), n.getDate() + idx);
+    return (d.getFullYear() - n.getFullYear()) * 12 + d.getMonth() - n.getMonth();
+  }
 
   /* If the user comes back from the booking page for the same treatment, restore their choices. */
   var prev = WP.get("booking", null);
   var same = prev && prev.id === tr.id;
   var state = {
     dur: same && mins.indexOf(prev.dur) >= 0 ? prev.dur : mins[0],
-    dateIdx: same ? prev.dateIdx : startDate,
+    dateIdx: same ? prev.dateIdx : firstOpenDay(startDate),
     slot: same ? prev.slot : null,
     party: D.partyNorm(same && prev.party ? prev.party : (WP.get("startParty", null) || { a: Math.min(6, Math.max(1, WP.get("startGuests", 1))) })),
-    page: null,   // which week of the date strip is shown (null = the week of the chosen date)
     err: false
   };
 
@@ -149,9 +157,12 @@
 
   function timesSection(lang, t) {
     var dates = D.dates(lang);
-    var page = state.page === null ? Math.floor(state.dateIdx / 7) : state.page;
-    var wStart = Math.min(page * 7, D.WINDOW - 7);
-    var week = dates.slice(wStart, wStart + 7);
+    if (state.monthOff === undefined) state.monthOff = monthOffFor(state.dateIdx);
+    var wk = D.weekendIdx(), nextWk = Math.min(D.WINDOW - 1, 7);
+    var quick = [[t.qToday, 0], [t.qTomorrow, 1], [t.qWeekend, wk], [t.qNextWeek, nextWk]].map(function (q) {
+      var d = dates[q[1]];
+      return '<button type="button" class="s-qbtn" aria-pressed="' + (state.dateIdx === q[1]) + '" data-action="pickDate" data-arg="' + q[1] + '"><span>' + esc(q[0]) + '</span><span class="s-sub">' + esc(d.dow + " " + d.day) + "</span></button>";
+    }).join("");
     var groups = D.slotGroups(state.dateIdx, lang, tr).filter(function (g) { return g.slots.length; });
     return '<section id="times" class="s-block" aria-labelledby="h-times"><h2 id="h-times" class="s-h3">' + esc(t.tabTimes) + "</h2>" +
       '<div class="s-slot-wrap">' +
@@ -159,16 +170,14 @@
         '<div class="s-chips" role="group" aria-label="' + esc(t.lengthLabel) + '" style="margin-bottom: 24px;">' + mins.map(function (m) {
           return UI.chip({ label: D.minLabel(m, lang) + " · " + D.baht(D.priceFor(tr, m)), icon: "clock", selected: m === state.dur, action: "pickDur", arg: m });
         }).join("") + "</div>" +
-        '<div class="s-week-label"><span class="wp-label">' + esc(t.dateLabel) + '</span><span class="s-small" aria-live="polite">' + esc(dates[wStart].monthYear) + "</span></div>" +
-        '<div class="s-week">' +
-          '<button type="button" class="s-cal-nav" aria-label="' + esc(t.prevWeek) + '"' + (page <= 0 ? " disabled" : "") + ' data-action="prevWeek" data-arg="' + page + '">' + icon("left") + "</button>" +
-          '<div class="s-datestrip" role="group" aria-label="' + esc(t.dateLabel) + '">' + week.map(function (d) {
-            return '<button type="button" class="s-datecard' + (d.idx === 0 ? " is-today" : "") + '" aria-pressed="' + (d.idx === state.dateIdx) + '" aria-label="' + esc(d.long) + '" data-action="pickDay" data-arg="' + d.idx + '">' +
-              '<span class="s-dc-top">' + esc(d.idx === 0 ? t.today : d.dow) + '</span><span class="s-dc-day">' + d.day + '</span><span class="s-dc-mon">' + esc(d.mon) + "</span></button>";
-          }).join("") + "</div>" +
-          '<button type="button" class="s-cal-nav" aria-label="' + esc(t.nextWeek) + '"' + (page >= MAX_PAGE ? " disabled" : "") + ' data-action="nextWeek" data-arg="' + page + '">' + icon("right") + "</button>" +
-        "</div>" +
+        '<p class="wp-label" style="margin: 0 0 10px;">' + esc(t.dateLabel) + "</p>" +
+        '<div class="s-datebox"><div class="s-datepane">' +
+          '<div class="s-quick" role="group" aria-label="' + esc(t.quickAria) + '">' + quick + "</div>" +
+          "<div>" + WP.calendarHtml(state.monthOff, state.dateIdx, lang, { prev: t.prevMonth, next: t.nextMonth }) +
+            '<p class="s-cal-note">' + esc(t.calNote) + "</p></div>" +
+        "</div></div>" +
         '<p class="wp-label" style="margin: 24px 0 0;">' + esc(t.startTime) + " · " + esc(dates[state.dateIdx].long) + "</p>" +
+        (groups.every(function (g) { return !g.open; }) ? '<p class="s-err-text" style="margin-top: 12px;">' + icon("info") + esc(t.noTimes) + "</p>" : "") +
         groups.map(function (g) {
           return '<div class="s-slot-group" role="group" aria-label="' + esc(g.label) + '"><p class="s-slot-head">' + icon(g.icon) + esc(g.label) + '<span class="s-slot-count">· ' + esc(g.count) + "</span></p>" +
             '<div class="wp-slots-grid">' + g.slots.map(function (x) {
@@ -259,9 +268,13 @@
       goBack: function () { WP.go("treatments", { filterCat: "all" }); return false; },
       pickDur: function (m) { state.dur = Number(m); },
       openPhoto: function (i) { openLightbox(Number(i)); return false; },
-      prevWeek: function (p) { state.page = Math.max(0, Number(p) - 1); },
-      nextWeek: function (p) { state.page = Math.min(MAX_PAGE, Number(p) + 1); },
-      pickDay: function (i) { state.dateIdx = Number(i); state.slot = null; },
+      prevMonth: function () { state.monthOff = Math.max(0, state.monthOff - 1); },
+      nextMonth: function () { state.monthOff = Math.min(WP.maxMonthOff(), state.monthOff + 1); },
+      pickDate: function (i) {
+        var idx = Number(i);
+        if (idx !== state.dateIdx) state.slot = null;   // times differ per day
+        state.dateIdx = idx; state.monthOff = monthOffFor(idx);
+      },
       pickSlot: function (time) { state.slot = time; state.err = false; },
       partyLess: function (i) { state.party = WP.partyChange(state.party, Number(i), "less"); },
       partyMore: function (i) { state.party = WP.partyChange(state.party, Number(i), "more"); },
