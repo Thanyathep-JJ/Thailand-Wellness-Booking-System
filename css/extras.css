@@ -273,3 +273,145 @@ a.s-foot-link { display: flex; align-items: center; text-decoration: none; }
 @media (max-width: 520px) { .s-datebox { padding: 14px; } }
 /* Quick-pick date buttons: stack the label and the day on small screens so long Thai labels don't wrap awkwardly */
 @media (max-width: 520px) { .s-qbtn { flex-direction: column; align-items: flex-start; justify-content: center; gap: 0; line-height: 1.4; } }
+
+/* =====================================================================
+   Checkout redesign: payment method list, live card preview, PromptPay,
+   pay button + trust notes, photo summary card, success tick
+   ===================================================================== */
+.s-paycard-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; }
+.s-secure-tag { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-pill); background: var(--success-tint); color: var(--success); font-size: 13px; font-weight: 600; }
+.s-secure-tag .wp-icon { width: 15px; height: 15px; }
+
+/* Payment method rows (radio style) */
+.s-pm-list { display: grid; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); overflow: hidden; background: var(--surface); }
+.s-pm { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 72px; padding: 14px 18px; border: 0; background: var(--surface); color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: background .18s ease; }
+.s-pm + .s-pm, .s-pm-panel + .s-pm { border-top: 1px solid var(--line); }
+.s-pm:hover { background: var(--surface-soft); }
+.s-pm[aria-pressed="true"] { background: var(--tint); }
+.s-pm-radio { width: 22px; height: 22px; flex: none; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--line-strong); background: var(--surface); transition: border .18s ease; }
+.s-pm[aria-pressed="true"] .s-pm-radio { border: 7px solid var(--jade); }
+.s-pm-text { display: grid; flex: 1; min-width: 0; }
+.s-pm-text strong { font-weight: 500; color: var(--forest); }
+.s-pm-text > span { font-size: 13px; color: var(--muted); }
+.s-pm-marks { display: flex; gap: 6px; flex: none; }
+.s-pm-panel { padding: 20px 18px 22px; border-top: 1px solid var(--line); background: var(--surface); animation: wp-fade-in .22s ease-out; }
+@media (max-width: 520px) { .s-pm { gap: 10px; padding: 12px 14px; } .s-pm-marks .s-mark-jcb, .s-pm-marks .s-mark-mc { display: none; } .s-pm-panel { padding: 16px 14px; } }
+
+/* Card brand badges */
+.s-mark { display: inline-grid; place-items: center; height: 26px; min-width: 42px; padding: 0 7px; box-sizing: border-box; border-radius: 6px; border: 1px solid var(--line); background: #fff; font-size: 11px; font-weight: 800; letter-spacing: .02em; line-height: 1; }
+.s-mark-visa { color: #1a1f71; font-style: italic; font-size: 13px; letter-spacing: .04em; }
+.s-mark-jcb { color: #0e4c96; }
+.s-mark-mc svg { width: 28px; height: 18px; display: block; }
+.s-mark-pp { background: #113566; border-color: #113566; color: #fff; font-size: 11px; font-weight: 700; }
+
+/* Card preview + fields side by side */
+.s-cardpay { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 28px; align-items: start; }
+.s-cardpay .s-cardform { padding: 0; border: 0; background: none; }
+.s-cardpay .wp-input { background: var(--surface-soft); }
+.s-cardpay .wp-input:focus { background: var(--surface); }
+#card-name { text-transform: uppercase; }
+#card-number { font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+@media (max-width: 1120px) { .s-cardpay { grid-template-columns: 1fr; } .s-cc-wrap { max-width: 340px; } }
+
+.s-cc-wrap { perspective: 1200px; width: 100%; }
+.s-cc { position: relative; width: 100%; aspect-ratio: 1.586; transform-style: preserve-3d; transition: transform .6s cubic-bezier(.3, .7, .3, 1); }
+.s-cc.is-flipped { transform: rotateY(180deg); }
+.s-cc-face { position: absolute; inset: 0; box-sizing: border-box; border-radius: 16px; overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #fff;
+  background: radial-gradient(circle at 85% -10%, rgba(159, 205, 179, .45), transparent 45%), radial-gradient(circle at 0% 110%, rgba(227, 162, 52, .28), transparent 45%), linear-gradient(135deg, var(--jade) 0%, var(--forest-2) 48%, var(--forest) 100%);
+  box-shadow: 0 18px 40px rgba(18, 53, 43, .28), inset 0 1px 0 rgba(255, 255, 255, .18); }
+.s-cc-face::before { content: ""; position: absolute; right: -60px; top: -80px; width: 220px; height: 220px; border-radius: 50%; border: 1px solid rgba(255, 255, 255, .12); box-shadow: 0 0 0 36px rgba(255, 255, 255, .03); }
+.s-cc-front { display: grid; grid-template-rows: auto 1fr auto; padding: 18px 20px; }
+.s-cc-top { display: flex; align-items: center; gap: 10px; }
+.s-cc-chip { width: 38px; height: 28px; border-radius: 6px; background: linear-gradient(135deg, #f3d38a, #c9963a 60%, #e8c06a); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .15); position: relative; }
+.s-cc-chip::after { content: ""; position: absolute; inset: 7px 9px; border: 1px solid rgba(80, 50, 0, .35); border-radius: 3px; }
+.s-cc-wave { width: 20px; height: 20px; fill: none; stroke: rgba(255, 255, 255, .8); stroke-width: 1.8; stroke-linecap: round; }
+.s-cc-brand { margin-left: auto; display: inline-flex; align-items: center; min-height: 28px; }
+.s-cc-visa { font-size: 22px; font-weight: 800; font-style: italic; letter-spacing: .04em; }
+.s-cc-jcb { font-size: 18px; font-weight: 800; letter-spacing: .06em; }
+.s-cc-mc svg { width: 46px; height: 28px; display: block; }
+.s-cc-generic { width: 26px; height: 26px; opacity: .8; }
+.s-cc-num { align-self: center; font-size: clamp(17px, 5.2vw, 21px); font-weight: 500; letter-spacing: .1em; font-variant-numeric: tabular-nums; white-space: nowrap; text-shadow: 0 1px 2px rgba(0, 0, 0, .25); }
+.s-cc-bottom { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; font-weight: 500; letter-spacing: .05em; text-transform: uppercase; }
+.s-cc-bottom > div { display: grid; min-width: 0; }
+.s-cc-holder span:last-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.s-cc-lbl { font-size: 10px; font-weight: 600; letter-spacing: .12em; color: rgba(255, 255, 255, .65); }
+.s-cc-back { transform: rotateY(180deg); padding: 0; }
+.s-cc-stripe { height: 42px; margin-top: 22px; background: #0b1f19; }
+.s-cc-sig { display: flex; align-items: center; margin: 16px 20px 0; height: 38px; border-radius: 6px; background: repeating-linear-gradient(-45deg, #f5f1e6 0 6px, #ece6d6 6px 12px); }
+.s-cc-sig span { flex: 1; }
+.s-cc-sig strong { padding: 0 14px; color: var(--ink); font-size: 16px; font-style: italic; letter-spacing: .12em; background: #fff; height: 100%; display: grid; place-items: center; border-radius: 0 6px 6px 0; }
+.s-cc-note { margin: 12px 20px 0; font-size: 11px; color: rgba(255, 255, 255, .7); }
+
+/* Test cards (tap to fill) */
+.s-testcards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 20px; padding-top: 18px; border-top: 1px dashed var(--line-strong); }
+.s-testcards-title { grid-column: 1 / -1; display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--ink-2); }
+.s-testcards-title .wp-icon { width: 15px; height: 15px; color: var(--turmeric); }
+.s-testcard { display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 8px 12px; border-radius: var(--radius-md); border: 1px solid var(--line); background: var(--surface-soft); font: inherit; text-align: left; cursor: pointer; transition: border-color .18s ease, background .18s ease; }
+.s-testcard:hover { border-color: var(--jade); background: var(--tint); }
+.s-testcard > span:last-child { display: grid; font-size: 13px; }
+.s-testcard strong { font-weight: 500; color: var(--forest); font-size: 14px; }
+.s-testcard-ok { color: var(--success); }
+.s-testcard-no { color: var(--danger); }
+@media (max-width: 640px) { .s-testcards { grid-template-columns: 1fr; } }
+
+/* PromptPay */
+.s-pp2 { display: grid; grid-template-columns: 240px minmax(0, 1fr); gap: 28px; align-items: start; }
+.s-pp-card { overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--line); background: #fff; box-shadow: var(--shadow-card); text-align: center; }
+.s-pp-band { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px; background: #113566; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: .04em; }
+.s-pp-band .s-mark-pp { border-color: rgba(255, 255, 255, .5); }
+.s-pp-code { padding: 16px 20px 6px; }
+.s-pp-code svg { display: block; width: 100%; max-width: 190px; height: auto; margin: 0 auto; }
+.s-pp-to { display: grid; padding: 0 16px; font-size: 12px; color: var(--muted); }
+.s-pp-to strong { color: var(--ink); font-size: 13px; font-weight: 500; }
+.s-pp-amt { margin: 10px 0 0; padding: 12px; border-top: 1px dashed var(--line); font-size: 26px; font-weight: 600; color: var(--forest); font-variant-numeric: tabular-nums; }
+.s-pp2.is-expired .s-pp-code svg { opacity: .12; }
+.s-pp-side { display: grid; gap: 18px; align-content: start; }
+.s-pp-timer { display: grid; gap: 8px; }
+.s-pp-bar { display: block; height: 6px; border-radius: var(--radius-pill); background: var(--line); overflow: hidden; }
+.s-pp-bar > span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--jade), var(--sage)); transition: width 1s linear; }
+.s-pp-steps { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.s-pp-steps li { display: flex; align-items: flex-start; gap: 12px; font-size: 15px; color: var(--ink-2); }
+.s-pp-n { width: 28px; height: 28px; flex: none; border-radius: 50%; display: grid; place-items: center; background: var(--tint-strong); color: var(--jade-dark); font-size: 13px; font-weight: 700; }
+@media (max-width: 700px) { .s-pp2 { grid-template-columns: 1fr; } .s-pp-card { max-width: 280px; } }
+
+/* Pay button + trust notes */
+.s-paybox { display: grid; gap: 14px; padding: 24px; border-radius: var(--radius-xl); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-sm); }
+.wp-btn.s-paybtn { width: 100%; min-height: 58px; border-radius: var(--radius-md); font-size: 17px; box-shadow: 0 12px 28px rgba(227, 162, 52, .32); }
+.wp-btn.s-paybtn:hover { box-shadow: 0 16px 32px rgba(227, 162, 52, .4); }
+.wp-btn.s-paybtn .wp-icon { width: 19px; height: 19px; }
+.s-agree { margin: 0; font-size: 13px; color: var(--muted); text-align: center; }
+.s-agree a { color: var(--jade-dark); text-underline-offset: 3px; }
+.s-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 4px 0 0; padding: 14px 0 0; border-top: 1px solid var(--line); list-style: none; }
+.s-trust li { display: flex; align-items: center; gap: 8px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+.s-trust .wp-icon { width: 30px; height: 30px; padding: 7px; box-sizing: border-box; flex: none; border-radius: 50%; background: var(--tint-strong); color: var(--jade-dark); }
+.s-demo-line { display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0; font-size: 12px; color: var(--notice-text); }
+.s-demo-line .wp-icon { width: 14px; height: 14px; }
+@media (max-width: 640px) { .s-trust { grid-template-columns: 1fr; } .s-paybox { padding: 18px; } }
+
+/* Summary card with photo (booking + checkout) */
+.s-sum-photo { position: relative; height: 170px; margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-8)) 0; overflow: hidden; border-radius: var(--radius-xl) var(--radius-xl) 0 0; background: linear-gradient(145deg, var(--forest), var(--jade) 62%, var(--sage)); }
+.s-sum-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.s-sum-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(18, 53, 43, .35)); }
+.s-sum-cat { position: absolute; left: 14px; bottom: 12px; z-index: 1; display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: var(--radius-pill); background: rgba(255, 255, 255, .94); color: var(--forest); font-size: 12px; font-weight: 600; }
+.s-sum-cat .wp-icon { width: 14px; height: 14px; color: var(--jade); }
+.s-sum-titlebox { display: grid; gap: 2px; }
+.s-sum-title { margin: 0; font-size: 19px; font-weight: 500; line-height: 1.4; color: var(--forest); }
+.s-sum-rate { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 13px; color: var(--muted); }
+.s-sum-rate strong { color: var(--forest); font-weight: 600; }
+.s-sum-sec { display: grid; gap: 10px; padding-top: 16px; border-top: 1px solid var(--line); }
+.s-sum-sec h3 { margin: 0; font-size: 16px; font-weight: 500; color: var(--forest); }
+.s-sum-sechead { display: flex; justify-content: space-between; align-items: center; }
+.s-sum-sechead .s-textbtn { min-height: 32px; }
+.s-cancel-line { display: flex; align-items: flex-start; gap: 8px; margin: 0; padding: 12px 14px; border-radius: var(--radius-md); background: var(--surface-soft); font-size: 14px; color: var(--ink-2); }
+.s-cancel-line.is-ok { background: var(--success-tint); color: var(--success); font-weight: 500; }
+.s-cancel-line .wp-icon { width: 17px; height: 17px; margin-top: 3px; stroke-width: 2.2; }
+@media (max-width: 520px) { .s-sum-photo { margin: -20px -20px 0; height: 150px; } }
+
+/* Processing overlay: success tick */
+.wp-processing-ok { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--success); color: #fff; animation: wp-ok-pop .45s cubic-bezier(.2, 1.4, .4, 1) both; box-shadow: 0 0 0 10px var(--success-tint); }
+.wp-processing-ok .wp-icon { width: 32px; height: 32px; stroke-width: 2.6; }
+@keyframes wp-ok-pop { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .s-cc { transition: none; } }
+.s-cardform .wp-field { max-width: none; min-width: 0; }
+.s-cardform .wp-input { width: 100%; min-width: 0; }
+.s-cardpay .s-cardform-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }

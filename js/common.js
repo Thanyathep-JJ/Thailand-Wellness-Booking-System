@@ -187,7 +187,11 @@
     el.setAttribute("role", "status");
     el.innerHTML = '<div class="wp-processing-box"><span class="wp-spinner" aria-hidden="true"></span><strong>' + esc(text) + "</strong></div>";
     document.body.appendChild(el);
-    return { done: function () { el.remove(); } };
+    return {
+      done: function () { el.remove(); },
+      /* Swap the spinner for an animated tick (e.g. "Payment successful") before moving on. */
+      success: function (msg) { el.querySelector(".wp-processing-box").innerHTML = '<span class="wp-processing-ok" aria-hidden="true">' + icon("check") + "</span><strong>" + esc(msg) + "</strong>"; }
+    };
   }
 
   /* Show or clear one form field's error message in place, without redrawing the page.
@@ -387,6 +391,15 @@
     return '<div style="display: flex; gap: 14px; align-items: center;"><span class="s-icon-tile" style="border-radius: 14px; flex: none;">' + icon(sum.icon) + "</span>" +
       '<div style="min-width: 0;">' + title + '<span class="s-small">' + esc(sum.venue) + "</span></div></div>";
   }
+  /* Summary card header with the treatment photo, category, title, venue and rating (booking + checkout). */
+  function summaryPhoto(sum, lang) {
+    var D = window.WPData, img = D.photos.byId[sum.tr.id], r = D.rating(sum.tr);
+    return '<div class="s-sum-photo">' + (img ? '<img src="' + esc(img) + '" alt="">' : "") +
+        '<span class="s-sum-cat">' + icon(sum.tr.icon) + esc(D.L(D.cat(sum.tr.cat), lang)) + "</span></div>" +
+      '<div class="s-sum-titlebox"><h2 class="s-sum-title">' + esc(sum.title) + "</h2>" +
+        '<span class="s-small">' + esc(sum.venue) + "</span>" +
+        '<span class="s-sum-rate">' + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") + "<strong>" + r.avg.toFixed(1) + "</strong><span>(" + r.count + ")</span></span></div>";
+  }
   /* <dl> of label/value rows. rows = [[label, value], ...]; falsy rows are skipped. */
   function sumRows(rows) {
     return '<dl class="s-sum-rows">' + rows.filter(Boolean).map(function (r) { return "<div><dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd></div>"; }).join("") + "</dl>";
@@ -414,7 +427,7 @@
 
   window.WP = { get: get, set: set, go: go, param: param, getLang: getLang, isSaved: isSaved, savedList: savedList, toggleSaved: toggleSaved, page: page,
     partyHtml: partyHtml, partyChange: partyChange, calendarHtml: calendarHtml, maxMonthOff: maxMonthOff,
-    bookingSummary: bookingSummary, summaryHead: summaryHead, sumRows: sumRows, backButton: backButton,
+    bookingSummary: bookingSummary, summaryHead: summaryHead, summaryPhoto: summaryPhoto, sumRows: sumRows, backButton: backButton,
     bookings: bookings, toast: toast, dialog: dialog, processing: processing, copyText: copyText, fieldError: fieldError,
     statusBadge: statusBadge, statusLabel: statusLabel, pageHero: pageHero };
 })();

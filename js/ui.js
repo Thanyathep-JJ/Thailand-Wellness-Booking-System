@@ -62,7 +62,11 @@
     close: [["path", { d: "M6 6l12 12M18 6L6 18" }]],
     left: [["path", { d: "M15 6l-6 6 6 6" }]],
     right: [["path", { d: "M9 6l6 6-6 6" }]],
-    menu: [["path", { d: "M4 7h16M4 12h16M4 17h16" }]]
+    menu: [["path", { d: "M4 7h16M4 12h16M4 17h16" }]],
+    lock: [["rect", { x: 5, y: 11, width: 14, height: 10, rx: 2 }], ["path", { d: "M8 11V8a4 4 0 0 1 8 0v3" }]],
+    card: [["rect", { x: 2.5, y: 5, width: 19, height: 14, rx: 2.5 }], ["path", { d: "M2.5 10h19M6 15h4" }]],
+    phone: [["rect", { x: 6.5, y: 2.5, width: 11, height: 19, rx: 2.5 }], ["path", { d: "M11 18.5h2" }]],
+    scan: [["path", { d: "M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16" }]]
   };
 
   function icon(name, opt) {

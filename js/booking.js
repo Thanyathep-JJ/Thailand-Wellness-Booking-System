@@ -129,7 +129,7 @@
   function summaryCard(lang, t) {
     var s = WP.bookingSummary(booking, lang);
     return '<aside class="s-sticky" aria-label="' + esc(t.sumAria) + '"><div class="s-card s-sum">' +
-      WP.summaryHead(s, "h2") +
+      WP.summaryPhoto(s, lang) +
       WP.sumRows([[t.sDate, s.date], [t.sTime, s.time], [t.sLength, s.length], [t.sGuests, s.guestsLabel], [s.lineLabel, s.line], s.fee > 0 && [t.sFee, s.feeLabel]]) +
       '<div class="s-total"><span>' + esc(t.estTotal) + "</span><strong>" + esc(s.totalLabel) + "</strong></div>" +
       UI.badge(t.sample, "notice") + "</div></aside>";
