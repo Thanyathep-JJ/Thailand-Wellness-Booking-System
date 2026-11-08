@@ -204,7 +204,11 @@
        city-<city>-N.jpg        home page city cards
      A treatment can list its own `photos` (file names without .jpg) to reuse photos from elsewhere.
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
-  function img(name) { return "images/" + name + ".jpg"; }
+  /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
+     url("detail.html?id=x") gives the right link to a page from whichever page is open. */
+  var ROOT = (document.body && document.body.getAttribute("data-root")) || "";
+  function url(page) { return page.indexOf("index.html") === 0 ? ROOT + page : (ROOT ? "" : "pages/") + page; }
+  function img(name) { return ROOT + "images/" + name + ".jpg"; }
   var photos = {
     hero: img("hero-1"),
     heroes: [{ src: img("hero-1") }, { src: img("hero-2"), city: "hkt" }, { src: img("hero-3") }],
@@ -392,7 +396,7 @@
     return scored.slice(0, 3).map(function (x) { var c = card(x.t, lang); c.reasons = x.r; return c; });
   }
 
-  window.WPData = { photos: photos, treatments: T, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
+  window.WPData = { url: url, photos: photos, treatments: T, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
     L: L, baht: baht, get: get, cat: cat, priceFor: priceFor, minLabel: minLabel, durLabel: durLabel, card: card, dates: dates, dayInfo: dayInfo, dows: dows, weekendIdx: weekendIdx, monthGrid: monthGrid, WINDOW: WINDOW, slotList: slotList, slotGroups: slotGroups, partyNorm: partyNorm, partyTotal: partyTotal, partyLabel: partyLabel, partyRows: partyRows, partyNote: partyNote, quiz: quiz, match: match,
     venues: venues, reviews: reviews, rating: rating, policy: policy, refundPct: refundPct, cityCards: cityCards,
     isoFromIdx: isoFromIdx, isoLabel: isoLabel, hoursUntil: hoursUntil };

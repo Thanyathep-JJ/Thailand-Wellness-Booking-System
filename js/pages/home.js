@@ -178,7 +178,7 @@
         '<button type="button" class="s-textbtn" data-action="wp:all">' + esc(t.allLink) + " →</button></div>" +
       '<div class="s-grid-cats">' + D.cats.map(function (c) {
         var label = D.L(c, lang).replace("สปาและอโรมาเทอราพี", "สปาและ\nอโรมาเทอราพี");
-        return '<div class="s-cardwrap">' + UI.categoryCard({ label: label, icon: c.icon, href: "treatments.html?cat=" + c.id, style: "height: 100%;" }) + "</div>";
+        return '<div class="s-cardwrap">' + UI.categoryCard({ label: label, icon: c.icon, href: WP.url("treatments.html?cat=" + c.id), style: "height: 100%;" }) + "</div>";
       }).join("") + "</div></div></section>";
   }
 
@@ -187,7 +187,7 @@
       '<div class="s-head-row"><div><p class="s-eyebrow">' + esc(t.cityEyebrow) + '</p><h2 id="city-title" class="s-h2">' + esc(t.cityTitle) + "</h2></div></div>" +
       '<div class="s-city-grid">' + D.cityCards.map(function (c) {
         var n = D.treatments.filter(function (tr) { return tr.city === c.id; }).length;
-        return '<a class="s-city-card" href="treatments.html?city=' + c.id + '"><img src="' + esc(c.image) + '" alt="" loading="lazy">' +
+        return '<a class="s-city-card" href="' + WP.url("treatments.html?city=" + c.id) + '"><img src="' + esc(c.image) + '" alt="" loading="lazy">' +
           '<span class="s-city-body"><span class="s-city-name">' + esc(D.L(D.cities[c.id], lang)) + icon("arrow") + "</span>" +
           '<span class="s-city-blurb">' + esc(D.L(c.blurb, lang)) + '</span><span class="s-city-count">' + esc(t.cityCount(n)) + "</span></span></a>";
       }).join("") + "</div></div></section>";
@@ -209,7 +209,7 @@
     var picksHtml = picks.length
       ? '<h3 class="s-h3" style="margin-bottom: 20px; font-size: 24px; text-align: center;">' + esc(t.picksTitle) + "</h3>" +
         '<div class="s-grid-3">' + picks.map(function (p) {
-          return '<div class="s-cardwrap">' + UI.treatmentCard(Object.assign({}, p, { lang: lang, href: "detail.html?id=" + p.id, saved: WP.isSaved(p.id) })) + "</div>";
+          return '<div class="s-cardwrap">' + UI.treatmentCard(Object.assign({}, p, { lang: lang, href: WP.url("detail.html?id=" + p.id), saved: WP.isSaved(p.id) })) + "</div>";
         }).join("") + "</div>"
       : '<div class="s-empty"><span class="s-icon-tile">' + icon("sparkle") + '</span><p style="margin: 0; max-width: 460px;">' + esc(t.picksEmpty) + "</p>" +
         UI.button({ label: t.allLink, variant: "ghost", size: "sm", action: "wp:all" }) + "</div>";
@@ -246,7 +246,7 @@
           '<div class="s-fact"><strong>' + sp.options.length + "</strong><span>" + esc(t.spotOpts) + "</span></div>" +
           '<div class="s-fact"><strong>' + esc(D.baht(sp.options[0].price)) + "</strong><span>" + esc(t.spotPrice) + "</span></div>" +
         "</div>" +
-        '<div class="s-btn-row">' + UI.button({ label: t.spotBtn, arrow: true, href: "detail.html?id=herbal-compress" }) + UI.badge(t.sampleBadge, "notice") + "</div>" +
+        '<div class="s-btn-row">' + UI.button({ label: t.spotBtn, arrow: true, href: WP.url("detail.html?id=herbal-compress") }) + UI.badge(t.sampleBadge, "notice") + "</div>" +
       "</div></article></div></section>";
   }
 
@@ -268,7 +268,7 @@
     return '<section class="s-section" aria-labelledby="faq-title"><div class="s-shell" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px 64px; align-items: start;">' +
       '<div><p class="s-eyebrow">' + esc(t.faqEyebrow) + '</p><h2 id="faq-title" class="s-h2">' + esc(t.faqTitle) + '</h2><p class="s-lead">' + esc(t.faqLead) + "</p></div>" +
       "<div>" + UI.faqItem(t.q1, t.a1) + UI.faqItem(t.q2, t.a2) + UI.faqItem(t.q3, t.a3) +
-        '<p style="margin: 16px 0 0;"><a class="wp-link" href="faq.html">' + esc(t.faqAll) + " " + icon("arrow") + "</a></p></div>" +
+        '<p style="margin: 16px 0 0;"><a class="wp-link" href="' + WP.url("faq.html") + '">' + esc(t.faqAll) + " " + icon("arrow") + "</a></p></div>" +
       "</div></section>";
   }
 

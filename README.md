@@ -14,16 +14,16 @@ Open `index.html` in a browser. No install or build step is needed. (The venue m
 
 | Page | File | Script |
 |---|---|---|
-| Home: hero search, categories, cities, quiz, FAQ | `index.html` | `js/home.js` |
-| All treatments: filters, sort (`?cat=` / `?city=`) | `treatments.html` | `js/treatments.js` |
-| Treatment detail: photos, reviews, venue map, date and time | `detail.html?id=<treatment id>` | `js/detail.js` |
-| Booking details: contact and health form | `booking.html` | `js/booking.js` |
-| Payment: card form or PromptPay QR | `checkout.html` | `js/checkout.js` |
-| Booking result: reference, print, email preview | `success.html` | `js/success.js` |
-| Wishlist | `wishlist.html` | `js/wishlist.js` |
-| My bookings: find, view, cancel | `mybookings.html` | `js/mybookings.js` |
-| Venue dashboard (demo): confirm / decline requests | `venue.html` | `js/venue.js` |
-| FAQ, Cancellation policy, Terms, Privacy, Contact | `faq.html`, `policy.html`, `terms.html`, `privacy.html`, `contact.html` | `js/info.js` |
+| Home: hero search, categories, cities, quiz, FAQ | `index.html` | `js/pages/home.js` |
+| All treatments: filters, sort (`?cat=` / `?city=`) | `pages/treatments.html` | `js/pages/treatments.js` |
+| Treatment detail: photos, reviews, venue map, date and time | `pages/detail.html?id=<treatment id>` | `js/pages/detail.js` |
+| Booking details: contact and health form | `pages/booking.html` | `js/pages/booking.js` |
+| Payment: card form or PromptPay QR | `pages/checkout.html` | `js/pages/checkout.js` |
+| Booking result: reference, print, email preview | `pages/success.html` | `js/pages/success.js` |
+| Wishlist | `pages/wishlist.html` | `js/pages/wishlist.js` |
+| My bookings: find, view, cancel | `pages/mybookings.html` | `js/pages/mybookings.js` |
+| Venue dashboard (demo): confirm / decline requests | `pages/venue.html` | `js/pages/venue.js` |
+| FAQ, Cancellation policy, Terms, Privacy, Contact | `pages/faq.html`, `policy.html`, `terms.html`, `privacy.html`, `contact.html` | `js/pages/info.js` |
 
 ## Trying the demo
 
@@ -35,24 +35,28 @@ Open `index.html` in a browser. No install or build step is needed. (The venue m
 ## Project structure
 
 ```
-css/style.css        colours, spacing and page layouts
-css/components.css   buttons, cards, quiz, badges, form fields
-css/extras.css       wishlist, reviews, payment, bookings, dashboard, info pages, dialogs, toasts, print
-js/data.js           treatments, venues, reviews, prices, time slots, booking rules, photos, helper functions
-js/ui.js             reusable HTML pieces (icons, buttons, cards, stars, form fields)
-js/common.js         header, footer, language, saved state, toasts, dialogs, booking store
-js/<page>.js         one script per page
-images/              photos and icons (see images/README.md for what each file is)
-favicon.svg          site icon
-original/            the original single-file prototype, kept for reference
+index.html                home page (stays at the top level so the site opens at its main address)
+pages/*.html              all other pages
+css/style.css             colours, spacing and page layouts
+css/components.css        buttons, cards, quiz, badges, form fields
+css/extras.css            wishlist, reviews, payment, bookings, dashboard, info pages, dialogs, toasts, print
+js/core/data.js           treatments, venues, reviews, prices, time slots, booking rules, photos, helper functions
+js/core/ui.js             reusable HTML pieces (icons, buttons, cards, stars, form fields)
+js/core/common.js         header, footer, language, saved state, toasts, dialogs, booking store
+js/pages/<page>.js        one script per page
+images/                   photos and icons (see images/README.md for what each file is)
+favicon.svg               site icon
+original/prototype.html   the original single-file prototype, kept for reference
 ```
+
+Every page except `index.html` lives in `pages/` and sets `<body data-root="../">`. Links shared by several pages (header, footer, photos) go through `WPData.url()` / `WP.url()` in `js/core/data.js`, which adds the right folder for the page that is open. Links between pages inside `pages/` are plain file names.
 
 Booking-in-progress choices are passed between pages with `sessionStorage`. The language, wishlist and finished demo bookings are kept with `localStorage`. Health details are never saved with a booking.
 
 ## Editing
 
-- **Treatments, prices, durations, start times:** the `T` list at the top of `js/data.js`.
-- **Venues, reviews, booking rules (cancellation hours, max guests…):** `venues`, `reviewPool` and `policy` in `js/data.js`.
+- **Treatments, prices, durations, start times:** the `T` list at the top of `js/core/data.js`.
+- **Venues, reviews, booking rules (cancellation hours, max guests…):** `venues`, `reviewPool` and `policy` in `js/core/data.js`.
 - **Photos:** replace a file in `images/` and keep its name, e.g. `muay-thai-1.jpg` is the Muay Thai card photo.
 - **Page text (Thai and English):** the `TEXT` object at the top of each page script.
 

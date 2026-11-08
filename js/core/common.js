@@ -48,7 +48,7 @@
   function go(screen, patch, hash) {
     patch = patch || {};
     set(patch);
-    var url = FILES[screen] || FILES.home;
+    var url = window.WPData.url(FILES[screen] || FILES.home);
     if (screen === "detail") url += "?id=" + encodeURIComponent(patch.treatmentId || get("treatmentId", "thai-traditional"));
     if (screen === "treatments" && patch.filterCat && patch.filterCat !== "all") url += "?cat=" + encodeURIComponent(patch.filterCat);
     location.href = url + (hash ? "#" + hash : "");
@@ -73,7 +73,7 @@
       wishlist: "Wishlist", search: "Search treatments", langAria: "Language", menu: "Menu", skip: "Skip to content" }
   };
   function navLink(href, label, current) {
-    return '<a class="s-nav-link" href="' + href + '"' + (current ? ' aria-current="page"' : "") + ">" + esc(label) + "</a>";
+    return '<a class="s-nav-link" href="' + window.WPData.url(href) + '"' + (current ? ' aria-current="page"' : "") + ">" + esc(label) + "</a>";
   }
   function navLinks(t, active, mobile) {
     return navLink("index.html", t.home, active === "home") + navLink("treatments.html", t.treatments, active === "treatments") +
@@ -84,11 +84,11 @@
   function header(lang, active, menuOpen) {
     var t = HEADER_T[lang], th = lang === "th", n = savedList().length;
     return '<header class="s-header" style="width: 100%;"><div class="s-shell"><div class="s-header-in">' +
-      '<a class="s-brand" href="index.html" aria-label="' + esc(t.homeAria) + '">' + icon("lotus", { cls: "s-brand-mark" }) + "Wellness Pass</a>" +
+      '<a class="s-brand" href="' + window.WPData.url("index.html") + '" aria-label="' + esc(t.homeAria) + '">' + icon("lotus", { cls: "s-brand-mark" }) + "Wellness Pass</a>" +
       '<nav class="s-nav" aria-label="' + esc(t.navAria) + '">' + navLinks(t, active) + "</nav>" +
       '<div class="s-tools">' +
-        '<span class="s-search-pill">' + UI.button({ label: t.search, size: "sm", href: "treatments.html" }) + "</span>" +
-        '<a class="wp-icon-btn s-wish-btn" href="wishlist.html"' + (active === "wishlist" ? ' aria-current="page"' : "") + ' aria-label="' + esc(t.wishlist + (n ? " (" + n + ")" : "")) + '">' + icon("heart") +
+        '<span class="s-search-pill">' + UI.button({ label: t.search, size: "sm", href: window.WPData.url("treatments.html") }) + "</span>" +
+        '<a class="wp-icon-btn s-wish-btn" href="' + window.WPData.url("wishlist.html") + '"' + (active === "wishlist" ? ' aria-current="page"' : "") + ' aria-label="' + esc(t.wishlist + (n ? " (" + n + ")" : "")) + '">' + icon("heart") +
           (n ? '<span class="wp-count" aria-hidden="true">' + n + "</span>" : "") + "</a>" +
         '<div class="s-lang" role="group" aria-label="' + esc(t.langAria) + '">' +
           '<button type="button" lang="th" aria-pressed="' + (th ? "true" : "false") + '" data-action="wp:lang" data-arg="th">ไทย</button>' +
@@ -136,9 +136,9 @@
         '<nav aria-label="' + esc(t.help) + '"><p class="s-eyebrow">' + esc(t.help) + "</p>" +
           footLink("faq.html", t.faq) + footLink("policy.html", t.policy) + footLink("contact.html", t.contact) + footLink("venue.html", t.venue) + "</nav>" +
       '</div><div class="s-foot-bottom"><span>' + esc(t.copy) + '</span><span class="s-foot-legal">' +
-        '<a href="terms.html">' + esc(t.terms) + '</a><span aria-hidden="true"> · </span><a href="privacy.html">' + esc(t.privacy) + "</a></span></div></div></footer></div>";
+        '<a href="' + window.WPData.url("terms.html") + '">' + esc(t.terms) + '</a><span aria-hidden="true"> · </span><a href="' + window.WPData.url("privacy.html") + '">' + esc(t.privacy) + "</a></span></div></div></footer></div>";
   }
-  function footLink(href, label) { return '<a class="s-foot-link" href="' + href + '">' + esc(label) + "</a>"; }
+  function footLink(href, label) { return '<a class="s-foot-link" href="' + window.WPData.url(href) + '">' + esc(label) + "</a>"; }
 
   /* ---------- Toasts: short messages that disappear by themselves (3.5 s) ---------- */
   function toast(msg, tone) {
@@ -425,7 +425,7 @@
       (lead ? '<p class="s-lead">' + esc(lead) + "</p>" : "") + "</div></section>";
   }
 
-  window.WP = { get: get, set: set, go: go, param: param, getLang: getLang, isSaved: isSaved, savedList: savedList, toggleSaved: toggleSaved, page: page,
+  window.WP = { url: window.WPData.url, get: get, set: set, go: go, param: param, getLang: getLang, isSaved: isSaved, savedList: savedList, toggleSaved: toggleSaved, page: page,
     partyHtml: partyHtml, partyChange: partyChange, calendarHtml: calendarHtml, maxMonthOff: maxMonthOff,
     bookingSummary: bookingSummary, summaryHead: summaryHead, summaryPhoto: summaryPhoto, sumRows: sumRows, backButton: backButton,
     bookings: bookings, toast: toast, dialog: dialog, processing: processing, copyText: copyText, fieldError: fieldError,

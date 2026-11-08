@@ -2,7 +2,7 @@
 
 Web-sized copies of the photos in `data/pictures` (JPEG, max 1600 px wide).
 The site finds photos by file name, so to swap a photo, replace the file and keep its name.
-Treatments added later reuse some photos; their `photos` list in `js/data.js` says which files they use.
+Treatments added later reuse some photos; their `photos` list in `js/core/data.js` says which files they use.
 
 | File | Used for | Original file in `data/pictures` |
 |---|---|---|
