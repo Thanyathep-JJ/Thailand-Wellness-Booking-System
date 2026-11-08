@@ -16,7 +16,6 @@
       calNote: "จองล่วงหน้าได้ 30 วัน · จุดใต้วันที่คือวันนี้",
       clear: "ล้างทั้งหมด", back: "ย้อนกลับ", next: "ถัดไป", show: "ดูทรีตเมนต์", step: function (n) { return "ขั้นตอน " + n + " จาก 3"; },
       qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", qAny: "วันไหนก็ได้", qAnySub: "ดูทุกวัน",
-      sampleBadge: "ตัวอย่าง · Sample", sampleNote: "เดโม: ชื่อสถานที่ ราคา และเวลาว่างทั้งหมดเป็นข้อมูลตัวอย่าง",
       catEyebrow: "CATEGORIES · ประเภท", catTitle: "เลือกตามสิ่งที่อยากทำ", allLink: "ดูทรีตเมนต์ทั้งหมด",
       quizEyebrow: "PICKED FOR YOU · แนะนำสำหรับคุณ", quizTitle: "ตอบ 3 คำถาม แล้วดูทรีตเมนต์ที่เหมาะกับคุณ",
       quizLead: "เราใช้เฉพาะคำตอบของคุณตอนนี้ ไม่ถามข้อมูลสุขภาพ และไม่ใช่การประเมินทางการแพทย์ จะข้ามไปดูทั้งหมดก็ได้",
@@ -49,7 +48,6 @@
       calNote: "Bookable up to 30 days ahead · the dot marks today",
       clear: "Clear all", back: "Back", next: "Next", show: "Show treatments", step: function (n) { return "Step " + n + " of 3"; },
       qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", qAny: "Any date", qAnySub: "See every day",
-      sampleBadge: "Sample · ตัวอย่าง", sampleNote: "Demo: every venue, price and time shown is sample content.",
       catEyebrow: "CATEGORIES", catTitle: "Browse by what you want to do", allLink: "All treatments",
       quizEyebrow: "PICKED FOR YOU", quizTitle: "Answer three questions, see what fits",
       quizLead: "We only use your answers from right now. No health questions, and this is not a medical assessment. You can skip it any time.",
@@ -127,8 +125,6 @@
         '<p class="s-hero-sub">' + esc(t.heroSub) + "</p>" +
         UI.searchBar({ fields: fields, buttonLabel: t.search, ariaLabel: t.searchAria, openIndex: state.panel }) +
         (state.panel !== null ? searchPanel(lang, t, party) : "") +
-        '<p style="margin: 20px 0 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; font-size: 14px; color: var(--on-forest-muted);">' +
-          UI.badge(t.sampleBadge, "notice") + "<span>" + esc(t.sampleNote) + "</span></p>" +
       "</div></section>";
   }
 
@@ -246,7 +242,7 @@
           '<div class="s-fact"><strong>' + sp.options.length + "</strong><span>" + esc(t.spotOpts) + "</span></div>" +
           '<div class="s-fact"><strong>' + esc(D.baht(sp.options[0].price)) + "</strong><span>" + esc(t.spotPrice) + "</span></div>" +
         "</div>" +
-        '<div class="s-btn-row">' + UI.button({ label: t.spotBtn, arrow: true, href: WP.url("detail.html?id=herbal-compress") }) + UI.badge(t.sampleBadge, "notice") + "</div>" +
+        '<div class="s-btn-row">' + UI.button({ label: t.spotBtn, arrow: true, href: WP.url("detail.html?id=herbal-compress") }) + "</div>" +
       "</div></article></div></section>";
   }
 

@@ -11,7 +11,7 @@
       okTitle: "จองสำเร็จแล้ว (เดโม)", okBody: "เราส่งอีเมลยืนยันพร้อมเลขอ้างอิงให้คุณแล้ว ในเว็บไซต์จริง หน้านี้จะแสดงหลังผู้ให้บริการชำระเงินยืนยันการชำระแล้วเท่านั้น",
       reqTitle: "ส่งคำขอจองแล้ว (เดโม)", reqBody: "สถานที่จะตรวจสอบและยืนยันภายใน 12 ชั่วโมง คุณจะถูกเรียกเก็บเงินเมื่อได้รับการยืนยันเท่านั้น ลองยืนยันแทนสถานที่ได้ที่แดชบอร์ดสถานที่ (เดโม)",
       demoTitle: "ผลลัพธ์ตัวอย่าง", demoBody: "ไม่มีการตัดเงินจริง การจองนี้บันทึกไว้ในเบราว์เซอร์นี้เท่านั้น",
-      refLabel: "เลขอ้างอิงการจอง", copy: "คัดลอก", copied: "คัดลอกเลขอ้างอิงแล้ว", sample: "ตัวอย่าง · Sample",
+      refLabel: "เลขอ้างอิงการจอง", copy: "คัดลอก", copied: "คัดลอกเลขอ้างอิงแล้ว",
       sumTitle: "สรุปการจอง", sDate: "วันที่", sTime: "เวลาเริ่ม", sLength: "ความยาว", sGuests: "ผู้เข้าร่วม", sMethod: "วิธีชำระเงิน", sStatus: "สถานะ", total: "ยอดรวม",
       card: "บัตรเครดิต / เดบิต", pp: "พร้อมเพย์ QR",
       nextTitle: "ขั้นตอนถัดไป", n1: function (e) { return "อีเมลยืนยันส่งไปที่ " + e; }, n2: "ดู เปลี่ยนแปลง หรือยกเลิกการจองได้ที่หน้า “การจองของฉัน” ด้วยเลขอ้างอิงและอีเมล", n3: "มาถึงก่อนเวลานัดประมาณ 15 นาที",
@@ -29,7 +29,7 @@
       okTitle: "You're booked (demo)", okBody: "We've emailed your confirmation and booking reference. On a live site this page appears only after the payment provider confirms the payment.",
       reqTitle: "Booking request sent (demo)", reqBody: "The venue reviews and confirms within 12 hours. You're charged only once it's confirmed. Try confirming it yourself in the venue dashboard (demo).",
       demoTitle: "Sample result", demoBody: "No money was taken. This booking is saved in this browser only.",
-      refLabel: "Booking reference", copy: "Copy", copied: "Booking reference copied", sample: "Sample · ตัวอย่าง",
+      refLabel: "Booking reference", copy: "Copy", copied: "Booking reference copied",
       sumTitle: "Your booking", sDate: "Date", sTime: "Start time", sLength: "Length", sGuests: "Guests", sMethod: "Payment method", sStatus: "Status", total: "Total",
       card: "Credit / debit card", pp: "PromptPay QR",
       nextTitle: "What happens next", n1: function (e) { return "A confirmation email has gone to " + e; }, n2: "View, change or cancel the booking in My bookings with your reference and email.", n3: "Arrive about 15 minutes before your start time.",
@@ -88,7 +88,7 @@
           '<p style="margin: 0; max-width: 640px; color: var(--ink-2);">' + esc(req ? t.reqBody : t.okBody) + "</p>" +
           UI.notice({ tone: "notice", title: t.demoTitle }, esc(t.demoBody)) +
           '<div class="s-ref"><span class="s-small">' + esc(t.refLabel) + "</span><strong>" + esc(rec.ref) + "</strong>" +
-            '<button type="button" class="s-copy no-print" data-action="copyRef">' + icon("check") + esc(t.copy) + "</button>" + UI.badge(t.sample, "notice") + "</div>" +
+            '<button type="button" class="s-copy no-print" data-action="copyRef">' + icon("check") + esc(t.copy) + "</button></div>" +
           '<div class="s-success-actions no-print">' +
             UI.button({ label: t.print, variant: "ghost", size: "sm", action: "print" }) +
             UI.button({ label: t.email, variant: "ghost", size: "sm", action: "email" }) +

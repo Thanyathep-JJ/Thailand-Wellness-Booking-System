@@ -21,7 +21,7 @@
       skipHealth: "ไม่ต้องการแจ้งข้อมูลสุขภาพก็ได้ คุณสามารถบอกนักบำบัดโดยตรงเมื่อไปถึง",
       hotelTitle: "ที่อยู่สำหรับบริการถึงโรงแรม", hotel: "ชื่อโรงแรม", room: "หมายเลขห้อง", hotelHint: "นักบำบัดจะติดต่อคุณก่อนเดินทาง ค่าเดินทางคิดต่อการจอง ไม่ใช่ต่อคน",
       next: "ไปที่การชำระเงิน", sumAria: "สรุปการจอง", sDate: "วันที่", sTime: "เวลาเริ่ม", sLength: "ความยาว", sGuests: "ผู้เข้าร่วม", sFee: "ค่าเดินทางถึงโรงแรม",
-      estTotal: "ราคารวมโดยประมาณ", sample: "ตัวอย่าง · Sample",
+      estTotal: "ราคารวมโดยประมาณ",
       eFirst: "กรอกชื่อเป็นตัวอักษรภาษาอังกฤษ", eLast: "กรอกนามสกุลเป็นตัวอักษรภาษาอังกฤษ", eEmail: "กรอกอีเมลให้ครบ เช่น name@example.com", ePhone: "กรอกเบอร์โทรศัพท์อย่างน้อย 9 หลัก", eHotel: "กรอกชื่อโรงแรมที่คุณพัก"
     },
     en: {
@@ -39,7 +39,7 @@
       skipHealth: "You can skip this and tell your therapist in person when you arrive.",
       hotelTitle: "Your hotel for the in-hotel session", hotel: "Hotel name", room: "Room number", hotelHint: "Your therapist contacts you before travelling. The travel fee is per booking, not per person.",
       next: "Continue to payment", sumAria: "Booking summary", sDate: "Date", sTime: "Start time", sLength: "Length", sGuests: "Guests", sFee: "In-hotel travel fee",
-      estTotal: "Estimated total", sample: "Sample · ตัวอย่าง",
+      estTotal: "Estimated total",
       eFirst: "Enter your first name in English letters", eLast: "Enter your last name in English letters", eEmail: "Enter a full email address, like name@example.com", ePhone: "Enter a phone number with at least 9 digits", eHotel: "Enter the name of your hotel"
     }
   };
@@ -131,8 +131,7 @@
     return '<aside class="s-sticky" aria-label="' + esc(t.sumAria) + '"><div class="s-card s-sum">' +
       WP.summaryPhoto(s, lang) +
       WP.sumRows([[t.sDate, s.date], [t.sTime, s.time], [t.sLength, s.length], [t.sGuests, s.guestsLabel], [s.lineLabel, s.line], s.fee > 0 && [t.sFee, s.feeLabel]]) +
-      '<div class="s-total"><span>' + esc(t.estTotal) + "</span><strong>" + esc(s.totalLabel) + "</strong></div>" +
-      UI.badge(t.sample, "notice") + "</div></aside>";
+      '<div class="s-total"><span>' + esc(t.estTotal) + "</span><strong>" + esc(s.totalLabel) + "</strong></div></div></aside>";
   }
 
   /* Show or clear one field's error message in place (no full redraw, so a click that caused the blur still lands). */

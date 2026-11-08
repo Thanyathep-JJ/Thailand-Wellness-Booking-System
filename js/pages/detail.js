@@ -7,7 +7,7 @@
 
   var TEXT = {
     th: {
-      back: "ทรีตเมนต์ทั้งหมด", photo: "ภาพตัวอย่าง", sample: "ตัวอย่าง · Sample", requestBadge: "รอสถานที่ยืนยัน",
+      back: "ทรีตเมนต์ทั้งหมด", photo: "ภาพตัวอย่าง", requestBadge: "รอสถานที่ยืนยัน",
       tabsAria: "หัวข้อในหน้านี้", tabOptions: "ตัวเลือก", tabTimes: "วันและเวลา", tabIncluded: "สิ่งที่รวม / ไม่รวม", tabBefore: "ก่อนจอง", tabAbout: "เกี่ยวกับ", tabReviews: "รีวิว",
       perPerson: "ท่าน", estimate: "ราคาโดยประมาณ ระบบจะคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
       dateLabel: "วันที่", lengthLabel: "ความยาว", startTime: "เวลาเริ่ม", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป", quickAria: "ตัวเลือกด่วน", qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", qNextWeek: "สัปดาห์หน้า", calNote: "จองล่วงหน้าได้ 30 วัน · จุดใต้วันที่คือวันนี้", noTimes: "วันนี้ไม่มีเวลาว่างแล้ว ลองเลือกวันอื่น", today: "วันนี้", fullSuffix: " เต็มแล้ว",
@@ -24,7 +24,7 @@
       intensity: "ความเข้มข้น: ", photoN: function (n) { return " · ภาพที่ " + n; }
     },
     en: {
-      back: "All treatments", photo: "Sample photo", sample: "Sample · ตัวอย่าง", requestBadge: "Venue confirms",
+      back: "All treatments", photo: "Sample photo", requestBadge: "Venue confirms",
       tabsAria: "On this page", tabOptions: "Options", tabTimes: "Date and time", tabIncluded: "Included / not included", tabBefore: "Before you book", tabAbout: "About", tabReviews: "Reviews",
       perPerson: "person", estimate: "Estimated prices. Checkout re-prices on the server.",
       dateLabel: "Date", lengthLabel: "Length", startTime: "Start time", prevMonth: "Previous month", nextMonth: "Next month", quickAria: "Quick picks", qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", qNextWeek: "Next week", calNote: "Bookable up to 30 days ahead · the dot marks today", noTimes: "No times left on this day. Please pick another date.", today: "Today", fullSuffix: ", fully booked",
@@ -130,7 +130,7 @@
     var r = D.rating(tr), list = D.reviews(tr);
     return '<section id="reviews" class="s-block" aria-labelledby="h-rev"><h2 id="h-rev" class="s-h3">' + esc(t.tabReviews) + "</h2>" +
       '<div class="s-rev-top"><span class="s-rev-avg">' + r.avg.toFixed(1) + "</span>" + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") +
-        '<span class="s-small">' + esc(t.reviewsOf(r.count)) + "</span>" + UI.badge(t.sample, "notice") + "</div>" +
+        '<span class="s-small">' + esc(t.reviewsOf(r.count)) + "</span></div>" +
       '<div class="s-rev-list">' + list.map(function (x) {
         return '<article class="s-rev"><span class="s-avatar" aria-hidden="true">' + esc(x.name.charAt(0)) + "</span><div>" +
           '<div class="s-rev-head"><span><span class="s-rev-name">' + esc(x.name) + '</span> <span class="s-rev-meta">· ' + esc(D.L(x.from, lang)) + "</span></span>" +
@@ -242,7 +242,7 @@
       return '<main id="main-content" class="s-shell" style="padding: 20px 0 72px;">' +
         WP.backButton(t.back, "goBack") + gallery(lang, t) +
         '<div class="s-split"><div style="min-width: 0;">' +
-          '<div class="s-chips" style="margin-bottom: 12px;">' + UI.badge(D.L(D.cat(tr.cat), lang), "jade", tr.icon) + UI.badge(t.sample, "notice") +
+          '<div class="s-chips" style="margin-bottom: 12px;">' + UI.badge(D.L(D.cat(tr.cat), lang), "jade", tr.icon) +
             (tr.request ? UI.badge(t.requestBadge, "neutral", "clock") : "") + "</div>" +
           '<h1 class="s-h1">' + esc(D.L(tr.title, lang)) + "</h1>" + ratingRow(lang, t) +
           '<div class="s-meta-row" style="margin-top: 12px;">' +

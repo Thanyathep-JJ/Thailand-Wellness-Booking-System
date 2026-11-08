@@ -14,7 +14,7 @@
       price: "ราคาต่อท่าน", minPrice: "ราคาต่ำสุด", maxPrice: "ราคาสูงสุด",
       fInt: "ความเข้มข้น", fSet: "บรรยากาศ", fCity: "เมือง", anyInt: "ทุกระดับ", anySet: "ทุกที่", anyCity: "ทุกเมือง",
       sortLabel: "เรียงตาม", sortRec: "แนะนำ", sortLow: "ราคาต่ำไปสูง", sortHigh: "ราคาสูงไปต่ำ",
-      count: function (n) { return "พบ " + n + " ทรีตเมนต์"; }, sample: "ตัวอย่าง · Sample", priceNote: "ราคาเริ่มต้นโดยประมาณ ระบบคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
+      count: function (n) { return "พบ " + n + " ทรีตเมนต์"; }, priceNote: "ราคาเริ่มต้นโดยประมาณ ระบบคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
       clear: "ล้างตัวกรอง", remove: "ลบตัวกรอง ",
       emptyTitle: "ไม่พบทรีตเมนต์ที่ตรงกับการค้นหา", emptyBody: "ลองลดตัวกรองบางอย่าง หรือดูทรีตเมนต์ทั้งหมด"
     },
@@ -26,7 +26,7 @@
       price: "Price per person", minPrice: "Minimum price", maxPrice: "Maximum price",
       fInt: "Intensity", fSet: "Setting", fCity: "City", anyInt: "Any intensity", anySet: "Anywhere", anyCity: "Any city",
       sortLabel: "Sort by", sortRec: "Recommended", sortLow: "Price: low to high", sortHigh: "Price: high to low",
-      count: function (n) { return n + (n === 1 ? " treatment found" : " treatments found"); }, sample: "Sample · ตัวอย่าง", priceNote: "Starting prices are estimates; checkout re-prices them.",
+      count: function (n) { return n + (n === 1 ? " treatment found" : " treatments found"); }, priceNote: "Starting prices are estimates; checkout re-prices them.",
       clear: "Clear filters", remove: "Remove filter ",
       emptyTitle: "No treatments match your search", emptyBody: "Try removing a filter, or view all treatments."
     }
@@ -171,7 +171,7 @@
           '<select id="f-sort" class="s-input s-select" data-input="sort">' + sortOpts.map(function (o) {
             return '<option value="' + o[0] + '"' + (state.sort === o[0] ? " selected" : "") + ">" + esc(o[1]) + "</option>";
           }).join("") + "</select></label></div>" +
-      '<p class="s-small" style="margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">' + UI.badge(t.sample, "notice") + "<span>" + esc(t.priceNote) + "</span></p>" +
+      '<p class="s-small" style="margin: 6px 0 0;">' + esc(t.priceNote) + "</p>" +
       (applied.length ? '<div class="s-chips" style="margin-top: 16px; align-items: center;">' + applied.map(function (a) {
           return '<button type="button" class="s-applied" aria-label="' + esc(t.remove + a.label) + '" data-action="removeFilter" data-arg="' + a.key + '"><span>' + esc(a.label) + "</span>" + icon("close") + "</button>";
         }).join("") + '<button type="button" class="s-textbtn" data-action="clearAll">' + esc(t.clear) + "</button></div>" : "") +
