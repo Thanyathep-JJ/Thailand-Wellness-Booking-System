@@ -60,45 +60,37 @@
       summary: { th: "สมาธิ เดินในสวน อาหารกลางวันมังสวิรัติ และนวดไทย 60 นาที", en: "Meditation, a garden walk, a vegetarian lunch and a 60-minute Thai massage." },
       about: { th: "หนึ่งวันช้า ๆ ในสวน เริ่มด้วยสมาธิ เดินในสวน อาหารกลางวันมังสวิรัติ และปิดท้ายด้วยนวดไทย สถานที่ยืนยันการจองภายใน 12 ชั่วโมง", en: "A slow day in a garden: meditation, a mindful walk, a vegetarian lunch and a Thai massage to close. The venue confirms your request within 12 hours." },
       options: [{ min: 360, price: 3900 }] },
-    /* Treatments below set `photos` because they reuse photos from other folders' names. Order: [card, detail 2, detail 3]. */
     { id: "temple-massage", cat: "thai", city: "bkk", intensity: "medium", setting: "spa", goals: ["recover", "relax"], icon: "hand",
-      photos: ["temple-massage-1", "thai-traditional-2", "deep-stretch-3"],
       title: { th: "นวดไทยย่านเมืองเก่า", en: "Old-town Thai massage" },
       summary: { th: "นวดไทยตำรับวัดในย่านท่าเตียน หลังเดินชมวัดและพระราชวัง", en: "Temple-style Thai massage in the Tha Tien old town, after a day of temples and palaces." },
       about: { th: "นวดไทยตามตำรับดั้งเดิมที่สอนกันในย่านวัดเก่าของกรุงเทพฯ เน้นกดจุดตามเส้นและยืดเหยียดอย่างเป็นจังหวะ ห้องนวดเรียบง่าย อยู่ใกล้ท่าเรือ เดินทางสะดวก", en: "A classic Thai massage in the style taught around Bangkok's old temples, with rhythmic pressure along the body's lines and deep stretches. Simple, calm rooms close to the river pier." },
       options: [{ min: 60, price: 650 }, { min: 90, price: 900 }, { min: 120, price: 1150 }] },
     { id: "park-yoga", slots: ["06:30", "07:30", "17:30"], cat: "yoga", city: "bkk", intensity: "gentle", setting: "nature", goals: ["energize", "relax"], icon: "sun",
-      photos: ["park-yoga-1", "sunrise-yoga-3", "sunrise-yoga-1"],
       title: { th: "โยคะยามเช้าในสวนสาธารณะ", en: "Morning yoga in the park" },
       summary: { th: "โยคะกลางแจ้งริมทะเลสาบกลางเมือง ก่อนอากาศจะร้อน", en: "Outdoor yoga by a city-centre lake, before the heat of the day." },
       about: { th: "คลาสวินยาสะแบบเบา ๆ บนสนามหญ้าริมทะเลสาบ เหมาะกับทุกระดับ ครูช่วยปรับท่าให้ มีเสื่อให้ยืม และจบด้วยการผ่อนคลายสั้น ๆ", en: "A gentle vinyasa class on the grass by the lake, suitable for every level. The teacher helps with alignment, mats are available, and the class ends with a short relaxation." },
       options: [{ min: 60, price: 450 }, { min: 90, price: 650 }] },
     { id: "street-foot-massage", cat: "thai", city: "cnx", intensity: "gentle", setting: "nature", goals: ["relax"], icon: "leaf",
-      photos: ["street-foot-massage-1", "foot-reflexology-2", "foot-reflexology-3"],
       title: { th: "นวดเท้าย่านเมืองเก่าเชียงใหม่", en: "Old City foot massage" },
       summary: { th: "นวดเท้าบนเก้าอี้เอนริมถนนคนเดิน บรรยากาศเชียงใหม่แท้ ๆ", en: "Foot massage in reclining chairs beside the walking street, a true Chiang Mai classic." },
       about: { th: "นั่งเอนสบาย ๆ ริมถนนในเมืองเก่า นักบำบัดนวดเท้าและน่องด้วยครีมสมุนไพร เหมาะหลังเดินตลาดหรือชมวัดทั้งวัน", en: "Sit back in a reclining chair on an Old City street while your therapist works on your feet and calves with herbal balm. Perfect after a day of markets and temples." },
       options: [{ min: 30, price: 250 }, { min: 60, price: 400 }] },
     { id: "sunset-stretch", slots: ["16:30", "17:30"], cat: "yoga", city: "hkt", intensity: "gentle", setting: "nature", goals: ["relax"], icon: "moon",
-      photos: ["sunset-stretch-1", "sunrise-yoga-2", "sunrise-yoga-3"],
       title: { th: "ยืดเหยียดและฝึกหายใจยามเย็นริมหาด", en: "Sunset stretch & breathwork" },
       summary: { th: "ยืดเหยียดช้า ๆ และฝึกลมหายใจบนเนินชมวิวอ่าวกะตะ", en: "Slow stretching and breathing practice on a hill overlooking Kata bay." },
       about: { th: "คลาสหยินโยคะและการฝึกหายใจในช่วงพระอาทิตย์ตก ไม่ต้องมีพื้นฐาน เหมาะสำหรับคลายตัวหลังวันเที่ยวทะเล", en: "A yin yoga and breathwork class as the sun goes down. No experience needed; a calm way to unwind after a beach day." },
       options: [{ min: 60, price: 600 }, { min: 90, price: 800 }] },
     { id: "couples-spa", cat: "spa", city: "bkk", intensity: "gentle", setting: "spa", goals: ["relax"], icon: "drop",
-      photos: ["in-hotel-aroma-2", "herbal-compress-2", "in-hotel-aroma-3"],
       title: { th: "แพ็กเกจสปาสำหรับคู่", en: "Couples spa package" },
       summary: { th: "ห้องสปาส่วนตัวสำหรับสองคน แช่เท้า ขัดผิว และนวดน้ำมันพร้อมกัน", en: "A private room for two: foot soak, body scrub and side-by-side oil massage." },
       about: { th: "เริ่มด้วยแช่เท้าในน้ำดอกไม้ ขัดผิวด้วยสครับมะพร้าว แล้วนวดน้ำมันหอมระเหยพร้อมกันในห้องส่วนตัว ราคาเป็นต่อท่าน", en: "Start with a flower foot soak and a coconut body scrub, then enjoy side-by-side aromatherapy oil massages in a private room. Prices are per person." },
       options: [{ min: 120, price: 2600 }, { min: 180, price: 3500 }] },
     { id: "beach-thai-massage", cat: "thai", city: "hkt", intensity: "medium", setting: "nature", goals: ["recover", "relax"], icon: "hand",
-      photos: ["thai-traditional-3", "deep-stretch-3", "thai-traditional-1"],
       title: { th: "นวดไทยในศาลาริมหาด", en: "Beachside Thai massage" },
       summary: { th: "นวดไทยบนเบาะในศาลาเปิดโล่ง ฟังเสียงคลื่นและลมทะเล", en: "Thai massage on a mat in an open-air sala, with the sound of the waves." },
       about: { th: "นวดไทยแผนโบราณในศาลาไม้ริมหาดกมลา ลมทะเลเย็นสบาย ปรับแรงนวดได้ตามต้องการ แนะนำช่วงบ่ายแก่ ๆ", en: "A traditional Thai massage in a wooden sala on Kamala Beach with a cool sea breeze. Pressure is adjusted to you; late afternoon is the nicest time." },
       options: [{ min: 60, price: 500 }, { min: 90, price: 750 }] },
     { id: "doi-nature-retreat", slots: ["07:00", "08:00"], cat: "retreat", city: "cnx", intensity: "medium", setting: "nature", goals: ["energize", "relax"], icon: "sun", request: true,
-      photos: ["mindful-retreat-3", "city-chiangmai-1", "herbal-steam-2"],
       title: { th: "รีทรีตธรรมชาติดอยอินทนนท์ 1 วัน", en: "Doi Inthanon nature day retreat" },
       summary: { th: "เดินป่าเบา ๆ ริมลำธาร อาหารกลางวันพื้นเมือง และแช่น้ำพุร้อน", en: "An easy forest walk by mountain streams, a local lunch and a hot spring soak." },
       about: { th: "รถรับส่งจากตัวเมืองเชียงใหม่ เดินป่าระยะสั้นกับไกด์ท้องถิ่น ทานอาหารกลางวันกับชุมชน และปิดท้ายด้วยแช่น้ำพุร้อน สถานที่ยืนยันการจองภายใน 12 ชั่วโมง", en: "Hotel pickup in Chiang Mai, a short guided forest walk, lunch with a local community and a hot spring soak to finish. The venue confirms your request within 12 hours." },
@@ -197,33 +189,33 @@
     en: ["Travel to the venue", "Tips for your therapist (optional)", "Products bought on site"]
   };
 
-  /* Photo slots. Files live in images/ and follow one naming pattern (see images/README.md):
-       hero-1..3.jpg            home page slideshow
-       <treatment id>-1.jpg     card photo + main detail photo   e.g. muay-thai-1.jpg
-       <treatment id>-2/3.jpg   the two smaller detail photos    e.g. muay-thai-2.jpg
-       city-<city>-N.jpg        home page city cards
-     A treatment can list its own `photos` (file names without .jpg) to reuse photos from elsewhere.
+  /* Photo slots. Files live in images/ (see images/README.md):
+       images/hero/hero-1..3.jpg                   home page slideshow
+       images/treatments/<treatment id>/1.jpg      card photo + main detail photo   e.g. treatments/muay-thai/1.jpg
+       images/treatments/<treatment id>/2.jpg, 3.jpg  the two smaller detail photos
+       images/cities/city-<city>-N.jpg             home page city cards
+     img() takes a path inside images/ without ".jpg".
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
   /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
      url("detail.html?id=x") gives the right link to a page from whichever page is open. */
   var ROOT = (document.body && document.body.getAttribute("data-root")) || "";
   function url(page) { return page.indexOf("index.html") === 0 ? ROOT + page : (ROOT ? "" : "pages/") + page; }
-  function img(name) { return ROOT + "images/" + name + ".jpg"; }
+  function img(path) { return ROOT + "images/" + path + ".jpg"; }
+  function treatmentImg(id, n) { return img("treatments/" + id + "/" + n); }
   var photos = {
-    hero: img("hero-1"),
-    heroes: [{ src: img("hero-1") }, { src: img("hero-2"), city: "hkt" }, { src: img("hero-3") }],
-    spot: img("herbal-compress-3"),          // home page spotlight (the herbal compress treatment)
-    treatments: img("sunrise-yoga-2"),       // treatments page banner
-    gallery: [img("hero-2"), img("hero-3")], // fallback detail photos if a treatment has none
+    hero: img("hero/hero-1"),
+    heroes: [{ src: img("hero/hero-1") }, { src: img("hero/hero-2"), city: "hkt" }, { src: img("hero/hero-3") }],
+    spot: treatmentImg("herbal-compress", 3),          // home page spotlight (the herbal compress treatment)
+    treatments: treatmentImg("sunrise-yoga", 2),       // treatments page banner
+    gallery: [img("hero/hero-2"), img("hero/hero-3")], // fallback detail photos if a treatment has none
     byId: {},
     galleryById: {}
   };
   T.forEach(function (t) {
-    var p = t.photos || [t.id + "-1", t.id + "-2", t.id + "-3"];
-    photos.byId[t.id] = img(p[0]);
-    photos.galleryById[t.id] = [img(p[1]), img(p[2])];
+    photos.byId[t.id] = treatmentImg(t.id, 1);
+    photos.galleryById[t.id] = [treatmentImg(t.id, 2), treatmentImg(t.id, 3)];
   });
-  cityCards.forEach(function (c) { c.image = img(c.photo); });
+  cityCards.forEach(function (c) { c.image = img("cities/" + c.photo); });
 
   /* Reviews + average rating for a treatment (3 sample reviews picked from its category's pool). */
   function reviews(t) {

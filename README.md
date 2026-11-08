@@ -44,7 +44,7 @@ js/core/data.js           treatments, venues, reviews, prices, time slots, booki
 js/core/ui.js             reusable HTML pieces (icons, buttons, cards, stars, form fields)
 js/core/common.js         header, footer, language, saved state, toasts, dialogs, booking store
 js/pages/<page>.js        one script per page
-images/                   photos and icons (see images/README.md for what each file is)
+images/                   photos: hero/, cities/, treatments/<id>/ and site/ (see images/README.md)
 favicon.svg               site icon
 original/prototype.html   the original single-file prototype, kept for reference
 ```
@@ -57,11 +57,11 @@ Booking-in-progress choices are passed between pages with `sessionStorage`. The 
 
 - **Treatments, prices, durations, start times:** the `T` list at the top of `js/core/data.js`.
 - **Venues, reviews, booking rules (cancellation hours, max guests…):** `venues`, `reviewPool` and `policy` in `js/core/data.js`.
-- **Photos:** replace a file in `images/` and keep its name, e.g. `muay-thai-1.jpg` is the Muay Thai card photo.
+- **Photos:** each treatment has a folder in `images/treatments/<treatment id>/` with `1.jpg` (card and main photo), `2.jpg` and `3.jpg`. To swap a photo, replace the file and keep its name. Home page photos are in `images/hero/` and `images/cities/`; the icon and link-preview image are in `images/site/`.
 - **Page text (Thai and English):** the `TEXT` object at the top of each page script.
 
 ## Deploy
 
 The site is static, so any static host works. On Vercel: import this repository, set **Framework Preset** to **Other**, leave the build settings empty and deploy.
 
-After deploying, change `og:image` in each HTML file to the full address (for example `https://your-site.vercel.app/images/og-cover.jpg`) so link previews show the image on LINE and Facebook.
+After deploying, change `og:image` in each HTML file to the full address (for example `https://your-site.vercel.app/images/site/og-cover.jpg`) so link previews show the image on LINE and Facebook.
