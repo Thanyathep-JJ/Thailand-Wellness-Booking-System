@@ -44,7 +44,7 @@ js/core/data.js           treatments, venues, reviews, prices, time slots, booki
 js/core/ui.js             reusable HTML pieces (icons, buttons, cards, stars, form fields)
 js/core/common.js         header, footer, language, saved state, toasts, dialogs, booking store
 js/pages/<page>.js        one script per page
-images/                   photos: hero/, cities/, treatments/<id>/ and site/ (see images/README.md)
+images/                   photos: hero/, cities/, categories/, treatments/<id>/ and site/ (see images/README.md)
 favicon.svg               site icon
 original/prototype.html   the original single-file prototype, kept for reference
 ```
@@ -57,7 +57,7 @@ Booking-in-progress choices are passed between pages with `sessionStorage`. The 
 
 - **Treatments, prices, durations, start times:** the `T` list at the top of `js/core/data.js`.
 - **Venues, reviews, booking rules (cancellation hours, max guests…):** `venues`, `reviewPool` and `policy` in `js/core/data.js`.
-- **Photos:** each treatment has a folder in `images/treatments/<treatment id>/` with `1.webp` (card and main photo), `2.webp` and `3.webp` (WebP format). To swap a photo, replace the file and keep its name. Home page photos are in `images/hero/` and `images/cities/`; the icon and link-preview image are in `images/site/`.
+- **Photos:** each treatment has a folder in `images/treatments/<treatment id>/` with `1.webp` (card and main photo), `2.webp` and `3.webp` (WebP format). To swap a photo, replace the file and keep its name. Home page photos are in `images/hero/`, `images/cities/` and `images/categories/` (one round illustration per category, named after its `id`); the icon and link-preview image are in `images/site/`.
 - **Page text (Thai and English):** the `TEXT` object at the top of each page script.
 
 ## Deploy

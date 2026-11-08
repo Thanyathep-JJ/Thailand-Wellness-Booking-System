@@ -112,9 +112,12 @@
       '<button type="submit" class="wp-btn wp-btn-cta wp-search-submit">' + icon("search") + esc(o.buttonLabel || "Search") + "</button></form>";
   }
 
+  /* Category card. o: { label, href, icon, image (optional round illustration shown instead of the icon), labelAlt, cls, style } */
   function categoryCard(o) {
-    return '<a class="' + cx("wp-cat", o.cls) + '"' + attrs({ href: o.href || "#", style: o.style }) + ">" +
-      '<span class="wp-cat-art" aria-hidden="true">' + icon(o.icon || "leaf") + "</span>" +
+    var art = o.image
+      ? '<span class="wp-cat-art has-img" aria-hidden="true"><img class="wp-cat-img" src="' + esc(o.image) + '" alt="" width="88" height="88" loading="lazy"></span>'
+      : '<span class="wp-cat-art" aria-hidden="true">' + icon(o.icon || "leaf") + "</span>";
+    return '<a class="' + cx("wp-cat", o.cls) + '"' + attrs({ href: o.href || "#", style: o.style }) + ">" + art +
       '<span class="wp-cat-label">' + esc(o.label) + "</span>" +
       (o.labelAlt ? '<span class="wp-hint">' + esc(o.labelAlt) + "</span>" : "") +
       '<span class="wp-cat-arrow" aria-hidden="true">' + icon("arrow") + "</span></a>";

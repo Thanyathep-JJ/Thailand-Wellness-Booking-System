@@ -8,6 +8,7 @@ The site builds each photo's path from its folder and number, so to swap a photo
 |---|---|
 | `hero/` | Home page slideshow (`hero-N.webp`) |
 | `cities/` | Home page city cards (`city-<city>-N.webp`) |
+| `categories/` | Home page category cards: round illustrations named after the category `id` (`thai.webp`, `spa.webp`…) |
 | `treatments/<treatment id>/` | One folder per treatment: `1.webp` is the card and main detail photo, `2.webp` and `3.webp` are the two smaller detail photos |
 | `site/` | Link preview image and iPhone home-screen icon |
 
@@ -67,6 +68,13 @@ A new treatment needs a folder named after its `id` in `js/core/data.js`, with `
 | treatments/doi-nature-retreat/1.webp | Doi Inthanon nature day retreat: card + main photo | copy of `treatments/mindful-retreat/3.webp` |
 | treatments/doi-nature-retreat/2.webp | Doi Inthanon nature day retreat: detail photo | copy of `cities/city-chiangmai-1.webp` |
 | treatments/doi-nature-retreat/3.webp | Doi Inthanon nature day retreat: detail photo | copy of `treatments/herbal-steam/2.webp` |
+| categories/thai.webp | Home: Thai massage category card | Wellness Animal Spa Icon Set.png (circle 1) |
+| categories/spa.webp | Home: Spa & aromatherapy category card | Wellness Animal Spa Icon Set.png (circle 2) |
+| categories/yoga.webp | Home: Yoga & meditation category card | Wellness Animal Spa Icon Set.png (circle 3) |
+| categories/retreat.webp | Home: Wellness retreats category card | Wellness Animal Spa Icon Set.png (circle 4) |
+| categories/muaythai.webp | Home: Muay Thai fitness category card | Wellness Animal Spa Icon Set.png (circle 5) |
+| categories/steam.webp | Home: Herbal steam & hot springs category card | Wellness Animal Spa Icon Set.png (circle 6) |
+| categories/inhotel.webp | Home: In-hotel treatments category card | Wellness Animal Spa Icon Set.png (circle 7) |
 | cities/city-bangkok-1.webp | Home: Bangkok city card | bangkok_view.png |
 | cities/city-chiangmai-1.webp | Home: Chiang Mai city card | Chiangmai_view.jpg |
 | cities/city-phuket-1.webp | Home: Phuket city card | phuket_view.webp |

@@ -178,7 +178,7 @@
         '<button type="button" class="s-textbtn" data-action="wp:all">' + esc(t.allLink) + " →</button></div>" +
       '<div class="s-grid-cats">' + D.cats.map(function (c) {
         var label = D.L(c, lang).replace("สปาและอโรมาเทอราพี", "สปาและ\nอโรมาเทอราพี");
-        return '<div class="s-cardwrap">' + UI.categoryCard({ label: label, icon: c.icon, href: WP.url("treatments.html?cat=" + c.id), style: "height: 100%;" }) + "</div>";
+        return '<div class="s-cardwrap">' + UI.categoryCard({ label: label, icon: c.icon, image: c.image, href: WP.url("treatments.html?cat=" + c.id), style: "height: 100%;" }) + "</div>";
       }).join("") + "</div></div></section>";
   }
 

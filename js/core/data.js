@@ -194,6 +194,7 @@
        images/treatments/<treatment id>/1.webp       card photo + main detail photo   e.g. treatments/muay-thai/1.webp
        images/treatments/<treatment id>/2.webp, 3.webp  the two smaller detail photos
        images/cities/city-<city>-N.webp              home page city cards
+       images/categories/<category id>.webp          home page category cards (round illustrations)
      img() takes a path inside images/ without ".webp".
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
   /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
@@ -216,6 +217,7 @@
     photos.galleryById[t.id] = [treatmentImg(t.id, 2), treatmentImg(t.id, 3)];
   });
   cityCards.forEach(function (c) { c.image = img("cities/" + c.photo); });
+  cats.forEach(function (c) { c.image = img("categories/" + c.id); });
 
   /* Reviews + average rating for a treatment (3 sample reviews picked from its category's pool). */
   function reviews(t) {
