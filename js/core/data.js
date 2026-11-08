@@ -190,17 +190,17 @@
   };
 
   /* Photo slots. Files live in images/ (see images/README.md):
-       images/hero/hero-1..3.jpg                   home page slideshow
-       images/treatments/<treatment id>/1.jpg      card photo + main detail photo   e.g. treatments/muay-thai/1.jpg
-       images/treatments/<treatment id>/2.jpg, 3.jpg  the two smaller detail photos
-       images/cities/city-<city>-N.jpg             home page city cards
-     img() takes a path inside images/ without ".jpg".
+       images/hero/hero-1..3.webp                    home page slideshow
+       images/treatments/<treatment id>/1.webp       card photo + main detail photo   e.g. treatments/muay-thai/1.webp
+       images/treatments/<treatment id>/2.webp, 3.webp  the two smaller detail photos
+       images/cities/city-<city>-N.webp              home page city cards
+     img() takes a path inside images/ without ".webp".
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
   /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
      url("detail.html?id=x") gives the right link to a page from whichever page is open. */
   var ROOT = (document.body && document.body.getAttribute("data-root")) || "";
   function url(page) { return page.indexOf("index.html") === 0 ? ROOT + page : (ROOT ? "" : "pages/") + page; }
-  function img(path) { return ROOT + "images/" + path + ".jpg"; }
+  function img(path) { return ROOT + "images/" + path + ".webp"; }
   function treatmentImg(id, n) { return img("treatments/" + id + "/" + n); }
   var photos = {
     hero: img("hero/hero-1"),
