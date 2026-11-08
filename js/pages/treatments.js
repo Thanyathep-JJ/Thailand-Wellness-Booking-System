@@ -11,8 +11,8 @@
       searchAria: "ค้นหาทรีตเมนต์", fTreat: "ทรีตเมนต์", fDate: "วันที่", fGuests: "ผู้เข้าร่วม", anyTreat: "ทุกทรีตเมนต์", anyDate: "วันไหนก็ได้", everyDay: "ทุกวัน",
       qToday: "วันนี้", qTomorrow: "พรุ่งนี้", qWeekend: "สุดสัปดาห์นี้", quickAria: "ตัวเลือกด่วน", prevMonth: "เดือนก่อนหน้า", nextMonth: "เดือนถัดไป", calNote: "จองล่วงหน้าได้ 30 วัน",
       done: "เสร็จ", filters: "ตัวกรอง", keyword: "คำค้นหา", searchPh: "เช่น นวดไทย โยคะ", clearSearch: "ล้างคำค้นหา",
-      price: "ช่วงราคา", priceSub: "ราคาเริ่มต้นต่อท่าน · บาท", minPrice: "ราคาต่ำสุด", maxPrice: "ราคาสูงสุด",
-      fInt: "ความเข้มข้น", fSet: "บรรยากาศ", fSetSub: "อยากได้ทรีตเมนต์ที่ไหน", fCity: "เมือง", anyInt: "ทุกระดับ", anySet: "ทุกที่", anyCity: "ทุกเมือง",
+      price: "ราคาต่อท่าน", minPrice: "ราคาต่ำสุด", maxPrice: "ราคาสูงสุด",
+      fInt: "ความเข้มข้น", fSet: "บรรยากาศ", fCity: "เมือง", anyInt: "ทุกระดับ", anySet: "ทุกที่", anyCity: "ทุกเมือง",
       sortLabel: "เรียงตาม", sortRec: "แนะนำ", sortLow: "ราคาต่ำไปสูง", sortHigh: "ราคาสูงไปต่ำ",
       count: function (n) { return "พบ " + n + " ทรีตเมนต์"; }, sample: "ตัวอย่าง · Sample", priceNote: "ราคาเริ่มต้นโดยประมาณ ระบบคำนวณราคาจริงอีกครั้งตอนชำระเงิน",
       clear: "ล้างตัวกรอง", remove: "ลบตัวกรอง ",
@@ -23,8 +23,8 @@
       searchAria: "Search treatments", fTreat: "Treatment", fDate: "Date", fGuests: "Guests", anyTreat: "All treatments", anyDate: "Any date", everyDay: "Every day",
       qToday: "Today", qTomorrow: "Tomorrow", qWeekend: "This weekend", quickAria: "Quick picks", prevMonth: "Previous month", nextMonth: "Next month", calNote: "Bookable up to 30 days ahead",
       done: "Done", filters: "Filters", keyword: "Keyword", searchPh: "e.g. Thai massage, yoga", clearSearch: "Clear search",
-      price: "Price range", priceSub: "Starting price per person · THB", minPrice: "Minimum price", maxPrice: "Maximum price",
-      fInt: "Intensity", fSet: "Setting", fSetSub: "Where you want your treatment", fCity: "City", anyInt: "Any intensity", anySet: "Anywhere", anyCity: "Any city",
+      price: "Price per person", minPrice: "Minimum price", maxPrice: "Maximum price",
+      fInt: "Intensity", fSet: "Setting", fCity: "City", anyInt: "Any intensity", anySet: "Anywhere", anyCity: "Any city",
       sortLabel: "Sort by", sortRec: "Recommended", sortLow: "Price: low to high", sortHigh: "Price: high to low",
       count: function (n) { return n + (n === 1 ? " treatment found" : " treatments found"); }, sample: "Sample · ตัวอย่าง", priceNote: "Starting prices are estimates; checkout re-prices them.",
       clear: "Clear filters", remove: "Remove filter ",
@@ -123,7 +123,7 @@
   }
   function radios(name, current, opts) {
     return opts.map(function (o) {
-      return '<label class="s-radio"><input type="radio" name="' + name + '" value="' + esc(o.id) + '"' + (current === o.id ? " checked" : "") + ' data-input="' + name + '"><span>' + esc(o.label) + "</span></label>";
+      return '<label class="s-fchip"><input type="radio" name="' + name + '" value="' + esc(o.id) + '"' + (current === o.id ? " checked" : "") + ' data-input="' + name + '"><span>' + esc(o.label) + "</span></label>";
     }).join("");
   }
   function sidebar(lang, t, applied) {
@@ -133,26 +133,26 @@
     var setOpts = [{ id: "all", label: t.anySet }].concat(Object.keys(D.settings).map(function (k) { return { id: k, label: D.L(D.settings[k], lang) }; }));
     var cityOpts = [{ id: "all", label: t.anyCity }].concat(Object.keys(D.cities).map(function (k) { return { id: k, label: D.L(D.cities[k], lang) }; }));
     return '<aside class="s-filters" aria-labelledby="f-head">' +
-      '<h2 id="f-head" class="s-f-head"><svg class="wp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4v6M8 14v6"></path></svg>' + esc(t.filters) + "</h2>" +
+      '<div class="s-f-headrow"><h2 id="f-head" class="s-f-head"><svg class="wp-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8M14 4v6M8 14v6"></path></svg>' + esc(t.filters) + "</h2>" +
+        (applied.length ? '<button type="button" class="s-textbtn s-f-clear" data-action="clearAll">' + esc(t.clear) + "</button>" : "") + "</div>" +
       '<div class="s-f-sec"><label class="s-f-title" for="f-q">' + esc(t.keyword) + "</label>" +
-        '<div class="s-search-in" style="margin-top: 10px;">' + icon("search") +
+        '<div class="s-search-in" style="margin-top: 6px;">' + icon("search") +
           '<input id="f-q" class="s-input" type="search" value="' + esc(state.q) + '" placeholder="' + esc(t.searchPh) + '" style="width: 100%;" data-input="q">' +
           (state.q ? '<button type="button" class="s-clear" aria-label="' + esc(t.clearSearch) + '" data-action="clearQ">' + icon("close") + "</button>" : "") +
         "</div></div>" +
-      '<div class="s-f-sec"><p class="s-f-title">' + esc(t.price) + '</p><p class="s-f-sub">' + esc(t.priceSub) + "</p>" +
-        '<div class="s-price-vals"><span id="p-min-label">' + esc(pl.min) + '</span><span id="p-max-label">' + esc(pl.max) + "</span></div>" +
+      '<div class="s-f-sec"><div class="s-f-titlerow"><p class="s-f-title">' + esc(t.price) + "</p>" +
+        '<p class="s-price-vals"><span id="p-min-label">' + esc(pl.min) + '</span><span aria-hidden="true">–</span><span id="p-max-label">' + esc(pl.max) + "</span></p></div>" +
         '<div class="s-range"><span class="s-range-track" aria-hidden="true"></span>' +
           '<span id="p-fill" class="s-range-fill" style="left: ' + pl.fillL + "%; right: " + pl.fillR + '%;" aria-hidden="true"></span>' +
           '<input id="p-min" type="range" min="' + P_MIN + '" max="' + P_MAX + '" step="100" value="' + state.minP + '" aria-label="' + esc(t.minPrice) + '" data-input="minP">' +
           '<input id="p-max" type="range" min="' + P_MIN + '" max="' + P_MAX + '" step="100" value="' + state.maxP + '" aria-label="' + esc(t.maxPrice) + '" data-input="maxP">' +
         "</div></div>" +
-      '<fieldset class="s-f-sec"><legend class="s-f-title">' + esc(t.fInt) + "</legend>" + radios("inten", state.inten, intOpts) + "</fieldset>" +
-      '<div class="s-f-sec" role="group" aria-labelledby="f-set"><p id="f-set" class="s-f-title">' + esc(t.fSet) + '</p><p class="s-f-sub">' + esc(t.fSetSub) + "</p>" +
-        '<div style="display: grid; gap: 4px; margin-top: 8px;">' + setOpts.map(function (o) {
-          return '<button type="button" class="s-optrow" aria-pressed="' + (state.setting === o.id) + '" data-action="pickSetting" data-arg="' + o.id + '">' + icon(setIcons[o.id]) + "<span>" + esc(o.label) + "</span></button>";
+      '<fieldset class="s-f-sec"><legend class="s-f-title">' + esc(t.fInt) + '</legend><div class="s-fchips">' + radios("inten", state.inten, intOpts) + "</div></fieldset>" +
+      '<div class="s-f-sec" role="group" aria-labelledby="f-set"><p id="f-set" class="s-f-title">' + esc(t.fSet) + "</p>" +
+        '<div class="s-fchips s-fchips-grid">' + setOpts.map(function (o) {
+          return '<button type="button" class="s-fchip" aria-pressed="' + (state.setting === o.id) + '" data-action="pickSetting" data-arg="' + o.id + '">' + icon(setIcons[o.id]) + "<span>" + esc(o.label) + "</span></button>";
         }).join("") + "</div></div>" +
-      '<fieldset class="s-f-sec"><legend class="s-f-title">' + esc(t.fCity) + "</legend>" + radios("city", state.city, cityOpts) + "</fieldset>" +
-      (applied.length ? '<div style="padding-top: 16px;">' + UI.button({ label: t.clear, variant: "ghost", size: "sm", action: "clearAll" }) + "</div>" : "") +
+      '<fieldset class="s-f-sec"><legend class="s-f-title">' + esc(t.fCity) + '</legend><div class="s-fchips">' + radios("city", state.city, cityOpts) + "</div></fieldset>" +
       "</aside>";
   }
 
@@ -179,6 +179,16 @@
   }
 
   /* Remember the chosen date / guests so the detail page starts with them. */
+  /* On short screens the sidebar scrolls inside itself; keep its position when the page redraws. */
+  var filterScroll = 0;
+  document.addEventListener("scroll", function (e) {
+    if (e.target.classList && e.target.classList.contains("s-filters")) filterScroll = e.target.scrollTop;
+  }, true);
+  function restoreFilterScroll() {
+    var f = document.querySelector(".s-filters");
+    if (f) f.scrollTop = filterScroll;
+  }
+
   function saveSearchContext() {
     WP.set({ filterCat: state.cat, startDate: state.dateIdx >= 0 ? state.dateIdx : 0, startGuests: D.partyTotal(state.party), startParty: state.party });
   }
@@ -204,7 +214,7 @@
           '<div class="s-lst-layout">' + sidebar(lang, t, applied) + resultsColumn(lang, t, list, applied) + "</div>" +
         '</div><div style="height: 72px;"></div></main>';
     },
-    after: saveSearchContext,
+    after: function () { saveSearchContext(); restoreFilterScroll(); },
     actions: {
       toggleMenu: function (id) { state.open = state.open === id ? null : id; },
       closeMenus: function () { state.open = null; },
