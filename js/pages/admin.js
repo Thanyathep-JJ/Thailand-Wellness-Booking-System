@@ -69,8 +69,10 @@
     for (var i = 0; i < 30; i++) {
       var tr = D.treatments[Math.floor(rnd() * D.treatments.length)], opt = pick(tr.options), guests = 1 + Math.floor(rnd() * 3);
       var day = Math.floor(rnd() * 31) - 12, mine = i < 4, n = mine ? ["Somchai", "Jaidee"] : pick(names);
+      if (mine) day = [3, 9, -5, -11][i];   // the demo customer always has 2 upcoming and 2 past bookings
       var status;
-      if (day < 0) status = rnd() < 0.8 ? "completed" : "cancelled";
+      if (mine) status = day < 0 ? "completed" : "confirmed";
+      else if (day < 0) status = rnd() < 0.8 ? "completed" : "cancelled";
       else if (tr.request && rnd() < 0.6) status = "pending";
       else status = rnd() < 0.86 ? "confirmed" : "cancelled";
       var date = D.isoFromIdx(day), slot = pick(D.slotList(day > 0 ? day : 1, tr).map(function (s) { return s.time; }));

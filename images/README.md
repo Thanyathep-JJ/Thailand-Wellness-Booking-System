@@ -10,7 +10,7 @@ The site builds each photo's path from its folder and number, so to swap a photo
 | `cities/` | Home page city cards (`city-<city>-N.webp`) |
 | `categories/` | Home page category cards: round illustrations named after the category `id` (`thai.webp`, `spa.webp`…) |
 | `treatments/<treatment id>/` | One folder per treatment: `1.webp` is the card and main detail photo, `2.webp` and `3.webp` are the two smaller detail photos |
-| `site/` | Link preview image, iPhone home-screen icon and the profile picture (`avatar.webp`) |
+| `site/` | Link preview image, iPhone home-screen icon, profile picture (`avatar.webp`) and the login / sign-up photos |
 
 Every treatment has its own three photos. Some treatments that were added later started with copies of another treatment's photos (marked "copy of" below). Replacing a copy changes only that treatment.
 A new treatment needs a folder named after its `id` in `js/core/data.js`, with `1.webp`, `2.webp` and `3.webp`.
@@ -80,4 +80,6 @@ A new treatment needs a folder named after its `id` in `js/core/data.js`, with `
 | cities/city-phuket-1.webp | Home: Phuket city card | phuket_view.webp |
 | site/og-cover.jpg | Link preview image (LINE, Facebook) | made from hero/hero-1 |
 | site/apple-touch-icon.png | iPhone home-screen icon | made for the site |
+| site/login.webp | Log in tab: side photo (HD, cropped tall) | herbal_compress_ball3.png |
+| site/signup.webp | Sign up tab: side photo (HD, cropped tall) | aroma_mas3.png |
 | site/avatar.webp | Profile picture for every account (header, account page, admin) | profile_avatar.png |

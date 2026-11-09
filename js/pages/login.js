@@ -161,7 +161,7 @@
         "</div>";
       return '<main id="main-content" class="s-auth-page"><div class="s-shell"><div class="s-auth">' +
         '<aside class="s-auth-side s-dark" aria-hidden="true">' +
-          '<img src="' + esc(window.WPData.photos.heroes[2].src) + '" alt="">' +
+          '<img class="s-auth-photo' + (signup ? " is-signup" : "") + '" src="' + esc(signup ? window.WPData.photos.signup : window.WPData.photos.login) + '" alt="" width="1050" height="1400">' +
           '<div class="s-auth-side-in"><p class="s-eyebrow">' + esc(t.eyebrow) + "</p>" +
             '<p class="s-auth-side-title">' + esc(t.sideTitle) + "</p>" +
             '<ul class="s-auth-benefits"><li>' + icon("sparkle") + esc(t.b1) + "</li><li>" + icon("calendar") + esc(t.b2) + "</li><li>" + icon("heart") + esc(t.b3) + "</li></ul></div>" +

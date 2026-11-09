@@ -132,7 +132,7 @@
       '<div class="s-rev-top"><span class="s-rev-avg">' + r.avg.toFixed(1) + "</span>" + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") +
         '<span class="s-small">' + esc(t.reviewsOf(r.count)) + "</span></div>" +
       '<div class="s-rev-list">' + list.map(function (x) {
-        return '<article class="s-rev"><span class="s-avatar" aria-hidden="true">' + esc(x.name.charAt(0)) + "</span><div>" +
+        return '<article class="s-rev"><span class="s-rev-avatar" aria-hidden="true">' + esc(x.name.charAt(0)) + "</span><div>" +
           '<div class="s-rev-head"><span><span class="s-rev-name">' + esc(x.name) + '</span> <span class="s-rev-meta">· ' + esc(D.L(x.from, lang)) + "</span></span>" +
             UI.stars(x.stars, x.stars + " / 5") + "</div>" +
           '<span class="s-rev-meta">' + esc(t.daysAgo(x.daysAgo)) + "</span>" +

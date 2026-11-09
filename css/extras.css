@@ -107,7 +107,7 @@ a.s-foot-link { display: flex; align-items: center; text-decoration: none; }
 .s-rev-top .wp-stars .wp-icon { width: 20px; height: 20px; }
 .s-rev-list { display: grid; gap: 12px; }
 .s-rev { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 14px; padding: 18px 20px; border-radius: var(--radius-lg); border: 1px solid var(--line); background: var(--surface); }
-.s-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--tint-strong); color: var(--jade-dark); font-weight: 600; }
+.s-rev-avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--tint-strong); color: var(--jade-dark); font-weight: 600; }
 .s-rev-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 12px; }
 .s-rev-name { font-weight: 500; color: var(--forest); }
 .s-rev-meta { font-size: 13px; color: var(--muted); }
@@ -433,16 +433,16 @@ a.s-foot-link { display: flex; align-items: center; text-decoration: none; }
 .s-acct { position: relative; }
 
 /* Avatar: the seal profile picture in a circle. Admins get a turmeric ring and a shield badge. */
-.s-avatar { position: relative; width: 42px; height: 42px; flex: none; display: inline-block; padding: 0; border-radius: 50%; border: 2px solid var(--surface); background: #3b82f6; box-shadow: 0 0 0 1.5px var(--line-hover); font: inherit; cursor: pointer; transition: box-shadow .18s ease; }
+.s-avatar { position: relative; width: 42px; height: 42px; flex: none; display: inline-block; box-sizing: border-box; padding: 3px; border-radius: 50%; border: 1px solid var(--line-strong); background: var(--surface); font: inherit; vertical-align: middle; cursor: pointer; transition: border-color .18s ease, box-shadow .18s ease; }
 .s-avatar > img { width: 100%; height: 100%; display: block; border-radius: 50%; object-fit: cover; }
-button.s-avatar:hover, .s-avatar[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--sage); }
-.s-avatar.is-admin { box-shadow: 0 0 0 2px var(--turmeric); }
-button.s-avatar.is-admin:hover, .s-avatar.is-admin[aria-expanded="true"] { box-shadow: 0 0 0 4px var(--turmeric); }
+button.s-avatar:hover, .s-avatar[aria-expanded="true"] { border-color: var(--jade); box-shadow: 0 0 0 3px var(--tint-strong); }
+.s-avatar.is-admin { border: 2px solid var(--turmeric); padding: 2px; }
+button.s-avatar.is-admin:hover, .s-avatar.is-admin[aria-expanded="true"] { box-shadow: 0 0 0 3px var(--notice-line); }
 .s-avatar-badge { position: absolute; right: -4px; bottom: -4px; width: 18px; height: 18px; display: grid; place-items: center; border-radius: 50%; border: 2px solid var(--surface); background: var(--turmeric); color: var(--on-turmeric); }
 .s-avatar-badge .wp-icon { width: 11px; height: 11px; stroke-width: 2.6; }
 .s-avatar-lg { width: 52px; height: 52px; cursor: default; }
-.s-avatar-xl { width: 96px; height: 96px; border-width: 4px; box-shadow: 0 0 0 1.5px var(--line-hover), var(--shadow-card); cursor: default; }
-.s-avatar-xl.is-admin { box-shadow: 0 0 0 3px var(--turmeric), var(--shadow-card); }
+.s-avatar-xl { width: 100px; height: 100px; padding: 5px; box-shadow: var(--shadow-card); cursor: default; }
+.s-avatar-xl.is-admin { border-width: 3px; padding: 4px; }
 .s-avatar-xl .s-avatar-badge { width: 30px; height: 30px; right: -2px; bottom: -2px; border-width: 3px; }
 .s-avatar-xl .s-avatar-badge .wp-icon { width: 16px; height: 16px; }
 
@@ -466,7 +466,8 @@ button.s-avatar.is-admin:hover, .s-avatar.is-admin[aria-expanded="true"] { box-s
 .s-auth-page { padding: 48px 0 80px; background: radial-gradient(1200px 500px at 85% -10%, var(--tint-strong), transparent 60%), var(--page); }
 .s-auth { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); max-width: 1040px; margin-inline: auto; border-radius: var(--radius-2xl); border: 1px solid var(--line); background: var(--surface); box-shadow: var(--shadow-card); overflow: hidden; }
 .s-auth-side { position: relative; min-height: 100%; background: var(--forest); color: var(--on-forest); overflow: hidden; }
-.s-auth-side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.s-auth-side img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; animation: wp-fade-in .4s ease-out both; }
+@media (max-width: 900px) { .s-auth-side img { object-position: 50% 38%; } .s-auth-side img.is-signup { object-position: 50% 30%; } }
 .s-auth-side::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(18, 53, 43, .2) 0%, rgba(18, 53, 43, .55) 45%, rgba(18, 53, 43, .94) 100%); }
 .s-auth-side-in { position: relative; z-index: 1; display: grid; gap: 14px; align-content: end; height: 100%; box-sizing: border-box; padding: 40px; }
 .s-auth-side-title { margin: 0; font-size: 30px; font-weight: 500; line-height: 1.3; color: var(--on-forest); }

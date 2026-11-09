@@ -223,6 +223,8 @@
   var photos = {
     hero: img("hero/hero-1"),
     avatar: img("site/avatar"),                         // profile picture for every account
+    login: img("site/login"),                           // login page side photo
+    signup: img("site/signup"),                         // sign-up page side photo
     heroes: [{ src: img("hero/hero-1") }, { src: img("hero/hero-2"), city: "hkt" }, { src: img("hero/hero-3") }],
     spot: treatmentImg("herbal-compress", 3),          // home page spotlight (the herbal compress treatment)
     treatments: treatmentImg("sunrise-yoga", 2),       // treatments page banner
