@@ -182,7 +182,7 @@
     return '<section class="s-section" style="padding-top: 0;" aria-labelledby="city-title"><div class="s-shell">' +
       '<div class="s-head-row"><div><p class="s-eyebrow">' + esc(t.cityEyebrow) + '</p><h2 id="city-title" class="s-h2">' + esc(t.cityTitle) + "</h2></div></div>" +
       '<div class="s-city-grid">' + D.cityCards.map(function (c) {
-        var n = D.treatments.filter(function (tr) { return tr.city === c.id; }).length;
+        var n = D.visible().filter(function (tr) { return tr.city === c.id; }).length;
         return '<a class="s-city-card" href="' + WP.url("treatments.html?city=" + c.id) + '"><img src="' + esc(c.image) + '" alt="" loading="lazy">' +
           '<span class="s-city-body"><span class="s-city-name">' + esc(D.L(D.cities[c.id], lang)) + icon("arrow") + "</span>" +
           '<span class="s-city-blurb">' + esc(D.L(c.blurb, lang)) + '</span><span class="s-city-count">' + esc(t.cityCount(n)) + "</span></span></a>";

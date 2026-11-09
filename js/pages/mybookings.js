@@ -8,7 +8,7 @@
   var TEXT = {
     th: {
       eyebrow: "MY BOOKINGS · การจองของฉัน", title: "การจองของฉัน", lead: "ดูสถานะ เปลี่ยนแปลง หรือยกเลิกการจองของคุณ",
-      findTitle: "ค้นหาการจอง", findLead: "ใส่เลขอ้างอิงและอีเมลที่ใช้จอง ไม่ต้องสมัครสมาชิก", ref: "เลขอ้างอิง", email: "อีเมล", find: "ค้นหา",
+      findTitle: "ค้นหาการจอง", findLead: "ใส่เลขอ้างอิงและอีเมลที่ใช้จอง ไม่ต้องสมัครสมาชิก หรือเข้าสู่ระบบเพื่อดูการจองทั้งหมดในบัญชี", ref: "เลขอ้างอิง", email: "อีเมล", find: "ค้นหา",
       notFound: "ไม่พบการจองที่ตรงกับเลขอ้างอิงและอีเมลนี้", found: "พบการจองแล้ว", needRef: "กรอกเลขอ้างอิง เช่น WP-AB12CD",
       listTitle: "การจองในเบราว์เซอร์นี้", demoNote: "ในเดโมนี้ การจองถูกบันทึกไว้ในเบราว์เซอร์ของคุณเท่านั้น",
       emptyTitle: "ยังไม่มีการจอง", emptyBody: "การจองที่คุณทำจะแสดงที่นี่", browse: "ดูทรีตเมนต์",
@@ -23,7 +23,7 @@
     },
     en: {
       eyebrow: "MY BOOKINGS", title: "My bookings", lead: "Check the status of your bookings, or change and cancel them.",
-      findTitle: "Find a booking", findLead: "Enter the reference and the email you booked with. No account needed.", ref: "Booking reference", email: "Email", find: "Find booking",
+      findTitle: "Find a booking", findLead: "Enter the reference and the email you booked with. No account needed, or log in to see every booking in your account.", ref: "Booking reference", email: "Email", find: "Find booking",
       notFound: "We couldn't find a booking with that reference and email.", found: "Booking found", needRef: "Enter a reference, e.g. WP-AB12CD",
       listTitle: "Bookings in this browser", demoNote: "In this demo, bookings are saved in your browser only.",
       emptyTitle: "No bookings yet", emptyBody: "Bookings you make will appear here.", browse: "Browse treatments",

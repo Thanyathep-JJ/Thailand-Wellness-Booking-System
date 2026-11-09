@@ -47,7 +47,7 @@
   /* ---------- Filtering ---------- */
   function results() {
     var needle = state.q.trim().toLowerCase();
-    var list = D.treatments.filter(function (tr) {
+    var list = D.visible().filter(function (tr) {
       var p = tr.options[0].price;
       if (state.cat !== "all" && tr.cat !== state.cat) return false;
       if (state.city !== "all" && tr.city !== state.city) return false;

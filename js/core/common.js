@@ -42,6 +42,96 @@
     }
   };
 
+  /* ---------- Demo accounts (saved in this browser) ----------
+     There is no server, so accounts live in localStorage. Passwords are stored as a simple hash so they are not
+     readable at a glance, but this is NOT real security; a live system would check passwords on a server.
+     Roles: "customer" and "admin". "Remember me" keeps the login in localStorage; otherwise it ends when the tab closes. */
+  function pwHash(s) { var h = 5381; s = "wp:" + s; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return "h" + (h >>> 0).toString(36); }
+  var DEMO_USERS = [
+    { id: "u-guest", email: "guest@demo.com", pw: pwHash("demo1234"), first: "Somchai", last: "Jaidee", phone: "+66 81 234 5678", role: "customer", lang: "", createdAt: "2026-03-14T09:00:00.000Z", demo: true },
+    { id: "u-admin", email: "admin@demo.com", pw: pwHash("admin1234"), first: "Malee", last: "Admin", phone: "+66 2 000 0000", role: "admin", lang: "", createdAt: "2026-01-05T09:00:00.000Z", demo: true }
+  ];
+  function lsDel(k) { try { localStorage.removeItem(KEY + "." + k); } catch (e) {} }
+  var auth = {
+    demo: [{ email: "guest@demo.com", pw: "demo1234", role: "customer" }, { email: "admin@demo.com", pw: "admin1234", role: "admin" }],
+    users: function () {
+      var l = lsGet("users", null);
+      if (!Array.isArray(l)) l = [];
+      var changed = false;
+      DEMO_USERS.forEach(function (d) { if (!l.some(function (u) { return u.id === d.id; })) { l.push(Object.assign({}, d)); changed = true; } });
+      if (changed) lsSet("users", l);
+      return l;
+    },
+    saveUsers: function (l) { lsSet("users", l); },
+    byEmail: function (email) { email = String(email || "").trim().toLowerCase(); return auth.users().filter(function (u) { return u.email === email; })[0] || null; },
+    current: function () {
+      var id = lsGet("session", null) || get("sessionUser", null);
+      if (!id) return null;
+      return auth.users().filter(function (u) { return u.id === id; })[0] || null;
+    },
+    isAdmin: function () { var u = auth.current(); return !!u && u.role === "admin"; },
+    startSession: function (u, remember) {
+      if (remember) lsSet("session", u.id); else { lsDel("session"); set({ sessionUser: u.id }); }
+      auth.claimBookings(u);
+    },
+    /* Returns { ok, user } or { ok: false, error: "nouser" | "badpw" } */
+    login: function (email, pw, remember) {
+      var u = auth.byEmail(email);
+      if (!u) return { ok: false, error: "nouser" };
+      if (u.pw !== pwHash(pw)) return { ok: false, error: "badpw" };
+      auth.startSession(u, remember);
+      return { ok: true, user: u };
+    },
+    /* o = { first, last, email, phone, pw }. Returns { ok, user } or { ok: false, error: "exists" } */
+    signup: function (o, remember) {
+      if (auth.byEmail(o.email)) return { ok: false, error: "exists" };
+      var u = { id: "u-" + Date.now().toString(36), email: String(o.email).trim().toLowerCase(), pw: pwHash(o.pw), first: o.first.trim(), last: o.last.trim(),
+        phone: (o.phone || "").trim(), role: "customer", lang: "", createdAt: new Date().toISOString() };
+      var l = auth.users(); l.push(u); auth.saveUsers(l);
+      auth.startSession(u, remember);
+      return { ok: true, user: u };
+    },
+    logout: function () { lsDel("session"); set({ sessionUser: null }); },
+    update: function (id, patch) {
+      var l = auth.users();
+      l.forEach(function (u) { if (u.id === id) Object.assign(u, patch); });
+      auth.saveUsers(l);
+    },
+    checkPw: function (u, pw) { return !!u && u.pw === pwHash(pw); },
+    setPw: function (id, pw) { auth.update(id, { pw: pwHash(pw) }); },
+    remove: function (id) {
+      auth.saveUsers(auth.users().filter(function (u) { return u.id !== id; }));
+      if ((lsGet("session", null) || get("sessionUser", null)) === id) auth.logout();
+    },
+    /* Bookings made as a guest with the same email are added to the account when the person logs in or signs up. */
+    claimBookings: function (u) {
+      var l = bookings.all(), n = 0;
+      l.forEach(function (b) { if (!b.account && b.email && b.email.toLowerCase() === u.email) { b.account = u.id; n++; } });
+      if (n) bookings.save(l);
+      return n;
+    },
+    bookingsOf: function (u) {
+      return bookings.all().filter(function (b) { return b.account === u.id || (!b.account && b.email && b.email.toLowerCase() === u.email); });
+    },
+    /* Inside of an avatar circle: the profile picture, plus a small shield for admins. */
+    avatarImg: function (u) {
+      return '<img src="' + esc(window.WPData.photos.avatar) + '" alt="" width="256" height="256">' +
+        (u && u.role === "admin" ? '<span class="s-avatar-badge">' + icon("shield") + "</span>" : "");
+    },
+    initials: function (u) { return ((u.first || "").charAt(0) + (u.last || "").charAt(0)).toUpperCase() || "?"; }
+  };
+  /* "next" link back to the page that is open now, relative to the pages/ folder (where login.html lives). */
+  function hereForLogin() {
+    var file = location.pathname.split("/").pop() || "index.html";
+    if (window.WPData.url("x.html") === "pages/x.html") return "../index.html" + location.hash;   // we are on index.html
+    return file + location.search;
+  }
+  function loginUrl(extra) {
+    var q = "next=" + encodeURIComponent(hereForLogin());
+    for (var k in (extra || {})) q += "&" + k + "=" + encodeURIComponent(extra[k]);
+    return window.WPData.url("login.html") + "?" + q;
+  }
+
   /* ---------- Navigation ---------- */
   var FILES = { home: "index.html", treatments: "treatments.html", detail: "detail.html", booking: "booking.html", checkout: "checkout.html", success: "success.html" };
   /* go("detail", { treatmentId: "muay-thai" }) saves the patch, then opens the page. */
@@ -68,10 +158,48 @@
   /* ---------- Header ---------- */
   var HEADER_T = {
     th: { homeAria: "Wellness Pass หน้าแรก", navAria: "เมนูหลัก", home: "หน้าแรก", treatments: "ทรีตเมนต์", picked: "แนะนำสำหรับคุณ", mine: "การจองของฉัน",
-      wishlist: "รายการที่ชอบ", search: "ค้นหาทรีตเมนต์", langAria: "ภาษา", menu: "เมนู", skip: "ข้ามไปยังเนื้อหา" },
+      wishlist: "รายการที่ชอบ", search: "ค้นหาทรีตเมนต์", langAria: "ภาษา", menu: "เมนู", skip: "ข้ามไปยังเนื้อหา",
+      login: "เข้าสู่ระบบ", acctMenu: "เมนูบัญชี", account: "บัญชีของฉัน", admin: "แดชบอร์ดผู้ดูแล", venue: "แดชบอร์ดสถานที่", logout: "ออกจากระบบ",
+      roleAdmin: "ผู้ดูแลระบบ", roleCustomer: "สมาชิก", loggedOut: "ออกจากระบบแล้ว" },
     en: { homeAria: "Wellness Pass home", navAria: "Main", home: "Home", treatments: "Treatments", picked: "Picked for you", mine: "My bookings",
-      wishlist: "Wishlist", search: "Search treatments", langAria: "Language", menu: "Menu", skip: "Skip to content" }
+      wishlist: "Wishlist", search: "Search treatments", langAria: "Language", menu: "Menu", skip: "Skip to content",
+      login: "Log in", acctMenu: "Account menu", account: "My account", admin: "Admin dashboard", venue: "Venue dashboard", logout: "Log out",
+      roleAdmin: "Admin", roleCustomer: "Member", loggedOut: "You're logged out" }
   };
+  /* Account button at the right of the header: "Log in" when logged out, an avatar with a dropdown when logged in. */
+  function accountTool(t, active, open) {
+    var u = auth.current();
+    if (!u) {
+      return '<a class="s-acct-login" href="' + esc(active === "login" ? window.WPData.url("login.html") : loginUrl()) + '"' + (active === "login" ? ' aria-current="page"' : "") + ">" +
+        icon("user") + '<span class="s-acct-login-txt">' + esc(t.login) + "</span></a>";
+    }
+    var admin = u.role === "admin", item = function (href, ico, label, cur) {
+      return '<a class="s-acct-item" role="menuitem" href="' + window.WPData.url(href) + '"' + (cur ? ' aria-current="page"' : "") + ">" + icon(ico) + "<span>" + esc(label) + "</span></a>";
+    };
+    return '<div class="s-acct">' +
+      '<button type="button" class="s-avatar' + (admin ? " is-admin" : "") + '" aria-haspopup="menu" aria-expanded="' + (open ? "true" : "false") + '" aria-label="' + esc(t.acctMenu + ": " + u.first + " " + u.last) + '" data-action="wp:acct">' +
+        auth.avatarImg(u) + "</button>" +
+      (open ? '<div class="s-acct-menu" role="menu" aria-label="' + esc(t.acctMenu) + '">' +
+        '<div class="s-acct-head"><span class="s-avatar s-avatar-lg' + (admin ? " is-admin" : "") + '" aria-hidden="true">' + auth.avatarImg(u) + "</span>" +
+          '<span style="min-width: 0;"><strong>' + esc(u.first + " " + u.last) + '</strong><span class="s-acct-email">' + esc(u.email) + "</span>" +
+          UI.badge(admin ? t.roleAdmin : t.roleCustomer, admin ? "notice" : "success", admin ? "shield" : "user") + "</span></div>" +
+        (admin ? item("admin.html", "shield", t.admin, active === "admin") + item("venue.html", "calendar", t.venue, false) + '<span class="s-acct-sep" role="separator"></span>' : "") +
+        item("account.html", "user", t.account, active === "account") +
+        item("mybookings.html", "calendar", t.mine, active === "mybookings") +
+        item("wishlist.html", "heart", t.wishlist, active === "wishlist") +
+        '<span class="s-acct-sep" role="separator"></span>' +
+        '<button type="button" class="s-acct-item" role="menuitem" data-action="wp:logout">' + icon("logout") + "<span>" + esc(t.logout) + "</span></button>" +
+      "</div>" : "") +
+      "</div>";
+  }
+  function mobileAccountLinks(t, active) {
+    var u = auth.current();
+    if (!u) return navLink("login.html", t.login, active === "login");
+    return '<span class="s-mobile-sep" aria-hidden="true"></span>' +
+      (u.role === "admin" ? navLink("admin.html", t.admin, active === "admin") : "") +
+      navLink("account.html", t.account, active === "account") +
+      '<button type="button" class="s-nav-link" data-action="wp:logout">' + esc(t.logout) + "</button>";
+  }
   function navLink(href, label, current) {
     return '<a class="s-nav-link" href="' + window.WPData.url(href) + '"' + (current ? ' aria-current="page"' : "") + ">" + esc(label) + "</a>";
   }
@@ -81,7 +209,7 @@
       (mobile ? navLink("wishlist.html", t.wishlist, active === "wishlist") : "") +
       navLink("mybookings.html", t.mine, active === "mybookings");
   }
-  function header(lang, active, menuOpen) {
+  function header(lang, active, menuOpen, acctOpen) {
     var t = HEADER_T[lang], th = lang === "th", n = savedList().length;
     return '<header class="s-header" style="width: 100%;"><div class="s-shell"><div class="s-header-in">' +
       '<a class="s-brand" href="' + window.WPData.url("index.html") + '" aria-label="' + esc(t.homeAria) + '">' + icon("lotus", { cls: "s-brand-mark" }) + "Wellness Pass</a>" +
@@ -94,9 +222,10 @@
           '<button type="button" lang="th" aria-pressed="' + (th ? "true" : "false") + '" data-action="wp:lang" data-arg="th">ไทย</button>' +
           '<button type="button" lang="en" aria-pressed="' + (th ? "false" : "true") + '" data-action="wp:lang" data-arg="en">EN</button>' +
         "</div>" +
+        accountTool(t, active, acctOpen) +
         '<button type="button" class="wp-icon-btn s-menu-btn" aria-label="' + esc(t.menu) + '" aria-expanded="' + (menuOpen ? "true" : "false") + '" data-action="wp:menu">' + icon(menuOpen ? "close" : "menu") + "</button>" +
       "</div></div>" +
-      (menuOpen ? '<nav class="s-mobile-nav" aria-label="' + esc(t.navAria) + '">' + navLinks(t, active, true) + "</nav>" : "") +
+      (menuOpen ? '<nav class="s-mobile-nav" aria-label="' + esc(t.navAria) + '">' + navLinks(t, active, true) + mobileAccountLinks(t, active) + "</nav>" : "") +
       "</div></header>";
   }
 
@@ -104,11 +233,11 @@
   var FOOTER_T = {
     th: { tagline: "จองนวดไทย สปา โยคะ และรีทรีตทั่วประเทศไทย จากสิ่งที่คุณบอกเรา", demo: "ต้นแบบเดโม · สถานที่ ราคา รีวิว และการชำระเงินทั้งหมดเป็นตัวอย่าง",
       explore: "EXPLORE · สำรวจ", all: "ทรีตเมนต์ทั้งหมด", picked: "แนะนำสำหรับคุณ", wishlist: "รายการที่ชอบ", mine: "การจองของฉัน",
-      help: "HELP · ช่วยเหลือ", faq: "คำถามที่พบบ่อย", policy: "นโยบายการยกเลิก", contact: "ติดต่อเรา", venue: "แดชบอร์ดสถานที่ (เดโม)",
+      help: "HELP · ช่วยเหลือ", faq: "คำถามที่พบบ่อย", policy: "นโยบายการยกเลิก", contact: "ติดต่อเรา", venue: "แดชบอร์ดสถานที่ (เดโม)", account: "บัญชีของฉัน", login: "เข้าสู่ระบบ / สมัครสมาชิก",
       copy: "© 2026 Wellness Pass · ต้นแบบเพื่อการศึกษา", terms: "ข้อกำหนดการใช้งาน", privacy: "นโยบายความเป็นส่วนตัว" },
     en: { tagline: "Book Thai massage, spa, yoga and retreats across Thailand, matched to what you tell us.", demo: "Demo prototype · venues, prices, reviews and payments are all samples.",
       explore: "EXPLORE", all: "All treatments", picked: "Picked for you", wishlist: "Wishlist", mine: "My bookings",
-      help: "HELP", faq: "FAQ", policy: "Cancellation policy", contact: "Contact us", venue: "Venue dashboard (demo)",
+      help: "HELP", faq: "FAQ", policy: "Cancellation policy", contact: "Contact us", venue: "Venue dashboard (demo)", account: "My account", login: "Log in / Sign up",
       copy: "© 2026 Wellness Pass · A student prototype", terms: "Terms of use", privacy: "Privacy policy" }
   };
   var FOOTER_ART = '<svg class="s-foot-art" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">' +
@@ -132,7 +261,7 @@
           '<p class="s-foot-muted" style="margin: 0; line-height: 1.75;">' + esc(t.tagline) + "</p>" +
           '<p class="s-foot-muted" style="margin: 0; font-size: 13px;">' + esc(t.demo) + "</p></div>" +
         '<nav aria-label="' + esc(t.explore) + '"><p class="s-eyebrow">' + esc(t.explore) + "</p>" +
-          footLink("treatments.html", t.all) + footLink("index.html#quiz", t.picked) + footLink("wishlist.html", t.wishlist) + footLink("mybookings.html", t.mine) + "</nav>" +
+          footLink("treatments.html", t.all) + footLink("index.html#quiz", t.picked) + footLink("wishlist.html", t.wishlist) + footLink("mybookings.html", t.mine) + (auth.current() ? footLink("account.html", t.account) : footLink("login.html", t.login)) + "</nav>" +
         '<nav aria-label="' + esc(t.help) + '"><p class="s-eyebrow">' + esc(t.help) + "</p>" +
           footLink("faq.html", t.faq) + footLink("policy.html", t.policy) + footLink("contact.html", t.contact) + footLink("venue.html", t.venue) + "</nav>" +
       '</div><div class="s-foot-bottom"><span>' + esc(t.copy) + '</span><span class="s-foot-legal">' +
@@ -233,8 +362,19 @@
      }) */
   function page(cfg) {
     var root = document.getElementById("app");
-    var ui = { lang: getLang(), menu: false };
+    var ui = { lang: getLang(), menu: false, acct: false };
     var api = {};
+
+    /* Pages that need a login: cfg.require = "user" | "admin". Without the right account, go to the login page,
+       which brings the person back here afterwards. */
+    if (cfg.require) {
+      var me = auth.current();
+      if (!me || (cfg.require === "admin" && me.role !== "admin")) {
+        location.replace(loginUrl(cfg.require === "admin" ? { need: "admin" } : { need: "user" }));
+        return { render: function () {}, lang: function () { return ui.lang; } };
+      }
+      if (me.lang && !lsGet("lang", null)) ui.lang = me.lang;
+    }
 
     function focusKey(el) {
       if (!el || !root.contains(el)) return null;
@@ -256,7 +396,7 @@
       var openDetails = Array.prototype.map.call(root.querySelectorAll("details"), function (d) { return d.open; });
       root.innerHTML = '<div class="s-page" style="width: 100%;">' +
         '<a class="s-skip" href="#main-content">' + esc(HEADER_T[ui.lang].skip) + "</a>" +
-        '<div class="s-header-slot">' + header(ui.lang, cfg.active, ui.menu) + "</div>" +
+        '<div class="s-header-slot">' + header(ui.lang, cfg.active, ui.menu, ui.acct) + "</div>" +
         cfg.view(ui.lang) +
         footer(ui.lang) + "</div>";
       Array.prototype.forEach.call(root.querySelectorAll("details"), function (d, i) { if (openDetails[i]) d.open = true; });
@@ -278,7 +418,19 @@
         go("home", null, "quiz"); return false;
       },
       "wp:lang": function (l) { ui.lang = l; setLangStored(l); },
-      "wp:menu": function () { ui.menu = !ui.menu; },
+      "wp:menu": function () { ui.menu = !ui.menu; ui.acct = false; },
+      "wp:acct": function () {
+        ui.acct = !ui.acct; ui.menu = false; render();
+        if (ui.acct) { var first = root.querySelector(".s-acct-menu .s-acct-item"); if (first) first.focus(); }
+        return false;
+      },
+      "wp:logout": function () {
+        var t = HEADER_T[ui.lang];
+        auth.logout(); ui.acct = false; ui.menu = false;
+        if (cfg.require) { set({ flash: t.loggedOut }); location.href = window.WPData.url("index.html"); return false; }
+        toast(t.loggedOut);
+        if (cfg.onAuthChange) cfg.onAuthChange();
+      },
       "toggleSave": function (id, el, e) {
         e.preventDefault(); e.stopPropagation();
         var now = toggleSaved(id), th = ui.lang === "th";
@@ -290,6 +442,7 @@
     root.addEventListener("click", function (e) {
       if (e.target.closest(".s-mobile-nav a")) { setTimeout(function () { if (ui.menu) { ui.menu = false; render(); } }, 0); return; }
       var el = e.target.closest("[data-action]");
+      if (ui.acct && !e.target.closest(".s-acct")) { ui.acct = false; if (!el) { render(); return; } }   // click outside closes the account menu
       if (!el || !root.contains(el) || el.disabled || el.getAttribute("aria-disabled") === "true") return;
       var name = el.getAttribute("data-action"), arg = el.getAttribute("data-arg");
       var fn = builtIn[name] || (cfg.actions && cfg.actions[name]);
@@ -318,9 +471,16 @@
       if (fn && fn.call(api, f, e) !== false) render();
     });
 
+    root.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && ui.acct) { ui.acct = false; render(); var b = root.querySelector(".s-avatar"); if (b) b.focus(); }
+    });
+
     api.render = render;
     api.lang = function () { return ui.lang; };
+    api.setLang = function (l) { ui.lang = l; setLangStored(l); };
     render();
+    var flash = get("flash", null);   // one-time message carried over from the previous page
+    if (flash) { set({ flash: null }); toast(flash); }
     root.classList.add("is-ready");   // fades the page in once (see extras.css)
     if (location.hash) { var target = document.getElementById(location.hash.slice(1)); if (target) target.scrollIntoView(); }
     return api;
@@ -411,6 +571,7 @@
   /* Status badge for a saved booking. */
   var STATUS = {
     confirmed: { tone: "success", icon: "check", th: "ยืนยันแล้ว", en: "Confirmed" },
+    completed: { tone: "neutral", icon: "check", th: "ใช้บริการแล้ว", en: "Completed" },
     pending: { tone: "notice", icon: "clock", th: "รอสถานที่ยืนยัน", en: "Waiting for venue" },
     declined: { tone: "danger", icon: "alert", th: "สถานที่ปฏิเสธ", en: "Declined by venue" },
     cancelled: { tone: "neutral", icon: "close", th: "ยกเลิกแล้ว", en: "Cancelled" }
@@ -429,5 +590,5 @@
     partyHtml: partyHtml, partyChange: partyChange, calendarHtml: calendarHtml, maxMonthOff: maxMonthOff,
     bookingSummary: bookingSummary, summaryHead: summaryHead, summaryPhoto: summaryPhoto, sumRows: sumRows, backButton: backButton,
     bookings: bookings, toast: toast, dialog: dialog, processing: processing, copyText: copyText, fieldError: fieldError,
-    statusBadge: statusBadge, statusLabel: statusLabel, pageHero: pageHero };
+    statusBadge: statusBadge, statusLabel: statusLabel, STATUS: STATUS, pageHero: pageHero, auth: auth, loginUrl: loginUrl, lsGet: lsGet, lsSet: lsSet };
 })();

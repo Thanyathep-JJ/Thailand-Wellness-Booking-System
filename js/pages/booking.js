@@ -9,7 +9,7 @@
     th: {
       back: "กลับไปที่ทรีตเมนต์", backShort: "ย้อนกลับ", title: "รายละเอียดการจอง", steps: ["ทรีตเมนต์", "ข้อมูลของคุณ", "ชำระเงิน"],
       fixTitle: "โปรดแก้ไขข้อมูลต่อไปนี้ก่อนดำเนินการต่อ",
-      contact: "ข้อมูลติดต่อ", contactHint: "เราจะส่งการยืนยันและรหัสค้นหาการจองไปที่อีเมลนี้",
+      contact: "ข้อมูลติดต่อ", contactHint: "เราจะส่งการยืนยันและรหัสค้นหาการจองไปที่อีเมลนี้", filled: function (n) { return "กรอกข้อมูลจากบัญชีของคุณ (" + n + ") แล้ว แก้ไขได้ถ้าต้องการ"; }, haveAcct: "มีบัญชีอยู่แล้ว?", loginFill: "เข้าสู่ระบบเพื่อกรอกข้อมูลอัตโนมัติ", orGuest: "หรือจองต่อแบบไม่ต้องมีบัญชี",
       first: "ชื่อ (ภาษาอังกฤษ)", last: "นามสกุล (ภาษาอังกฤษ)", email: "อีเมล", emailHint: "เช่น name@example.com", phone: "เบอร์โทรศัพท์", phoneHint: "ใส่รหัสประเทศ เช่น +66 81 234 5678",
       guestsTitle: "ผู้เข้าร่วมคนอื่น", guestName: function (n) { return "ชื่อผู้เข้าร่วมคนที่ " + n; }, optional: "(ไม่บังคับ)", optWord: "ไม่บังคับ",
       healthTitle: "ข้อมูลสุขภาพสำหรับนักบำบัด",
@@ -27,7 +27,7 @@
     en: {
       back: "Back to treatment", backShort: "Back", title: "Booking details", steps: ["Treatment", "Your details", "Payment"],
       fixTitle: "Please fix the following to continue",
-      contact: "Contact details", contactHint: "We send your confirmation and booking lookup code to this email.",
+      contact: "Contact details", contactHint: "We send your confirmation and booking lookup code to this email.", filled: function (n) { return "Filled in from your account (" + n + "). You can change anything."; }, haveAcct: "Have an account?", loginFill: "Log in to fill this in", orGuest: "or carry on as a guest",
       first: "First name (English letters)", last: "Last name (English letters)", email: "Email", emailHint: "For example name@example.com", phone: "Phone", phoneHint: "Include the country code, e.g. +66 81 234 5678",
       guestsTitle: "Other guests", guestName: function (n) { return "Guest " + n + " name"; }, optional: "(optional)", optWord: "optional",
       healthTitle: "Health details for your therapist",
@@ -52,6 +52,9 @@
   /* Form values. Restored from an earlier visit in this tab, so going back from checkout keeps what was typed. */
   var f = Object.assign({ first: "", last: "", email: "", phone: "", consent: false, pressure: "", therapist: "", preg: "", notes: "", hotel: "", room: "", g2: "", g3: "", g4: "", g5: "", g6: "" }, WP.get("contact", {}));
   var state = { submitted: false, emailTouched: false };
+  /* Logged in: fill the contact fields from the account (only the empty ones, so edits are kept). */
+  var me = WP.auth.current();
+  if (me) ["first", "last", "email", "phone"].forEach(function (k) { if (!f[k]) f[k] = me[k] || ""; });
 
   /* ---------- Validation ---------- */
   function nameOk(v) { return /^[A-Za-z][A-Za-z' .-]*$/.test((v || "").trim()); }
@@ -87,6 +90,8 @@
 
       '<section class="s-card s-form" aria-labelledby="sec-contact"><h2 id="sec-contact" class="s-sec-title"><span class="s-num-tile">1</span>' + esc(t.contact) + "</h2>" +
         '<p class="s-small" style="margin: 0;">' + esc(t.contactHint) + "</p>" +
+        (me ? '<p class="s-acct-hint">' + '<span class="s-avatar" aria-hidden="true">' + WP.auth.avatarImg(me) + "</span>" + esc(t.filled(me.first + " " + me.last)) + "</p>"
+          : '<p class="s-acct-hint">' + icon("user") + "<span>" + esc(t.haveAcct) + ' <a href="' + esc(WP.loginUrl()) + '">' + esc(t.loginFill) + "</a> " + esc(t.orGuest) + "</span></p>") +
         '<div class="s-field-grid">' +
           field({ id: "bk-first", label: t.first, required: true, value: f.first, error: e.first, autocomplete: "given-name" }) +
           field({ id: "bk-last", label: t.last, required: true, value: f.last, error: e.last, autocomplete: "family-name" }) +

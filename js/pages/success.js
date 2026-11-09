@@ -16,7 +16,7 @@
       card: "บัตรเครดิต / เดบิต", pp: "พร้อมเพย์ QR",
       nextTitle: "ขั้นตอนถัดไป", n1: function (e) { return "อีเมลยืนยันส่งไปที่ " + e; }, n2: "ดู เปลี่ยนแปลง หรือยกเลิกการจองได้ที่หน้า “การจองของฉัน” ด้วยเลขอ้างอิงและอีเมล", n3: "มาถึงก่อนเวลานัดประมาณ 15 นาที",
       print: "พิมพ์ / บันทึกเป็น PDF", email: "ดูตัวอย่างอีเมลยืนยัน", mine: "ไปที่การจองของฉัน", venue: "เปิดแดชบอร์ดสถานที่ (เดโม)",
-      home: "กลับหน้าแรก", more: "ดูทรีตเมนต์อื่น", yourEmail: "อีเมลของคุณ",
+      home: "กลับหน้าแรก", saveTitle: "เก็บการจองนี้ไว้ในบัญชี", saveBody: "สร้างบัญชีด้วยอีเมลนี้ แล้วการจองนี้จะอยู่ในบัญชีของคุณ ครั้งหน้าจองได้เร็วขึ้น", saveBtn: "สร้างบัญชี", saveLogin: "เข้าสู่ระบบ", savedAcct: "บันทึกการจองนี้ไว้ในบัญชีของคุณแล้ว", more: "ดูทรีตเมนต์อื่น", yourEmail: "อีเมลของคุณ",
       noneTitle: "ไม่พบการจอง", noneBody: "ยังไม่มีการจองที่เพิ่งทำในแท็บนี้ ดูการจองทั้งหมดได้ที่หน้า “การจองของฉัน”",
       mailTitle: "ตัวอย่างอีเมลยืนยัน", mailFrom: "จาก", mailTo: "ถึง", mailSubject: "หัวเรื่อง",
       subjOk: function (r) { return "ยืนยันการจอง " + r + " · Wellness Pass"; }, subjReq: function (r) { return "ได้รับคำขอจอง " + r + " · Wellness Pass"; },
@@ -34,7 +34,7 @@
       card: "Credit / debit card", pp: "PromptPay QR",
       nextTitle: "What happens next", n1: function (e) { return "A confirmation email has gone to " + e; }, n2: "View, change or cancel the booking in My bookings with your reference and email.", n3: "Arrive about 15 minutes before your start time.",
       print: "Print / save as PDF", email: "Preview confirmation email", mine: "Go to My bookings", venue: "Open the venue dashboard (demo)",
-      home: "Back to home", more: "Browse more treatments", yourEmail: "your email",
+      home: "Back to home", saveTitle: "Keep this booking in an account", saveBody: "Create an account with this email and this booking is added to it. Next time, booking is faster.", saveBtn: "Create account", saveLogin: "Log in", savedAcct: "This booking is saved to your account.", more: "Browse more treatments", yourEmail: "your email",
       noneTitle: "No booking found", noneBody: "There's no recent booking in this tab. You can see all your bookings in My bookings.",
       mailTitle: "Confirmation email preview", mailFrom: "From", mailTo: "To", mailSubject: "Subject",
       subjOk: function (r) { return "Booking confirmed " + r + " · Wellness Pass"; }, subjReq: function (r) { return "Booking request received " + r + " · Wellness Pass"; },
@@ -70,6 +70,16 @@
     });
   }
 
+  /* Guest booking: offer an account (bookings with the same email are added when it is created). Logged in: say it is saved. */
+  function saveBox(t, rec) {
+    if (WP.auth.current()) return '<p class="s-acct-hint no-print">' + icon("check") + "<span>" + esc(t.savedAcct) + "</span></p>";
+    var q = "&email=" + encodeURIComponent(rec.email || "") + "&next=" + encodeURIComponent("mybookings.html?ref=" + rec.ref);
+    return '<div class="s-save-acct no-print"><span class="s-avatar" aria-hidden="true">' + WP.auth.avatarImg(null) + "</span>" +
+      '<div><strong>' + esc(t.saveTitle) + '</strong><p class="s-small" style="margin: 0;">' + esc(t.saveBody) + "</p>" +
+      '<div class="s-btn-row" style="margin-top: 10px;">' + UI.button({ label: t.saveBtn, size: "sm", href: "login.html?tab=signup" + q }) +
+      UI.button({ label: t.saveLogin, variant: "ghost", size: "sm", href: "login.html?tab=login" + q }) + "</div></div></div>";
+  }
+
   WP.page({
     active: null,
     view: function (lang) {
@@ -103,6 +113,7 @@
             '<ul class="s-list">' + check(t.n1(rec.email || t.yourEmail)) + check(t.n2) + check(t.n3) + "</ul>" +
             '<div class="s-btn-row no-print" style="margin-top: 8px;">' + UI.button({ label: t.mine, arrow: true, href: "mybookings.html?ref=" + encodeURIComponent(rec.ref) }) +
               UI.button({ label: t.more, variant: "ghost", href: "treatments.html" }) + "</div>" +
+            saveBox(t, rec) +
           "</section></div></main>";
     },
     actions: {

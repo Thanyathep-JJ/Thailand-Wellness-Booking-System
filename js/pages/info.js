@@ -22,7 +22,7 @@
   var FAQ = {
     th: [
       { group: "การจอง", items: [
-        ["ต้องสมัครสมาชิกก่อนจองไหม", "ไม่ต้อง กรอกชื่อ อีเมล และเบอร์โทรตอนจองก็พอ แล้วใช้เลขอ้างอิงกับอีเมลเพื่อดูการจองที่หน้า “การจองของฉัน”"],
+        ["ต้องสมัครสมาชิกก่อนจองไหม", "ไม่ต้อง กรอกชื่อ อีเมล และเบอร์โทรตอนจองก็พอ แล้วใช้เลขอ้างอิงกับอีเมลเพื่อดูการจองที่หน้า “การจองของฉัน” แต่ถ้ามีบัญชี ระบบจะกรอกข้อมูลการจองให้อัตโนมัติ และเก็บการจองทั้งหมดไว้ในที่เดียว"],
         ["จองล่วงหน้าได้นานแค่ไหน", "จองได้ตั้งแต่วันนี้จนถึง " + P.windowDays + " วันข้างหน้า"],
         ["จองให้หลายคนได้ไหม", "ได้ สูงสุด " + P.maxGuests + " ท่านต่อการจอง ทรีตเมนต์คู่ใช้นักบำบัดสองคน และผู้ที่อายุต่ำกว่า 18 ปีต้องมีผู้ปกครองอยู่ด้วย"],
         ["“รอสถานที่ยืนยัน” หมายความว่าอะไร", "บางบริการ เช่น บริการถึงโรงแรมและรีทรีต สถานที่ต้องตรวจสอบก่อน จะยืนยันภายใน " + P.confirmHours + " ชั่วโมง และคุณจะถูกเรียกเก็บเงินเมื่อยืนยันแล้วเท่านั้น"]
@@ -45,7 +45,7 @@
     ],
     en: [
       { group: "Booking", items: [
-        ["Do I need an account to book?", "No. Just add your name, email and phone when you book. Use your reference and email to find the booking in My bookings."],
+        ["Do I need an account to book?", "No. Just add your name, email and phone when you book, then use your reference and email to find the booking in My bookings. With an account, your details are filled in for you and all your bookings stay in one place."],
         ["How far ahead can I book?", "From today up to " + P.windowDays + " days ahead."],
         ["Can I book for a group?", "Yes, up to " + P.maxGuests + " guests per booking. Couples treatments use two therapists, and guests under 18 need a parent or guardian on site."],
         ["What does “Waiting for venue” mean?", "Some services, such as in-hotel treatments and retreats, are checked by the venue first. They confirm within " + P.confirmHours + " hours, and you're only charged once confirmed."]

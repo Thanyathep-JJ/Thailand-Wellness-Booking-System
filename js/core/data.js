@@ -199,12 +199,30 @@
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
   /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
      url("detail.html?id=x") gives the right link to a page from whichever page is open. */
+  /* Admin edits (demo): the admin dashboard saves price changes and hidden treatments in this browser.
+     overrides = { "<treatment id>": { from: <new starting price>, hidden: true } }. Longer options scale with the new price. */
+  var OVR = {};
+  try { OVR = JSON.parse(localStorage.getItem("wellnessPass.overrides")) || {}; } catch (e) {}
+  function applyOverride(t, o) {
+    o = o || {};
+    var base = t.basePrices, k = o.from > 0 ? o.from / base[0] : 1;
+    t.options.forEach(function (op, i) { op.price = i === 0 ? (o.from > 0 ? o.from : base[0]) : Math.round(base[i] * k / 10) * 10; });
+    t.hidden = !!o.hidden;
+  }
+  T.forEach(function (t) {
+    t.basePrices = t.options.map(function (op) { return op.price; });   // the catalogue prices before any admin edit
+    if (OVR[t.id]) applyOverride(t, OVR[t.id]);
+  });
+  /* Treatments shown to guests (the admin can hide some). Saved bookings still look up hidden ones with get(). */
+  function visible() { return T.filter(function (t) { return !t.hidden; }); }
+
   var ROOT = (document.body && document.body.getAttribute("data-root")) || "";
   function url(page) { return page.indexOf("index.html") === 0 ? ROOT + page : (ROOT ? "" : "pages/") + page; }
   function img(path) { return ROOT + "images/" + path + ".webp"; }
   function treatmentImg(id, n) { return img("treatments/" + id + "/" + n); }
   var photos = {
     hero: img("hero/hero-1"),
+    avatar: img("site/avatar"),                         // profile picture for every account
     heroes: [{ src: img("hero/hero-1") }, { src: img("hero/hero-2"), city: "hkt" }, { src: img("hero/hero-3") }],
     spot: treatmentImg("herbal-compress", 3),          // home page spotlight (the herbal compress treatment)
     treatments: treatmentImg("sunrise-yoga", 2),       // treatments page banner
@@ -379,7 +397,7 @@
   };
   function match(ans, lang) {
     if (!ans || !ans.goal || !ans.intensity || !ans.setting) return [];
-    var scored = T.map(function (t, i) {
+    var scored = visible().map(function (t, i) {
       var r = [], sc = 0;
       if (t.goals.indexOf(ans.goal) >= 0) { sc += 3; r.push(L(goalReason[ans.goal], lang)); }
       if (t.intensity === ans.intensity) { sc += 2; r.push(lang === "th" ? "ความเข้มข้นระดับ" + intensity[t.intensity].th + " ตามที่คุณเลือก" : intensity[t.intensity].en + " intensity, as you chose"); }
@@ -390,7 +408,7 @@
     return scored.slice(0, 3).map(function (x) { var c = card(x.t, lang); c.reasons = x.r; return c; });
   }
 
-  window.WPData = { url: url, photos: photos, treatments: T, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
+  window.WPData = { url: url, photos: photos, treatments: T, visible: visible, applyOverride: applyOverride, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
     L: L, baht: baht, get: get, cat: cat, priceFor: priceFor, minLabel: minLabel, durLabel: durLabel, card: card, dates: dates, dayInfo: dayInfo, dows: dows, weekendIdx: weekendIdx, monthGrid: monthGrid, WINDOW: WINDOW, slotList: slotList, slotGroups: slotGroups, partyNorm: partyNorm, partyTotal: partyTotal, partyLabel: partyLabel, partyRows: partyRows, partyNote: partyNote, quiz: quiz, match: match,
     venues: venues, reviews: reviews, rating: rating, policy: policy, refundPct: refundPct, cityCards: cityCards,
     isoFromIdx: isoFromIdx, isoLabel: isoLabel, hoursUntil: hoursUntil };

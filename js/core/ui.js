@@ -66,6 +66,11 @@
     lock: [["rect", { x: 5, y: 11, width: 14, height: 10, rx: 2 }], ["path", { d: "M8 11V8a4 4 0 0 1 8 0v3" }]],
     card: [["rect", { x: 2.5, y: 5, width: 19, height: 14, rx: 2.5 }], ["path", { d: "M2.5 10h19M6 15h4" }]],
     phone: [["rect", { x: 6.5, y: 2.5, width: 11, height: 19, rx: 2.5 }], ["path", { d: "M11 18.5h2" }]],
+    logout: [["path", { d: "M10 4H5a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h5M15 8l4 4-4 4M19 12H9" }]],
+    mail: [["rect", { x: 3, y: 5, width: 18, height: 14, rx: 2 }], ["path", { d: "M3.5 6.5l8.5 6.5 8.5-6.5" }]],
+    chart: [["path", { d: "M4 20V10M10 20V4M16 20v-7M22 20H2" }]],
+    grid: [["rect", { x: 3, y: 3, width: 7.5, height: 7.5, rx: 1.5 }], ["rect", { x: 13.5, y: 3, width: 7.5, height: 7.5, rx: 1.5 }], ["rect", { x: 3, y: 13.5, width: 7.5, height: 7.5, rx: 1.5 }], ["rect", { x: 13.5, y: 13.5, width: 7.5, height: 7.5, rx: 1.5 }]],
+    edit: [["path", { d: "M4 20h4l10.5-10.5a2.1 2.1 0 0 0-4-4L4 16z" }], ["path", { d: "M13.5 6.5l4 4" }]],
     scan: [["path", { d: "M4 8V5a1 1 0 0 1 1-1h3M16 4h3a1 1 0 0 1 1 1v3M20 16v3a1 1 0 0 1-1 1h-3M8 20H5a1 1 0 0 1-1-1v-3M4 12h16" }]]
   };
 
@@ -193,6 +198,15 @@
       "</div>";
   }
 
+  /* Password input with a show/hide button. o: textField options + { shown, showLabel, hideLabel }.
+     The eye button fires action "togglePw" with the input id. */
+  function passwordField(o) {
+    var html = textField(Object.assign({}, o, { type: o.shown ? "text" : "password", cls: cx("wp-pass", o.cls) }));
+    var btn = "<button" + attrs({ type: "button", "class": "wp-pass-eye", "aria-pressed": o.shown ? "true" : "false", "aria-controls": o.id, "data-action": "togglePw", "data-arg": o.id }) + ">" +
+      esc(o.shown ? (o.hideLabel || "Hide") : (o.showLabel || "Show")) + "</button>";
+    return html.replace(/(<input[^>]*>)/, '<span class="wp-pass-box">$1' + btn + "</span>");
+  }
+
   /* Checkbox with label. o: { id, label, detail, required, checked, input } */
   function consentCheck(o) {
     return '<label class="' + cx("wp-consent", o.cls) + '" for="' + esc(o.id) + '">' +
@@ -214,5 +228,5 @@
 
   window.UI = { esc: esc, attrs: attrs, cx: cx, act: act, icon: icon, button: button, iconButton: iconButton, chip: chip, badge: badge,
     searchBar: searchBar, categoryCard: categoryCard, matchReasons: matchReasons, treatmentCard: treatmentCard, stepper: stepper,
-    notice: notice, money: money, textField: textField, consentCheck: consentCheck, faqItem: faqItem, stars: stars };
+    notice: notice, money: money, textField: textField, passwordField: passwordField, consentCheck: consentCheck, faqItem: faqItem, stars: stars };
 })();

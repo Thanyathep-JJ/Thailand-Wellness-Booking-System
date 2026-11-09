@@ -286,6 +286,7 @@
       status: s.tr.request ? "pending" : "confirmed", request: !!s.tr.request,
       id: b.id, dur: b.dur, date: D.isoFromIdx(b.dateIdx), slot: b.slot, guests: s.guests, party: b.party || null,
       method: state.method, total: s.total, fee: s.fee,
+      account: (WP.auth.current() || {}).id || undefined,
       first: contact.first || "", last: contact.last || "", email: contact.email || "", phone: contact.phone || "",
       hotel: contact.hotel || "", room: contact.room || ""
       // Health details are deliberately not saved with the booking.
