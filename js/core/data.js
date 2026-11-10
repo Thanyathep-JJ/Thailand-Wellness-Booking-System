@@ -199,20 +199,35 @@
      To swap a photo, replace the file and keep its name. Set a slot to null to show the illustrated fallback. */
   /* index.html sits at the site root; every other page lives in pages/ and sets <body data-root="../">.
      url("detail.html?id=x") gives the right link to a page from whichever page is open. */
-  /* Admin edits (demo): the admin dashboard saves price changes and hidden treatments in this browser.
-     overrides = { "<treatment id>": { from: <new starting price>, hidden: true } }. Longer options scale with the new price. */
+  /* Admin and shop edits (demo), saved in this browser.
+     overrides = { "<treatment id>": { from: <new starting price>, prices: [<price per option>], hidden: true, hours: "10:00–22:00" } }.
+     "from" (admin) scales every option; "prices" (shop dashboard) sets each option and wins over "from". */
   var OVR = {};
   try { OVR = JSON.parse(localStorage.getItem("wellnessPass.overrides")) || {}; } catch (e) {}
   function applyOverride(t, o) {
     o = o || {};
     var base = t.basePrices, k = o.from > 0 ? o.from / base[0] : 1;
-    t.options.forEach(function (op, i) { op.price = i === 0 ? (o.from > 0 ? o.from : base[0]) : Math.round(base[i] * k / 10) * 10; });
+    t.options.forEach(function (op, i) {
+      if (o.prices && o.prices[i] > 0) { op.price = o.prices[i]; return; }
+      op.price = i === 0 ? (o.from > 0 ? o.from : base[0]) : Math.round(base[i] * k / 10) * 10;
+    });
     t.hidden = !!o.hidden;
+    var v = venues[t.id];
+    if (v) v.hours = o.hours || v.baseHours;
   }
   T.forEach(function (t) {
     t.basePrices = t.options.map(function (op) { return op.price; });   // the catalogue prices before any admin edit
+    if (venues[t.id]) venues[t.id].baseHours = venues[t.id].hours;
     if (OVR[t.id]) applyOverride(t, OVR[t.id]);
   });
+
+  /* Times a shop has closed from its dashboard (demo): blocks = { "<treatment id>": { "YYYY-MM-DD": ["all"] or ["10:30", ...] } }.
+     Guests see closed times as fully booked. Read fresh each time so a change in another tab shows straight away. */
+  function blocks() { try { return JSON.parse(localStorage.getItem("wellnessPass.blocks")) || {}; } catch (e) { return {}; } }
+  function blockedAt(id, iso, time) {
+    var d = (blocks()[id] || {})[iso];
+    return !!d && (d.indexOf("all") >= 0 || (time !== undefined && d.indexOf(time) >= 0));
+  }
   /* Treatments shown to guests (the admin can hide some). Saved bookings still look up hidden ones with get(). */
   function visible() { return T.filter(function (t) { return !t.hidden; }); }
 
@@ -351,13 +366,14 @@
   var slots = ["09:00", "10:30", "12:00", "13:30", "15:00", "16:30", "18:00", "19:30"];
   /* Start times for one day. Treatments can set their own `slots` (classes, day retreats); otherwise the standard list.
      Some times show as fully booked so the demo looks realistic. */
+  function slotsOf(t) { return (t && t.slots) || slots; }
   function slotList(dateIdx, t) {
-    var i = dateIdx || 0, list = (t && t.slots) || slots;
+    var i = dateIdx || 0, list = (t && t.slots) || slots, iso = t ? isoFromIdx(i) : null;
     var full = t && t.slots ? (list.length > 1 && i % 3 === 2 ? [list[list.length - 1]] : []) : (i % 2 ? ["10:30", "16:30"] : ["12:00", "18:00"]);
     var now = new Date(), nowMin = now.getHours() * 60 + now.getMinutes();
     return list.map(function (s) {
       var hm = s.split(":"), past = i === 0 && Number(hm[0]) * 60 + Number(hm[1]) <= nowMin + 60;   // today: needs at least 1 hour's notice
-      return full.indexOf(s) >= 0 || past ? { time: s, state: "full" } : { time: s };
+      return full.indexOf(s) >= 0 || past || (t && blockedAt(t.id, iso, s)) ? { time: s, state: "full" } : { time: s };
     });
   }
   function slotGroups(dateIdx, lang, t) {
@@ -413,5 +429,6 @@
   window.WPData = { url: url, photos: photos, treatments: T, visible: visible, applyOverride: applyOverride, cats: cats, cities: cities, intensity: intensity, settings: settings, included: included, excluded: excluded,
     L: L, baht: baht, get: get, cat: cat, priceFor: priceFor, minLabel: minLabel, durLabel: durLabel, card: card, dates: dates, dayInfo: dayInfo, dows: dows, weekendIdx: weekendIdx, monthGrid: monthGrid, WINDOW: WINDOW, slotList: slotList, slotGroups: slotGroups, partyNorm: partyNorm, partyTotal: partyTotal, partyLabel: partyLabel, partyRows: partyRows, partyNote: partyNote, quiz: quiz, match: match,
     venues: venues, reviews: reviews, rating: rating, policy: policy, refundPct: refundPct, cityCards: cityCards,
-    isoFromIdx: isoFromIdx, isoLabel: isoLabel, hoursUntil: hoursUntil };
+    isoFromIdx: isoFromIdx, isoLabel: isoLabel, hoursUntil: hoursUntil, dateFromIso: dateFromIso,
+    blocks: blocks, blockedAt: blockedAt, slotsOf: slotsOf };
 })();

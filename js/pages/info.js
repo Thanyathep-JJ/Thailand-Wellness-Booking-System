@@ -122,12 +122,12 @@
         "<h2>ข้อมูลสุขภาพ</h2><p>ข้อมูลสุขภาพเป็นข้อมูลอ่อนไหวตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA) เราส่งให้เฉพาะสถานที่ที่ดูแลการจองนั้น ไม่ใช้เพื่อการตลาด และลบภายใน " + P.retentionDays + " วันหลังวันนัด คุณถอนความยินยอมได้ทุกเมื่อ</p>" +
         "<h2>ผู้ที่ได้รับข้อมูล</h2><p>สถานที่ที่คุณจอง และผู้ให้บริการชำระเงิน เราไม่ขายข้อมูลส่วนบุคคลของคุณ</p>" +
         "<h2>สิทธิของคุณ</h2><ul><li>ขอดู แก้ไข หรือลบข้อมูลของคุณ</li><li>ถอนความยินยอมเรื่องข้อมูลสุขภาพ</li><li>ร้องเรียนต่อสำนักงานคณะกรรมการคุ้มครองข้อมูลส่วนบุคคล</li></ul>" +
-        "<h2>ในเดโมนี้</h2><p>ข้อมูลการจองตัวอย่างถูกเก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น (Local Storage) ไม่ได้ส่งไปที่เซิร์ฟเวอร์ใด และไม่บันทึกข้อมูลสุขภาพไว้กับการจอง ล้างได้จากแดชบอร์ดสถานที่ (เดโม)</p>"
+        "<h2>ในเดโมนี้</h2><p>ข้อมูลการจองตัวอย่างถูกเก็บไว้ในเบราว์เซอร์ของคุณเท่านั้น (Local Storage) ไม่ได้ส่งไปที่เซิร์ฟเวอร์ใด และไม่บันทึกข้อมูลสุขภาพไว้กับการจอง ล้างได้จากแดชบอร์ดผู้ดูแล (เดโม)</p>"
       : "<h2>What we collect</h2><ul><li>Contact details: name, email and phone, to manage your booking.</li><li>Booking details: treatment, date and time, and number of guests.</li><li>Health details (optional): only if you give consent.</li></ul>" +
         "<h2>Health details</h2><p>Health details are sensitive data under Thailand's Personal Data Protection Act (PDPA). We share them only with the venue handling that booking, never use them for marketing, and delete them " + P.retentionDays + " days after your appointment. You can withdraw consent at any time.</p>" +
         "<h2>Who receives your data</h2><p>The venue you book with and our payment provider. We never sell your personal data.</p>" +
         "<h2>Your rights</h2><ul><li>See, correct or delete your data.</li><li>Withdraw consent for health details.</li><li>Complain to Thailand's Personal Data Protection Committee.</li></ul>" +
-        "<h2>In this demo</h2><p>Sample bookings are kept only in your browser (local storage). Nothing is sent to a server, and health details are not saved with bookings. You can clear the data from the venue dashboard (demo).</p>";
+        "<h2>In this demo</h2><p>Sample bookings are kept only in your browser (local storage). Nothing is sent to a server, and health details are not saved with bookings. You can clear the data from the admin dashboard (demo).</p>";
     return { title: th ? "นโยบายความเป็นส่วนตัว" : "Privacy policy", lead: th ? "วิธีที่เราดูแลข้อมูลส่วนบุคคลและข้อมูลสุขภาพของคุณ" : "How we handle your personal and health information.", html: '<div class="s-prose">' + body + "</div>" };
   }
 

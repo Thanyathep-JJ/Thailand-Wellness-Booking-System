@@ -23,7 +23,7 @@
       danger: "ลบบัญชี", dangerLead: "ลบบัญชีและข้อมูลส่วนตัวออกจากเบราว์เซอร์นี้ การจองที่ทำไว้ยังค้นหาได้ด้วยเลขอ้างอิงและอีเมล",
       del: "ลบบัญชีของฉัน", delDemo: "บัญชีเดโมลบไม่ได้ ลองสมัครบัญชีใหม่เพื่อทดสอบการลบ",
       dTitle: "ลบบัญชีนี้?", dBody: "คุณจะออกจากระบบและบัญชีนี้จะถูกลบ ทำย้อนกลับไม่ได้", dYes: "ลบบัญชี", dNo: "ยกเลิก", deleted: "ลบบัญชีแล้ว",
-      logout: "ออกจากระบบ", adminLink: "ไปที่แดชบอร์ดผู้ดูแล", roleAdmin: "ผู้ดูแลระบบ", roleCustomer: "สมาชิก"
+      logout: "ออกจากระบบ", adminLink: "ไปที่แดชบอร์ดผู้ดูแล", roleAdmin: "ผู้ดูแลระบบ", roleCustomer: "สมาชิก", roleVenue: "เจ้าของร้าน", shopLink: "ไปที่แดชบอร์ดร้าน"
     },
     en: {
       eyebrow: "MY ACCOUNT", hello: function (n) { return "Hello, " + n; },
@@ -42,7 +42,7 @@
       danger: "Delete account", dangerLead: "Removes your account and personal details from this browser. Bookings you made can still be found with the reference and email.",
       del: "Delete my account", delDemo: "Demo accounts can't be deleted. Sign up a new account to try this.",
       dTitle: "Delete this account?", dBody: "You'll be logged out and the account will be deleted. This can't be undone.", dYes: "Delete account", dNo: "Cancel", deleted: "Account deleted",
-      logout: "Log out", adminLink: "Go to the admin dashboard", roleAdmin: "Admin", roleCustomer: "Member"
+      logout: "Log out", adminLink: "Go to the admin dashboard", roleAdmin: "Admin", roleCustomer: "Member", roleVenue: "Shop owner", shopLink: "Go to my shop dashboard"
     }
   };
 
@@ -71,7 +71,7 @@
       var t = TEXT[lang];
       me = A.current();
       if (!me) return "<main id=\"main-content\"></main>";
-      var admin = me.role === "admin", list = A.bookingsOf(me);
+      var admin = me.role === "admin", shop = me.role === "venue", list = A.bookingsOf(me);
       var isUp = function (b) { return (b.status === "confirmed" || b.status === "pending") && D.hoursUntil(b.date, b.slot) > 0; };
       var up = list.filter(isUp).sort(function (a, b) { return D.hoursUntil(a.date, a.slot) - D.hoursUntil(b.date, b.slot); });
       var past = list.filter(function (b) { return !isUp(b); });
@@ -84,13 +84,14 @@
 
       var nav = [["acc-overview", "grid", t.nOverview], ["acc-profile", "user", t.nProfile], ["acc-bookings", "calendar", t.nBookings], ["acc-saved", "heart", t.nSaved], ["acc-security", "lock", t.nSecurity]];
       var aside = '<aside class="s-acc-side"><div class="s-card s-acc-id">' +
-          '<span class="s-avatar s-avatar-xl' + (admin ? " is-admin" : "") + '" aria-hidden="true">' + A.avatarImg(me) + "</span>" +
+          '<span class="s-avatar s-avatar-xl' + A.ringOf(me) + '" aria-hidden="true">' + A.avatarImg(me) + "</span>" +
           "<strong>" + esc(me.first + " " + me.last) + '</strong><span class="s-small">' + esc(me.email) + "</span>" +
-          UI.badge(admin ? t.roleAdmin : t.roleCustomer, admin ? "notice" : "success", admin ? "shield" : "user") +
+          UI.badge(admin ? t.roleAdmin : shop ? t.roleVenue : t.roleCustomer, admin ? "notice" : "success", admin ? "shield" : shop ? "store" : "user") +
           '<nav class="s-acc-nav" aria-label="' + esc(t.navAria) + '">' + nav.map(function (n) {
             return '<a href="#' + n[0] + '">' + icon(n[1]) + "<span>" + esc(n[2]) + "</span></a>";
           }).join("") + "</nav>" +
           (admin ? UI.button({ label: t.adminLink, size: "sm", href: "admin.html", cls: "s-acc-wide" }) : "") +
+          (shop ? UI.button({ label: t.shopLink, size: "sm", href: "venue.html", cls: "s-acc-wide" }) : "") +
           UI.button({ label: t.logout, variant: "ghost", size: "sm", action: "wp:logout", cls: "s-acc-wide" }) +
         "</div></aside>";
 

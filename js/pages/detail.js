@@ -15,7 +15,7 @@
       guests: "ผู้เข้าร่วม", inc: "รวมในราคา", exc: "ไม่รวมในราคา",
       healthTitle: "สุขภาพและความปลอดภัย", healthBody: "ถ้าคุณตั้งครรภ์ มีอาการบาดเจ็บ หรือมีโรคประจำตัว คุณจะแจ้งได้ในขั้นตอนกรอกรายละเอียด หากไม่แน่ใจว่าทรีตเมนต์นี้เหมาะกับคุณหรือไม่ โปรดปรึกษาแพทย์ของคุณ",
       b1: "มาถึงก่อนเวลาประมาณ 15 นาที", b2: "หลีกเลี่ยงอาหารมื้อหนักก่อนนวดประมาณ 1 ชั่วโมง", b3: "บอกนักบำบัดได้ตลอดถ้าแรงนวดมากหรือน้อยเกินไป",
-      venueNote: "ชื่อสถานที่ ที่อยู่ และรีวิวเป็นข้อมูลตัวอย่างสำหรับเดโม", hours: "เวลาเปิด", daily: "ทุกวัน", openMap: "เปิดใน Google Maps", mapTitle: "แผนที่",
+      replyFrom: "คำตอบจากร้าน", venueNote: "ชื่อสถานที่ ที่อยู่ และรีวิวเป็นข้อมูลตัวอย่างสำหรับเดโม", hours: "เวลาเปิด", daily: "ทุกวัน", openMap: "เปิดใน Google Maps", mapTitle: "แผนที่",
       reviewsOf: function (n) { return "จาก " + n + " รีวิวตัวอย่าง"; }, reviewsNote: "รีวิวในเดโมนี้เป็นตัวอย่าง ในเว็บไซต์จริงจะแสดงเฉพาะรีวิวจากผู้ที่ใช้บริการแล้ว", daysAgo: function (n) { return n + " วันที่แล้ว"; },
       viewPhotos: "ดูรูปทั้งหมด", photoOf: function (i, n) { return "รูปที่ " + i + " จาก " + n; }, prevPhoto: "รูปก่อนหน้า", nextPhoto: "รูปถัดไป", openPhoto: "เปิดรูปขนาดใหญ่",
       panelAria: "สรุปการจอง", estTotal: "ราคารวมโดยประมาณ", sLength: "ความยาว", sDate: "วันที่", sTime: "เวลาเริ่ม", sGuests: "ผู้เข้าร่วม", sFee: "ค่าเดินทางถึงโรงแรม",
@@ -32,7 +32,7 @@
       guests: "Guests", inc: "Included", exc: "Not included",
       healthTitle: "Health and safety", healthBody: "If you are pregnant, injured or have a health condition, you can tell us in the details step. If you are unsure whether this treatment suits you, please check with your doctor.",
       b1: "Arrive about 15 minutes early", b2: "Avoid a heavy meal for about an hour before a massage", b3: "Tell your therapist any time the pressure is too much or too little",
-      venueNote: "Venue names, addresses and reviews are sample content for this demo.", hours: "Opening hours", daily: "daily", openMap: "Open in Google Maps", mapTitle: "Map",
+      replyFrom: "Reply from the shop", venueNote: "Venue names, addresses and reviews are sample content for this demo.", hours: "Opening hours", daily: "daily", openMap: "Open in Google Maps", mapTitle: "Map",
       reviewsOf: function (n) { return "from " + n + " sample reviews"; }, reviewsNote: "Reviews in this demo are samples. On a live site only guests who completed a visit could review.", daysAgo: function (n) { return n + " days ago"; },
       viewPhotos: "View photos", photoOf: function (i, n) { return "Photo " + i + " of " + n; }, prevPhoto: "Previous photo", nextPhoto: "Next photo", openPhoto: "Open larger photo",
       panelAria: "Booking summary", estTotal: "Estimated total", sLength: "Length", sDate: "Date", sTime: "Start time", sGuests: "Guests", sFee: "In-hotel travel fee",
@@ -126,17 +126,23 @@
       '<a href="#reviews">' + esc(t.reviewsOf(r.count)) + "</a></div>";
   }
 
+  /* A shop's reply to a review, written on the shop dashboard (saved in this browser). */
+  function replyHtml(i, t) {
+    var r = ((WP.lsGet("replies", {}) || {})[tr.id] || {})[i], v = D.venues[tr.id];
+    if (!r || !r.text) return "";
+    return '<div class="s-reply"><span class="s-reply-head">' + icon("reply") + "<strong>" + esc(t.replyFrom) + '</strong><span class="s-sub">· ' + esc(v ? v.name : "") + "</span></span><p>" + esc(r.text) + "</p></div>";
+  }
   function reviewsSection(lang, t) {
     var r = D.rating(tr), list = D.reviews(tr);
     return '<section id="reviews" class="s-block" aria-labelledby="h-rev"><h2 id="h-rev" class="s-h3">' + esc(t.tabReviews) + "</h2>" +
       '<div class="s-rev-top"><span class="s-rev-avg">' + r.avg.toFixed(1) + "</span>" + UI.stars(r.avg, r.avg.toFixed(1) + " / 5") +
         '<span class="s-small">' + esc(t.reviewsOf(r.count)) + "</span></div>" +
-      '<div class="s-rev-list">' + list.map(function (x) {
+      '<div class="s-rev-list">' + list.map(function (x, i) {
         return '<article class="s-rev"><span class="s-rev-avatar" aria-hidden="true">' + esc(x.name.charAt(0)) + "</span><div>" +
           '<div class="s-rev-head"><span><span class="s-rev-name">' + esc(x.name) + '</span> <span class="s-rev-meta">· ' + esc(D.L(x.from, lang)) + "</span></span>" +
             UI.stars(x.stars, x.stars + " / 5") + "</div>" +
           '<span class="s-rev-meta">' + esc(t.daysAgo(x.daysAgo)) + "</span>" +
-          "<p>" + esc(x[lang] || x.en) + "</p></div></article>";
+          "<p>" + esc(x[lang] || x.en) + "</p>" + replyHtml(i, t) + "</div></article>";
       }).join("") + "</div>" +
       '<p class="s-small" style="margin: 14px 0 0;">' + esc(t.reviewsNote) + "</p></section>";
   }

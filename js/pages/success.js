@@ -9,13 +9,13 @@
     th: {
       steps: ["ทรีตเมนต์", "ข้อมูลของคุณ", "ชำระเงิน"],
       okTitle: "จองสำเร็จแล้ว (เดโม)", okBody: "เราส่งอีเมลยืนยันพร้อมเลขอ้างอิงให้คุณแล้ว ในเว็บไซต์จริง หน้านี้จะแสดงหลังผู้ให้บริการชำระเงินยืนยันการชำระแล้วเท่านั้น",
-      reqTitle: "ส่งคำขอจองแล้ว (เดโม)", reqBody: "สถานที่จะตรวจสอบและยืนยันภายใน 12 ชั่วโมง คุณจะถูกเรียกเก็บเงินเมื่อได้รับการยืนยันเท่านั้น ลองยืนยันแทนสถานที่ได้ที่แดชบอร์ดสถานที่ (เดโม)",
+      reqTitle: "ส่งคำขอจองแล้ว (เดโม)", reqBody: "สถานที่จะตรวจสอบและยืนยันภายใน 12 ชั่วโมง คุณจะถูกเรียกเก็บเงินเมื่อได้รับการยืนยันเท่านั้น ลองยืนยันเองได้ที่แดชบอร์ดผู้ดูแล (เดโม) โดยเข้าสู่ระบบด้วย admin@demo.com",
       demoTitle: "ผลลัพธ์ตัวอย่าง", demoBody: "ไม่มีการตัดเงินจริง การจองนี้บันทึกไว้ในเบราว์เซอร์นี้เท่านั้น",
       refLabel: "เลขอ้างอิงการจอง", copy: "คัดลอก", copied: "คัดลอกเลขอ้างอิงแล้ว",
       sumTitle: "สรุปการจอง", sDate: "วันที่", sTime: "เวลาเริ่ม", sLength: "ความยาว", sGuests: "ผู้เข้าร่วม", sMethod: "วิธีชำระเงิน", sStatus: "สถานะ", total: "ยอดรวม",
       card: "บัตรเครดิต / เดบิต", pp: "พร้อมเพย์ QR",
       nextTitle: "ขั้นตอนถัดไป", n1: function (e) { return "อีเมลยืนยันส่งไปที่ " + e; }, n2: "ดู เปลี่ยนแปลง หรือยกเลิกการจองได้ที่หน้า “การจองของฉัน” ด้วยเลขอ้างอิงและอีเมล", n3: "มาถึงก่อนเวลานัดประมาณ 15 นาที",
-      print: "พิมพ์ / บันทึกเป็น PDF", email: "ดูตัวอย่างอีเมลยืนยัน", mine: "ไปที่การจองของฉัน", venue: "เปิดแดชบอร์ดสถานที่ (เดโม)",
+      print: "พิมพ์ / บันทึกเป็น PDF", email: "ดูตัวอย่างอีเมลยืนยัน", mine: "ไปที่การจองของฉัน", venue: "เปิดแดชบอร์ดผู้ดูแล (เดโม)",
       home: "กลับหน้าแรก", saveTitle: "เก็บการจองนี้ไว้ในบัญชี", saveBody: "สร้างบัญชีด้วยอีเมลนี้ แล้วการจองนี้จะอยู่ในบัญชีของคุณ ครั้งหน้าจองได้เร็วขึ้น", saveBtn: "สร้างบัญชี", saveLogin: "เข้าสู่ระบบ", savedAcct: "บันทึกการจองนี้ไว้ในบัญชีของคุณแล้ว", more: "ดูทรีตเมนต์อื่น", yourEmail: "อีเมลของคุณ",
       noneTitle: "ไม่พบการจอง", noneBody: "ยังไม่มีการจองที่เพิ่งทำในแท็บนี้ ดูการจองทั้งหมดได้ที่หน้า “การจองของฉัน”",
       mailTitle: "ตัวอย่างอีเมลยืนยัน", mailFrom: "จาก", mailTo: "ถึง", mailSubject: "หัวเรื่อง",
@@ -27,13 +27,13 @@
     en: {
       steps: ["Treatment", "Your details", "Payment"],
       okTitle: "You're booked (demo)", okBody: "We've emailed your confirmation and booking reference. On a live site this page appears only after the payment provider confirms the payment.",
-      reqTitle: "Booking request sent (demo)", reqBody: "The venue reviews and confirms within 12 hours. You're charged only once it's confirmed. Try confirming it yourself in the venue dashboard (demo).",
+      reqTitle: "Booking request sent (demo)", reqBody: "The venue reviews and confirms within 12 hours. You're charged only once it's confirmed. Try confirming it yourself in the admin dashboard (demo) with admin@demo.com.",
       demoTitle: "Sample result", demoBody: "No money was taken. This booking is saved in this browser only.",
       refLabel: "Booking reference", copy: "Copy", copied: "Booking reference copied",
       sumTitle: "Your booking", sDate: "Date", sTime: "Start time", sLength: "Length", sGuests: "Guests", sMethod: "Payment method", sStatus: "Status", total: "Total",
       card: "Credit / debit card", pp: "PromptPay QR",
       nextTitle: "What happens next", n1: function (e) { return "A confirmation email has gone to " + e; }, n2: "View, change or cancel the booking in My bookings with your reference and email.", n3: "Arrive about 15 minutes before your start time.",
-      print: "Print / save as PDF", email: "Preview confirmation email", mine: "Go to My bookings", venue: "Open the venue dashboard (demo)",
+      print: "Print / save as PDF", email: "Preview confirmation email", mine: "Go to My bookings", venue: "Open the admin dashboard (demo)",
       home: "Back to home", saveTitle: "Keep this booking in an account", saveBody: "Create an account with this email and this booking is added to it. Next time, booking is faster.", saveBtn: "Create account", saveLogin: "Log in", savedAcct: "This booking is saved to your account.", more: "Browse more treatments", yourEmail: "your email",
       noneTitle: "No booking found", noneBody: "There's no recent booking in this tab. You can see all your bookings in My bookings.",
       mailTitle: "Confirmation email preview", mailFrom: "From", mailTo: "To", mailSubject: "Subject",
@@ -102,7 +102,7 @@
           '<div class="s-success-actions no-print">' +
             UI.button({ label: t.print, variant: "ghost", size: "sm", action: "print" }) +
             UI.button({ label: t.email, variant: "ghost", size: "sm", action: "email" }) +
-            (req ? UI.button({ label: t.venue, variant: "ghost", size: "sm", href: "venue.html" }) : "") +
+            (req ? UI.button({ label: t.venue, variant: "ghost", size: "sm", href: "admin.html" }) : "") +
           "</div>" +
         "</div>" +
         '<div class="s-two" style="margin-top: 40px; align-items: start;">' +

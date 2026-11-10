@@ -57,6 +57,9 @@
     info: [["circle", { cx: 12, cy: 12, r: 9 }], ["path", { d: "M12 11v5M12 8h.01" }]],
     alert: [["path", { d: "M12 3l9.5 17h-19z" }], ["path", { d: "M12 10v4M12 17h.01" }]],
     shield: [["path", { d: "M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z" }], ["path", { d: "M9 12l2 2 4-4" }]],
+    store: [["path", { d: "M4 9.5V20h16V9.5M3 5l1.5-2h15L21 5v2.5a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 7.5z" }], ["path", { d: "M9.5 20v-5h5v5" }]],
+    reply: [["path", { d: "M9 7L4 12l5 5" }], ["path", { d: "M4 12h10a6 6 0 0 1 6 6v1" }]],
+    lock2: [["rect", { x: 5, y: 11, width: 14, height: 10, rx: 2 }], ["path", { d: "M8 11V8a4 4 0 0 1 8 0v3" }]],
     sparkle: [["path", { d: "M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" }], ["path", { d: "M19 16l.8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8z" }]],
     // Extra glyphs used by the page templates (close, chevrons, menu).
     close: [["path", { d: "M6 6l12 12M18 6L6 18" }]],

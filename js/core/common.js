@@ -45,15 +45,16 @@
   /* ---------- Demo accounts (saved in this browser) ----------
      There is no server, so accounts live in localStorage. Passwords are stored as a simple hash so they are not
      readable at a glance, but this is NOT real security; a live system would check passwords on a server.
-     Roles: "customer" and "admin". "Remember me" keeps the login in localStorage; otherwise it ends when the tab closes. */
+     Roles: "customer", "venue" (a shop owner, linked to one venue with `venue: "<treatment id>"`) and "admin". "Remember me" keeps the login in localStorage; otherwise it ends when the tab closes. */
   function pwHash(s) { var h = 5381; s = "wp:" + s; for (var i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return "h" + (h >>> 0).toString(36); }
   var DEMO_USERS = [
     { id: "u-guest", email: "guest@demo.com", pw: pwHash("demo1234"), first: "Somchai", last: "Jaidee", phone: "+66 81 234 5678", role: "customer", lang: "", createdAt: "2026-03-14T09:00:00.000Z", demo: true },
-    { id: "u-admin", email: "admin@demo.com", pw: pwHash("admin1234"), first: "Malee", last: "Admin", phone: "+66 2 000 0000", role: "admin", lang: "", createdAt: "2026-01-05T09:00:00.000Z", demo: true }
+    { id: "u-admin", email: "admin@demo.com", pw: pwHash("admin1234"), first: "Malee", last: "Admin", phone: "+66 2 000 0000", role: "admin", lang: "", createdAt: "2026-01-05T09:00:00.000Z", demo: true },
+    { id: "u-shop", email: "shop@demo.com", pw: pwHash("shop1234"), first: "Niran", last: "Kaewmanee", phone: "+66 2 111 2233", role: "venue", venue: "thai-traditional", lang: "", createdAt: "2025-11-20T09:00:00.000Z", demo: true }
   ];
   function lsDel(k) { try { localStorage.removeItem(KEY + "." + k); } catch (e) {} }
   var auth = {
-    demo: [{ email: "guest@demo.com", pw: "demo1234", role: "customer" }, { email: "admin@demo.com", pw: "admin1234", role: "admin" }],
+    demo: [{ email: "guest@demo.com", pw: "demo1234", role: "customer" }, { email: "admin@demo.com", pw: "admin1234", role: "admin" }, { email: "shop@demo.com", pw: "shop1234", role: "venue" }],
     users: function () {
       var l = lsGet("users", null);
       if (!Array.isArray(l)) l = [];
@@ -70,6 +71,8 @@
       return auth.users().filter(function (u) { return u.id === id; })[0] || null;
     },
     isAdmin: function () { var u = auth.current(); return !!u && u.role === "admin"; },
+    /* The venue a shop account manages. The admin can open the example shop's dashboard too. */
+    shopOf: function (u) { return u && u.role === "venue" ? u.venue : u && u.role === "admin" ? "thai-traditional" : null; },
     startSession: function (u, remember) {
       if (remember) lsSet("session", u.id); else { lsDel("session"); set({ sessionUser: u.id }); }
       auth.claimBookings(u);
@@ -113,11 +116,14 @@
     bookingsOf: function (u) {
       return bookings.all().filter(function (b) { return b.account === u.id || (!b.account && b.email && b.email.toLowerCase() === u.email); });
     },
-    /* Inside of an avatar circle: the profile picture, plus a small shield for admins. */
+    /* Inside of an avatar circle: the profile picture, plus a small shield for admins or a shop sign for shop owners. */
     avatarImg: function (u) {
       return '<img src="' + esc(window.WPData.photos.avatar) + '" alt="" width="256" height="256">' +
-        (u && u.role === "admin" ? '<span class="s-avatar-badge">' + icon("shield") + "</span>" : "");
+        (u && u.role === "admin" ? '<span class="s-avatar-badge">' + icon("shield") + "</span>" :
+         u && u.role === "venue" ? '<span class="s-avatar-badge is-venue">' + icon("store") + "</span>" : "");
     },
+    /* Extra class for an avatar circle: a coloured ring for admins and shop owners. */
+    ringOf: function (u) { return u && u.role === "admin" ? " is-admin" : u && u.role === "venue" ? " is-venue" : ""; },
     initials: function (u) { return ((u.first || "").charAt(0) + (u.last || "").charAt(0)).toUpperCase() || "?"; }
   };
   /* "next" link back to the page that is open now, relative to the pages/ folder (where login.html lives). */
@@ -159,12 +165,12 @@
   var HEADER_T = {
     th: { homeAria: "Wellness Pass หน้าแรก", navAria: "เมนูหลัก", home: "หน้าแรก", treatments: "ทรีตเมนต์", picked: "แนะนำสำหรับคุณ", mine: "การจองของฉัน",
       wishlist: "รายการที่ชอบ", search: "ค้นหาทรีตเมนต์", langAria: "ภาษา", menu: "เมนู", skip: "ข้ามไปยังเนื้อหา",
-      login: "เข้าสู่ระบบ", acctMenu: "เมนูบัญชี", account: "บัญชีของฉัน", admin: "แดชบอร์ดผู้ดูแล", venue: "แดชบอร์ดสถานที่", logout: "ออกจากระบบ",
-      roleAdmin: "ผู้ดูแลระบบ", roleCustomer: "สมาชิก", loggedOut: "ออกจากระบบแล้ว" },
+      login: "เข้าสู่ระบบ", acctMenu: "เมนูบัญชี", account: "บัญชีของฉัน", admin: "แดชบอร์ดผู้ดูแล", venue: "แดชบอร์ดร้านตัวอย่าง", myShop: "แดชบอร์ดร้านของฉัน", logout: "ออกจากระบบ",
+      roleAdmin: "ผู้ดูแลระบบ", roleCustomer: "สมาชิก", roleVenue: "เจ้าของร้าน", loggedOut: "ออกจากระบบแล้ว" },
     en: { homeAria: "Wellness Pass home", navAria: "Main", home: "Home", treatments: "Treatments", picked: "Picked for you", mine: "My bookings",
       wishlist: "Wishlist", search: "Search treatments", langAria: "Language", menu: "Menu", skip: "Skip to content",
-      login: "Log in", acctMenu: "Account menu", account: "My account", admin: "Admin dashboard", venue: "Venue dashboard", logout: "Log out",
-      roleAdmin: "Admin", roleCustomer: "Member", loggedOut: "You're logged out" }
+      login: "Log in", acctMenu: "Account menu", account: "My account", admin: "Admin dashboard", venue: "Example shop dashboard", myShop: "My shop dashboard", logout: "Log out",
+      roleAdmin: "Admin", roleCustomer: "Member", roleVenue: "Shop owner", loggedOut: "You're logged out" }
   };
   /* Account button at the right of the header: "Log in" when logged out, an avatar with a dropdown when logged in. */
   function accountTool(t, active, open) {
@@ -173,17 +179,18 @@
       return '<a class="s-acct-login" href="' + esc(active === "login" ? window.WPData.url("login.html") : loginUrl()) + '"' + (active === "login" ? ' aria-current="page"' : "") + ">" +
         icon("user") + '<span class="s-acct-login-txt">' + esc(t.login) + "</span></a>";
     }
-    var admin = u.role === "admin", item = function (href, ico, label, cur) {
+    var admin = u.role === "admin", shop = u.role === "venue", ring = auth.ringOf(u), item = function (href, ico, label, cur) {
       return '<a class="s-acct-item" role="menuitem" href="' + window.WPData.url(href) + '"' + (cur ? ' aria-current="page"' : "") + ">" + icon(ico) + "<span>" + esc(label) + "</span></a>";
     };
     return '<div class="s-acct">' +
-      '<button type="button" class="s-avatar' + (admin ? " is-admin" : "") + '" aria-haspopup="menu" aria-expanded="' + (open ? "true" : "false") + '" aria-label="' + esc(t.acctMenu + ": " + u.first + " " + u.last) + '" data-action="wp:acct">' +
+      '<button type="button" class="s-avatar' + ring + '" aria-haspopup="menu" aria-expanded="' + (open ? "true" : "false") + '" aria-label="' + esc(t.acctMenu + ": " + u.first + " " + u.last) + '" data-action="wp:acct">' +
         auth.avatarImg(u) + "</button>" +
       (open ? '<div class="s-acct-menu" role="menu" aria-label="' + esc(t.acctMenu) + '">' +
-        '<div class="s-acct-head"><span class="s-avatar s-avatar-lg' + (admin ? " is-admin" : "") + '" aria-hidden="true">' + auth.avatarImg(u) + "</span>" +
+        '<div class="s-acct-head"><span class="s-avatar s-avatar-lg' + ring + '" aria-hidden="true">' + auth.avatarImg(u) + "</span>" +
           '<span style="min-width: 0;"><strong>' + esc(u.first + " " + u.last) + '</strong><span class="s-acct-email">' + esc(u.email) + "</span>" +
-          UI.badge(admin ? t.roleAdmin : t.roleCustomer, admin ? "notice" : "success", admin ? "shield" : "user") + "</span></div>" +
-        (admin ? item("admin.html", "shield", t.admin, active === "admin") + item("venue.html", "calendar", t.venue, false) + '<span class="s-acct-sep" role="separator"></span>' : "") +
+          UI.badge(admin ? t.roleAdmin : shop ? t.roleVenue : t.roleCustomer, admin ? "notice" : "success", admin ? "shield" : shop ? "store" : "user") + "</span></div>" +
+        (admin ? item("admin.html", "shield", t.admin, active === "admin") + item("venue.html", "store", t.venue, active === "venue") + '<span class="s-acct-sep" role="separator"></span>' : "") +
+        (shop ? item("venue.html", "store", t.myShop, active === "venue") + '<span class="s-acct-sep" role="separator"></span>' : "") +
         item("account.html", "user", t.account, active === "account") +
         item("mybookings.html", "calendar", t.mine, active === "mybookings") +
         item("wishlist.html", "heart", t.wishlist, active === "wishlist") +
@@ -197,6 +204,7 @@
     if (!u) return navLink("login.html", t.login, active === "login");
     return '<span class="s-mobile-sep" aria-hidden="true"></span>' +
       (u.role === "admin" ? navLink("admin.html", t.admin, active === "admin") : "") +
+      (u.role === "venue" ? navLink("venue.html", t.myShop, active === "venue") : "") +
       navLink("account.html", t.account, active === "account") +
       '<button type="button" class="s-nav-link" data-action="wp:logout">' + esc(t.logout) + "</button>";
   }
@@ -233,11 +241,11 @@
   var FOOTER_T = {
     th: { tagline: "จองนวดไทย สปา โยคะ และรีทรีตทั่วประเทศไทย จากสิ่งที่คุณบอกเรา", demo: "ต้นแบบเดโม · สถานที่ ราคา รีวิว และการชำระเงินทั้งหมดเป็นตัวอย่าง",
       explore: "EXPLORE · สำรวจ", all: "ทรีตเมนต์ทั้งหมด", picked: "แนะนำสำหรับคุณ", wishlist: "รายการที่ชอบ", mine: "การจองของฉัน",
-      help: "HELP · ช่วยเหลือ", faq: "คำถามที่พบบ่อย", policy: "นโยบายการยกเลิก", contact: "ติดต่อเรา", venue: "แดชบอร์ดสถานที่ (เดโม)", account: "บัญชีของฉัน", login: "เข้าสู่ระบบ / สมัครสมาชิก",
+      help: "HELP · ช่วยเหลือ", faq: "คำถามที่พบบ่อย", policy: "นโยบายการยกเลิก", contact: "ติดต่อเรา", venue: "แดชบอร์ดร้าน (เดโม)", account: "บัญชีของฉัน", login: "เข้าสู่ระบบ / สมัครสมาชิก",
       copy: "© 2026 Wellness Pass · ต้นแบบเพื่อการศึกษา", terms: "ข้อกำหนดการใช้งาน", privacy: "นโยบายความเป็นส่วนตัว" },
     en: { tagline: "Book Thai massage, spa, yoga and retreats across Thailand, matched to what you tell us.", demo: "Demo prototype · venues, prices, reviews and payments are all samples.",
       explore: "EXPLORE", all: "All treatments", picked: "Picked for you", wishlist: "Wishlist", mine: "My bookings",
-      help: "HELP", faq: "FAQ", policy: "Cancellation policy", contact: "Contact us", venue: "Venue dashboard (demo)", account: "My account", login: "Log in / Sign up",
+      help: "HELP", faq: "FAQ", policy: "Cancellation policy", contact: "Contact us", venue: "Shop dashboard (demo)", account: "My account", login: "Log in / Sign up",
       copy: "© 2026 Wellness Pass · A student prototype", terms: "Terms of use", privacy: "Privacy policy" }
   };
   var FOOTER_ART = '<svg class="s-foot-art" viewBox="0 0 1440 260" preserveAspectRatio="xMidYMax slice" aria-hidden="true">' +
@@ -365,12 +373,12 @@
     var ui = { lang: getLang(), menu: false, acct: false };
     var api = {};
 
-    /* Pages that need a login: cfg.require = "user" | "admin". Without the right account, go to the login page,
+    /* Pages that need a login: cfg.require = "user" | "admin" | "venue" (a shop owner or the admin). Without the right account, go to the login page,
        which brings the person back here afterwards. */
     if (cfg.require) {
       var me = auth.current();
-      if (!me || (cfg.require === "admin" && me.role !== "admin")) {
-        location.replace(loginUrl(cfg.require === "admin" ? { need: "admin" } : { need: "user" }));
+      if (!me || (cfg.require === "admin" && me.role !== "admin") || (cfg.require === "venue" && me.role !== "venue" && me.role !== "admin")) {
+        location.replace(loginUrl({ need: cfg.require === "user" ? "user" : cfg.require }));
         return { render: function () {}, lang: function () { return ui.lang; } };
       }
       if (me.lang && !lsGet("lang", null)) ui.lang = me.lang;

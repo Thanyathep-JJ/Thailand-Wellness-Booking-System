@@ -1,7 +1,7 @@
 /* Wellness Pass: Log in / Sign up (login.html).
    Demo accounts saved in this browser (see WP.auth in common.js). Booking without an account still works;
    an account fills in the booking form and keeps all bookings in one place.
-   URL options: ?tab=signup  ?email=...  ?need=admin|user (why the person was sent here)  ?next=<page to return to> */
+   URL options: ?tab=signup  ?email=...  ?need=admin|venue|user (why the person was sent here)  ?next=<page to return to> */
 (function () {
   "use strict";
   var UI = window.UI, WP = window.WP, esc = UI.esc, icon = UI.icon, A = WP.auth;
@@ -16,13 +16,15 @@
       remember: "จดจำฉันไว้ในเบราว์เซอร์นี้", forgot: "ลืมรหัสผ่าน?", login: "เข้าสู่ระบบ", signup: "สร้างบัญชี",
       terms: "ฉันยอมรับข้อกำหนดการใช้งานและนโยบายความเป็นส่วนตัว", or: "หรือ", google: "ดำเนินการต่อด้วย Google", line: "ดำเนินการต่อด้วย LINE",
       socialDemo: "การเข้าสู่ระบบด้วยบัญชีโซเชียลยังไม่เชื่อมต่อในเดโมนี้ ลองใช้บัญชีเดโมด้านล่าง",
-      demoTitle: "บัญชีเดโม", demoLead: "กดเพื่อกรอกข้อมูลให้อัตโนมัติ", demoCustomer: "ลูกค้า", demoAdmin: "ผู้ดูแลระบบ",
+      demoTitle: "บัญชีเดโม", demoLead: "กดเพื่อกรอกข้อมูลให้อัตโนมัติ", demoCustomer: "ลูกค้า", demoAdmin: "ผู้ดูแลระบบ", demoVenue: "เจ้าของร้าน",
       guest: "ไม่อยากสมัคร? คุณยังจองแบบไม่ต้องมีบัญชีได้", guestLink: "ดูทรีตเมนต์",
       noAcct: "ยังไม่มีบัญชี?", haveAcct: "มีบัญชีอยู่แล้ว?",
       eEmail: "กรอกอีเมลให้ครบ เช่น name@example.com", ePw: "กรอกรหัสผ่าน", eNoUser: "ไม่พบบัญชีที่ใช้อีเมลนี้ ลองสมัครสมาชิก", eBadPw: "รหัสผ่านไม่ถูกต้อง",
       eFirst: "กรอกชื่อ", eLast: "กรอกนามสกุล", eWeak: "ใช้อย่างน้อย 8 ตัวอักษร มีทั้งตัวอักษรและตัวเลข", eMatch: "รหัสผ่านทั้งสองช่องไม่ตรงกัน",
       eExists: "อีเมลนี้มีบัญชีอยู่แล้ว ลองเข้าสู่ระบบ", eTerms: "โปรดยอมรับข้อกำหนดก่อนสร้างบัญชี", eNotAdmin: "บัญชีนี้ไม่ใช่ผู้ดูแลระบบ ลองใช้ admin@demo.com",
       needAdminTitle: "สำหรับผู้ดูแลระบบเท่านั้น", needAdmin: "เข้าสู่ระบบด้วยบัญชีผู้ดูแลเพื่อเปิดแดชบอร์ด",
+      needVenueTitle: "สำหรับเจ้าของร้าน", needVenue: "เข้าสู่ระบบด้วยบัญชีร้าน (shop@demo.com) หรือบัญชีผู้ดูแลเพื่อเปิดแดชบอร์ดร้าน",
+      eNotVenue: "บัญชีนี้ไม่ใช่บัญชีร้าน ลองใช้ shop@demo.com", wrongVenue: "บัญชีที่เข้าสู่ระบบอยู่ไม่ใช่บัญชีร้าน ออกจากระบบแล้วเข้าด้วย shop@demo.com",
       needUserTitle: "โปรดเข้าสู่ระบบ", needUser: "เข้าสู่ระบบเพื่อดูหน้านี้",
       already: function (n) { return "คุณเข้าสู่ระบบเป็น " + n + " อยู่แล้ว"; }, cont: "ไปต่อ", switchAcct: "ออกจากระบบและเปลี่ยนบัญชี",
       wrongRole: "บัญชีที่เข้าสู่ระบบอยู่ไม่ใช่ผู้ดูแลระบบ ออกจากระบบแล้วเข้าด้วยบัญชีผู้ดูแล",
@@ -41,13 +43,15 @@
       remember: "Remember me on this browser", forgot: "Forgot password?", login: "Log in", signup: "Create account",
       terms: "I agree to the Terms of use and Privacy policy", or: "or", google: "Continue with Google", line: "Continue with LINE",
       socialDemo: "Social login isn't connected in this demo. Try a demo account below.",
-      demoTitle: "Demo accounts", demoLead: "Tap one to fill in the form", demoCustomer: "Customer", demoAdmin: "Admin",
+      demoTitle: "Demo accounts", demoLead: "Tap one to fill in the form", demoCustomer: "Customer", demoAdmin: "Admin", demoVenue: "Shop owner",
       guest: "Don't want an account? You can still book as a guest.", guestLink: "Browse treatments",
       noAcct: "New to Wellness Pass?", haveAcct: "Already have an account?",
       eEmail: "Enter a full email address, like name@example.com", ePw: "Enter your password", eNoUser: "No account uses this email. Try signing up.", eBadPw: "That password isn't right",
       eFirst: "Enter your first name", eLast: "Enter your last name", eWeak: "Use at least 8 characters, with letters and numbers", eMatch: "The passwords don't match",
       eExists: "This email already has an account. Try logging in.", eTerms: "Please accept the terms to create an account", eNotAdmin: "This account isn't an admin. Try admin@demo.com",
       needAdminTitle: "Admin only", needAdmin: "Log in with an admin account to open the dashboard.",
+      needVenueTitle: "Shop owners only", needVenue: "Log in with the shop account (shop@demo.com) or an admin account to open the shop dashboard.",
+      eNotVenue: "This isn't a shop account. Try shop@demo.com", wrongVenue: "The account you're logged in with isn't a shop account. Log out, then log in with shop@demo.com.",
       needUserTitle: "Please log in", needUser: "Log in to see this page.",
       already: function (n) { return "You're logged in as " + n; }, cont: "Continue", switchAcct: "Log out and switch account",
       wrongRole: "The account you're logged in with isn't an admin. Log out, then log in with an admin account.",
@@ -73,10 +77,13 @@
   function emailOk(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((v || "").trim()); }
   function strongOk(v) { return (v || "").length >= 8 && /[A-Za-z]/.test(v) && /\d/.test(v); }
 
+  /* Where each kind of account starts, and whether it can open the page that sent the person here. */
+  function home(u) { return u.role === "admin" ? "admin.html" : u.role === "venue" ? "venue.html" : "account.html"; }
+  function wrongFor(u) { return (need === "admin" && u.role !== "admin") || (need === "venue" && u.role !== "venue" && u.role !== "admin"); }
   function goAfter(u, msg) {
     WP.set({ flash: msg });
-    var dest = next || (u.role === "admin" ? "admin.html" : "account.html");
-    if (need === "admin" && u.role !== "admin") dest = "account.html";
+    var dest = next || home(u);
+    if (wrongFor(u)) dest = home(u);
     location.href = dest;
   }
 
@@ -113,10 +120,10 @@
   function demoTiles(t) {
     return '<div class="s-demo-accts"><p class="s-demo-head"><strong>' + esc(t.demoTitle) + "</strong> · " + esc(t.demoLead) + "</p>" +
       '<div class="s-demo-grid">' + A.demo.map(function (d, i) {
-        var admin = d.role === "admin";
-        return '<button type="button" class="s-demo-acct' + (admin ? " is-admin" : "") + '" data-action="useDemo" data-arg="' + i + '">' +
-          '<span class="s-demo-ico">' + icon(admin ? "shield" : "user") + "</span>" +
-          '<span><strong>' + esc(admin ? t.demoAdmin : t.demoCustomer) + "</strong><span>" + esc(d.email) + "</span><span>" + esc(d.pw) + "</span></span></button>";
+        var admin = d.role === "admin", shop = d.role === "venue";
+        return '<button type="button" class="s-demo-acct' + (admin ? " is-admin" : shop ? " is-venue" : "") + '" data-action="useDemo" data-arg="' + i + '">' +
+          '<span class="s-demo-ico">' + icon(admin ? "shield" : shop ? "store" : "user") + "</span>" +
+          '<span><strong>' + esc(admin ? t.demoAdmin : shop ? t.demoVenue : t.demoCustomer) + "</strong><span>" + esc(d.email) + "</span><span>" + esc(d.pw) + "</span></span></button>";
       }).join("") + "</div></div>";
   }
 
@@ -129,14 +136,14 @@
   }
 
   function alreadyCard(t, u) {
-    var wrong = need === "admin" && u.role !== "admin";
+    var wrong = wrongFor(u);
     return '<div class="s-auth-already">' +
-      '<span class="s-avatar s-avatar-xl' + (u.role === "admin" ? " is-admin" : "") + '" aria-hidden="true">' + A.avatarImg(u) + "</span>" +
+      '<span class="s-avatar s-avatar-xl' + A.ringOf(u) + '" aria-hidden="true">' + A.avatarImg(u) + "</span>" +
       '<h1 class="s-auth-title">' + esc(t.already(u.first + " " + u.last)) + "</h1>" +
       '<p class="s-small" style="margin: 0;">' + esc(u.email) + "</p>" +
-      (wrong ? UI.notice({ tone: "notice", title: t.needAdminTitle }, esc(t.wrongRole)) : "") +
+      (wrong ? UI.notice({ tone: "notice", title: need === "venue" ? t.needVenueTitle : t.needAdminTitle }, esc(need === "venue" ? t.wrongVenue : t.wrongRole)) : "") +
       '<div class="s-btn-row" style="justify-content: center;">' +
-        (wrong ? "" : UI.button({ label: t.cont, arrow: true, href: next || (u.role === "admin" ? "admin.html" : "account.html") })) +
+        (wrong ? "" : UI.button({ label: t.cont, arrow: true, href: next || home(u) })) +
         UI.button({ label: t.switchAcct, variant: wrong ? "primary" : "ghost", action: "switch" }) + "</div></div>";
   }
 
@@ -145,6 +152,7 @@
     view: function (lang) {
       var t = TEXT[lang], u = A.current(), signup = state.tab === "signup";
       var needBox = need === "admin" ? UI.notice({ tone: "notice", title: t.needAdminTitle, cls: "s-auth-need" }, esc(t.needAdmin))
+        : need === "venue" ? UI.notice({ tone: "notice", title: t.needVenueTitle, cls: "s-auth-need" }, esc(t.needVenue))
         : need === "user" ? UI.notice({ tone: "info", title: t.needUserTitle, cls: "s-auth-need" }, esc(t.needUser)) : "";
       var main = u ? alreadyCard(t, u) :
         needBox +
@@ -210,7 +218,7 @@
         var before = WP.bookings.all().filter(function (b) { return b.account; }).length;
         var r = A.login(state.l.email, state.l.pw, state.remember);
         if (!r.ok) { state.errors = r.error === "nouser" ? { "l.email": t.eNoUser } : { "l.pw": t.eBadPw }; return focusError(); }
-        if (need === "admin" && r.user.role !== "admin") { A.logout(); state.errors = { "l.email": t.eNotAdmin }; return focusError(); }
+        if (wrongFor(r.user)) { A.logout(); state.errors = { "l.email": need === "venue" ? t.eNotVenue : t.eNotAdmin }; return focusError(); }
         var added = WP.bookings.all().filter(function (b) { return b.account; }).length - before;
         goAfter(r.user, t.welcome(r.user.first) + (added > 0 ? t.claimed(added) : ""));
         return false;
